@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accxs Creations | Staff Dashboard</title>
+    <link rel="icon" type="image/png" href="a/1/a.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-font { font-family: 'Fira Code', monospace; }
+
+        * {
+            transition:
+                background-color .25s ease,
+                border-color .25s ease,
+                color .25s ease,
+                opacity .25s ease,
+                transform .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .dark .bg-grid-pattern {
+            background-image: radial-gradient(rgba(129, 140, 248, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        .quote-card.pending {
+            border-color: rgba(99, 102, 241, .28);
+        }
+
+        .quote-card.in_progress {
+            border-color: rgba(245, 158, 11, .55);
+            background: linear-gradient(145deg, rgba(245, 158, 11, .09), rgba(255,255,255,.98));
+        }
+
+        .dark .quote-card.in_progress {
+            background: linear-gradient(145deg, rgba(245, 158, 11, .14), rgba(15,23,42,.97));
+        }
+
+        .quote-card.completed {
+            border-color: rgba(16, 185, 129, .55);
+            background: linear-gradient(145deg, rgba(16, 185, 129, .10), rgba(255,255,255,.98));
+        }
+
+        .dark .quote-card.completed {
+            background: linear-gradient(145deg, rgba(16, 185, 129, .14), rgba(15,23,42,.97));
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 10px 28px rgba(79, 70, 229, .22);
+        }
+
+        .skeleton {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(148,163,184,.14), transparent);
+            animation: shimmer 1.4s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        @media (max-width: 639px) {
+            .dashboard-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col">
+
+    <!-- Authentication Loading Screen -->
+    <div id="authLoadingScreen" class="fixed inset-0 z-[200] bg-slate-950 flex items-center justify-center">
+        <div class="text-center px-6">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-2xl shadow-indigo-500/30">
+                <i class="fa-solid fa-shield-halved text-white text-2xl"></i>
+            </div>
+            <div class="mt-6 text-white text-xl font-extrabold">Accxs Creations</div>
+            <div class="mt-2 text-sm text-slate-400">Verifying staff access...</div>
+            <div class="mt-5 flex justify-center">
+                <i class="fa-solid fa-circle-notch fa-spin text-indigo-400 text-xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-3 group min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105">
+                    <i class="fa-solid fa-code text-white text-lg"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="text-base sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent truncate">
+                        Accxs Creations
+                    </div>
+                    <div class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">
+                        Staff Dashboard
+                    </div>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="hidden md:flex items-center gap-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <div id="headerFullName" class="text-sm font-bold">Loading...</div>
+                        <div id="headerRole" class="text-[11px] text-slate-500 dark:text-slate-400">Staff</div>
+                    </div>
+                </div>
+
+                <button id="themeToggle" type="button" aria-label="Toggle Theme" class="w-10 h-10 inline-flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">
+                    <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
+                </button>
+
+                <button id="logoutBtn" type="button" class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-semibold text-sm shadow-sm hover:scale-[1.02] active:scale-[0.98]">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow bg-grid-pattern relative">
+        <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[420px] h-[420px] sm:w-[720px] sm:h-[720px] bg-indigo-500/10 dark:bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <section class="relative z-10 py-8 sm:py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!-- Welcome -->
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Secure Staff Workspace
+                        </div>
+                        <h1 class="dashboard-title mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight">
+                            Project Quote Dashboard
+                        </h1>
+                        <p class="mt-3 text-slate-600 dark:text-slate-400 max-w-2xl">
+                            Welcome, <span id="welcomeName" class="font-semibold text-slate-900 dark:text-white">Staff Member</span>. Review incoming requests and update their current project status.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                        <i class="fa-solid fa-arrows-rotate text-indigo-500"></i>
+                        <span>Live Firestore updates enabled</span>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+                    <div class="p-5 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Total</div>
+                            <i class="fa-solid fa-inbox text-indigo-500"></i>
+                        </div>
+                        <div id="countAll" class="mt-3 text-3xl font-extrabold">0</div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Pending</div>
+                            <i class="fa-regular fa-clock text-violet-500"></i>
+                        </div>
+                        <div id="countPending" class="mt-3 text-3xl font-extrabold">0</div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-amber-300/60 dark:border-amber-500/20 shadow-sm backdrop-blur-md">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs uppercase tracking-wider font-bold text-amber-600 dark:text-amber-400">In Progress</div>
+                            <i class="fa-solid fa-screwdriver-wrench text-amber-500"></i>
+                        </div>
+                        <div id="countProgress" class="mt-3 text-3xl font-extrabold">0</div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-emerald-300/60 dark:border-emerald-500/20 shadow-sm backdrop-blur-md">
+                        <div class="flex items-center justify-between">
+                            <div class="text-xs uppercase tracking-wider font-bold text-emerald-600 dark:text-emerald-400">Completed</div>
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                        </div>
+                        <div id="countCompleted" class="mt-3 text-3xl font-extrabold">0</div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="mt-8 p-4 sm:p-5 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+                    <div class="flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
+                        <div class="relative flex-1 max-w-2xl">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input id="searchInput" type="search" placeholder="Search customer, email, project type, or details..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-sm">
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:flex gap-2">
+                            <button data-filter="all" class="filter-btn active px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">All</button>
+                            <button data-filter="pending" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Pending</button>
+                            <button data-filter="in_progress" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">In Progress</button>
+                            <button data-filter="completed" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Completed</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quote Cards -->
+                <div class="mt-6">
+                    <div id="quotesLoading" class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+                        <div class="skeleton h-72 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"></div>
+                        <div class="skeleton h-72 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800"></div>
+                    </div>
+
+                    <div id="quotesGrid" class="hidden grid grid-cols-1 xl:grid-cols-2 gap-5"></div>
+
+                    <div id="emptyState" class="hidden py-20 text-center rounded-3xl bg-white/75 dark:bg-slate-900/75 border border-dashed border-slate-300 dark:border-slate-700">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl">
+                            <i class="fa-regular fa-folder-open"></i>
+                        </div>
+                        <h2 class="mt-5 text-xl font-bold">No project requests found</h2>
+                        <p id="emptyStateText" class="mt-2 text-sm text-slate-500 dark:text-slate-400">New quote requests will appear here automatically.</p>
+                    </div>
+
+                    <div id="dashboardError" class="hidden mt-5 p-5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="deleteBackdrop" class="absolute inset-0 bg-slate-950/65 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl p-6 sm:p-8">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h2 class="mt-5 text-2xl font-extrabold">Delete project request?</h2>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                This permanently removes the request from Firestore. This action cannot be undone.
+            </p>
+
+            <div class="mt-6 grid grid-cols-2 gap-3">
+                <button id="cancelDeleteBtn" type="button" class="px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold text-sm">Cancel</button>
+                <button id="confirmDeleteBtn" type="button" class="px-4 py-3 rounded-xl bg-rose-600 text-white font-semibold text-sm shadow-lg shadow-rose-500/20">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-[120] hidden max-w-sm px-5 py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-2xl text-sm font-semibold"></div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow">
+                            <i class="fa-solid fa-code text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+                            Accxs Creations
+                        </span>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-400 text-sm max-w-sm leading-relaxed">
+                        Empowering individuals and businesses through stunning personal websites, custom software apps, and high-performance live websites.
+                    </p>
+
+                    <div class="flex items-center space-x-3 pt-2">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-indigo-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-pink-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="mailto:accxscreations@gmail.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-solid fa-envelope text-sm"></i>
+                        </a>
+                        <a href="https://m.me" target="_blank" aria-label="Messenger" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-blue-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-brands fa-facebook-messenger text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-4">Quick Links</h5>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a href="index.html#hero" class="hover:text-indigo-600 dark:hover:text-indigo-400">Home</a></li>
+                        <li><a href="index.html#purpose" class="hover:text-indigo-600 dark:hover:text-indigo-400">Purpose & Goal</a></li>
+                        <li><a href="index.html#personal-websites" class="hover:text-indigo-600 dark:hover:text-indigo-400">Personal Websites</a></li>
+                        <li><a href="index.html#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">What We Do</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-4">Solutions</h5>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a href="index.html#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Portfolios & CVs</a></li>
+                        <li><a href="index.html#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Software Apps</a></li>
+                        <li><a href="index.html#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Live Websites</a></li>
+                        <li><a href="index.html#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Cloud Solutions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 sm:mt-0">
+                    <a href="privacypolicy.html" class="hover:text-slate-700 dark:hover:text-slate-400">Privacy Policy</a>
+                    <a href="termsofservice.html" class="hover:text-slate-700 dark:hover:text-slate-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'light') {
+            htmlElement.classList.remove('dark');
+            themeIcon.className = 'fa-solid fa-moon text-indigo-600';
+        } else {
+            htmlElement.classList.add('dark');
+            themeIcon.className = 'fa-solid fa-sun text-amber-400';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = htmlElement.classList.contains('dark');
+
+            if (isDark) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIcon.className = 'fa-solid fa-moon text-indigo-600';
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun text-amber-400';
+            }
+        });
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+        import {
+            getFirestore,
+            collection,
+            query,
+            where,
+            limit,
+            getDocs,
+            orderBy,
+            onSnapshot,
+            doc,
+            updateDoc,
+            deleteDoc
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZrI3Y1l3dq9GCUfzB8RZyxKx8LE9cM_Y",
+            authDomain: "accxs-3a962.firebaseapp.com",
+            projectId: "accxs-3a962",
+            storageBucket: "accxs-3a962.firebasestorage.app",
+            messagingSenderId: "348927244141",
+            appId: "1:348927244141:web:fff6e94e4b2c72a5f24c64"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const authLoadingScreen = document.getElementById('authLoadingScreen');
+        const headerFullName = document.getElementById('headerFullName');
+        const headerRole = document.getElementById('headerRole');
+        const welcomeName = document.getElementById('welcomeName');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        const quotesLoading = document.getElementById('quotesLoading');
+        const quotesGrid = document.getElementById('quotesGrid');
+        const emptyState = document.getElementById('emptyState');
+        const emptyStateText = document.getElementById('emptyStateText');
+        const dashboardError = document.getElementById('dashboardError');
+        const searchInput = document.getElementById('searchInput');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        const countAll = document.getElementById('countAll');
+        const countPending = document.getElementById('countPending');
+        const countProgress = document.getElementById('countProgress');
+        const countCompleted = document.getElementById('countCompleted');
+
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteBackdrop = document.getElementById('deleteBackdrop');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const toast = document.getElementById('toast');
+
+        let allQuotes = [];
+        let currentFilter = 'all';
+        let quoteToDelete = null;
+        let unsubscribeQuotes = null;
+
+        function escapeHtml(value = '') {
+            return String(value)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        function formatTimestamp(timestamp) {
+            if (!timestamp || typeof timestamp.toDate !== 'function') {
+                return 'Saving time...';
+            }
+
+            const date = timestamp.toDate();
+
+            return new Intl.DateTimeFormat('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }).format(date);
+        }
+
+        function getStatusMeta(status) {
+            if (status === 'completed') {
+                return {
+                    label: 'Completed',
+                    badge: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+                    icon: 'fa-solid fa-circle-check'
+                };
+            }
+
+            if (status === 'in_progress') {
+                return {
+                    label: 'In Progress',
+                    badge: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+                    icon: 'fa-solid fa-screwdriver-wrench'
+                };
+            }
+
+            return {
+                label: 'Pending',
+                badge: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
+                icon: 'fa-regular fa-clock'
+            };
+        }
+
+        function updateCounts() {
+            countAll.textContent = allQuotes.length;
+            countPending.textContent = allQuotes.filter(item => item.status === 'pending').length;
+            countProgress.textContent = allQuotes.filter(item => item.status === 'in_progress').length;
+            countCompleted.textContent = allQuotes.filter(item => item.status === 'completed').length;
+        }
+
+        function getFilteredQuotes() {
+            const search = searchInput.value.trim().toLowerCase();
+
+            return allQuotes.filter(item => {
+                const matchesFilter = currentFilter === 'all' || item.status === currentFilter;
+
+                const haystack = [
+                    item.name,
+                    item.email,
+                    item.projectType,
+                    item.projectDetails
+                ].join(' ').toLowerCase();
+
+                const matchesSearch = !search || haystack.includes(search);
+
+                return matchesFilter && matchesSearch;
+            });
+        }
+
+        function renderQuotes() {
+            updateCounts();
+
+            const quotes = getFilteredQuotes();
+            quotesGrid.innerHTML = '';
+
+            if (!quotes.length) {
+                quotesGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+
+                if (searchInput.value.trim() || currentFilter !== 'all') {
+                    emptyStateText.textContent = 'No project requests match your current search or filter.';
+                } else {
+                    emptyStateText.textContent = 'New quote requests will appear here automatically.';
+                }
+
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            quotesGrid.classList.remove('hidden');
+
+            quotes.forEach(item => {
+                const meta = getStatusMeta(item.status);
+
+                const article = document.createElement('article');
+                article.className = `quote-card ${item.status || 'pending'} relative overflow-hidden rounded-3xl border bg-white dark:bg-slate-900 shadow-lg p-5 sm:p-7`;
+
+                article.innerHTML = `
+                    <div class="absolute inset-x-0 top-0 h-1 ${
+                        item.status === 'completed'
+                            ? 'bg-emerald-500'
+                            : item.status === 'in_progress'
+                                ? 'bg-amber-500'
+                                : 'bg-gradient-to-r from-indigo-600 to-violet-500'
+                    }"></div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white break-words">
+                                ${escapeHtml(item.name)}
+                            </div>
+
+                            <a href="mailto:${escapeHtml(item.email)}" class="inline-flex items-center gap-2 mt-1 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 break-all">
+                                <i class="fa-regular fa-envelope"></i>
+                                ${escapeHtml(item.email)}
+                            </a>
+                        </div>
+
+                        <div class="sm:text-right shrink-0">
+                            <div class="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                                ${formatTimestamp(item.createdAt)}
+                            </div>
+
+                            <div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${meta.badge}">
+                                <i class="${meta.icon}"></i>
+                                ${meta.label}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="text-[11px] uppercase tracking-[0.2em] font-bold text-indigo-600 dark:text-indigo-400">
+                            Project Type
+                        </div>
+                        <h2 class="mt-2 text-2xl sm:text-3xl font-extrabold leading-tight">
+                            ${escapeHtml(item.projectType)}
+                        </h2>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="text-[11px] uppercase tracking-[0.2em] font-bold text-slate-500 dark:text-slate-400">
+                            Project Details
+                        </div>
+                        <p class="mt-2 text-sm sm:text-[15px] leading-7 text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
+                            ${escapeHtml(item.projectDetails)}
+                        </p>
+                    </div>
+
+                    <div class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-2.5">
+                        <button data-action="complete" data-id="${item.id}" type="button"
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 active:scale-[0.99]">
+                            <i class="fa-solid fa-check"></i>
+                            Completed
+                        </button>
+
+                        <button data-action="progress" data-id="${item.id}" type="button"
+                            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-amber-500 text-white font-semibold text-sm hover:bg-amber-400 active:scale-[0.99]">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            In Progress
+                        </button>
+
+                        <button data-action="delete" data-id="${item.id}" type="button"
+                            class="sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold text-sm hover:bg-rose-600 hover:text-white active:scale-[0.99]">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Delete
+                        </button>
+                    </div>
+                `;
+
+                quotesGrid.appendChild(article);
+            });
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+
+            clearTimeout(window.__accxsToastTimer);
+            window.__accxsToastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3200);
+        }
+
+        async function updateQuoteStatus(id, status) {
+            try {
+                await updateDoc(doc(db, 'projectQuotes', id), { status });
+                showToast(status === 'completed' ? 'Project marked as completed.' : 'Project marked as in progress.');
+            } catch (error) {
+                console.error(error);
+                showToast('Could not update this project.');
+            }
+        }
+
+        function openDeleteModal(id) {
+            quoteToDelete = id;
+            deleteModal.classList.remove('hidden');
+            deleteModal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeDeleteModal() {
+            quoteToDelete = null;
+            deleteModal.classList.add('hidden');
+            deleteModal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        quotesGrid.addEventListener('click', event => {
+            const button = event.target.closest('[data-action]');
+            if (!button) return;
+
+            const id = button.dataset.id;
+            const action = button.dataset.action;
+
+            if (action === 'complete') updateQuoteStatus(id, 'completed');
+            if (action === 'progress') updateQuoteStatus(id, 'in_progress');
+            if (action === 'delete') openDeleteModal(id);
+        });
+
+        cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+        deleteBackdrop.addEventListener('click', closeDeleteModal);
+
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (!quoteToDelete) return;
+
+            const id = quoteToDelete;
+            confirmDeleteBtn.disabled = true;
+            confirmDeleteBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Deleting...';
+
+            try {
+                await deleteDoc(doc(db, 'projectQuotes', id));
+                closeDeleteModal();
+                showToast('Project request deleted.');
+            } catch (error) {
+                console.error(error);
+                showToast('Could not delete this project.');
+            } finally {
+                confirmDeleteBtn.disabled = false;
+                confirmDeleteBtn.textContent = 'Delete';
+            }
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && !deleteModal.classList.contains('hidden')) {
+                closeDeleteModal();
+            }
+        });
+
+        searchInput.addEventListener('input', renderQuotes);
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentFilter = button.dataset.filter;
+
+                filterButtons.forEach(item => item.classList.remove('active'));
+                button.classList.add('active');
+
+                renderQuotes();
+            });
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            logoutBtn.disabled = true;
+
+            try {
+                await signOut(auth);
+                window.location.replace('index.html');
+            } catch (error) {
+                console.error(error);
+                logoutBtn.disabled = false;
+                showToast('Logout failed. Please try again.');
+            }
+        });
+
+        async function loadEmployeeProfile(user) {
+            const employeeQuery = query(
+                collection(db, 'employees'),
+                where('authUid', '==', user.uid),
+                limit(1)
+            );
+
+            const snapshot = await getDocs(employeeQuery);
+
+            if (snapshot.empty) {
+                throw new Error('No employee profile is assigned to this account.');
+            }
+
+            const profile = snapshot.docs[0].data();
+
+            const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'Staff Member';
+
+            headerFullName.textContent = fullName;
+            headerRole.textContent = `${profile.role || 'Staff'} • ${profile.userId || 'Employee'}`;
+            welcomeName.textContent = fullName;
+
+            return profile;
+        }
+
+        function startQuoteListener() {
+            const quotesQuery = query(
+                collection(db, 'projectQuotes'),
+                orderBy('createdAt', 'desc')
+            );
+
+            unsubscribeQuotes = onSnapshot(
+                quotesQuery,
+                snapshot => {
+                    allQuotes = snapshot.docs.map(document => ({
+                        id: document.id,
+                        ...document.data()
+                    }));
+
+                    quotesLoading.classList.add('hidden');
+                    dashboardError.classList.add('hidden');
+                    renderQuotes();
+                },
+                error => {
+                    console.error('Quote listener error:', error);
+                    quotesLoading.classList.add('hidden');
+                    dashboardError.textContent = 'The dashboard could not load project requests. Check your Firestore rules and make sure the projectQuotes collection is accessible to signed-in staff.';
+                    dashboardError.classList.remove('hidden');
+                }
+            );
+        }
+
+        onAuthStateChanged(auth, async user => {
+            if (!user) {
+                window.location.replace('index.html');
+                return;
+            }
+
+            try {
+                await loadEmployeeProfile(user);
+                startQuoteListener();
+                authLoadingScreen.classList.add('hidden');
+            } catch (error) {
+                console.error('Staff verification failed:', error);
+
+                if (unsubscribeQuotes) unsubscribeQuotes();
+
+                try {
+                    await signOut(auth);
+                } catch (_) {}
+
+                window.location.replace('index.html');
+            }
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribeQuotes) unsubscribeQuotes();
+        });
+    </script>
+</body>
+</html>
