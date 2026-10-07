@@ -766,26 +766,19 @@ brand.<span class="text-blue-400">deploy</span>()`,
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-
-        // STEP 1: Replace these placeholders with the exact config copied from
-        // Firebase Console > Project settings > Your apps > Web app.
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAZrI3Y1l3dq9GCUfzB8RZyxKx8LE9cM_Y",
+    authDomain: "accxs-3a962.firebaseapp.com",
+    projectId: "accxs-3a962",
+    storageBucket: "accxs-3a962.firebasestorage.app",
+    messagingSenderId: "348927244141",
+    appId: "1:348927244141:web:fff6e94e4b2c72a5f24c64"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-
-        // Employees enter only ACX001, ACX002, etc.
-        // Firebase Email/Password authentication requires an email internally,
-        // so the code converts the ID into an admin-only authentication address.
         const STAFF_EMAIL_DOMAIN = "staff.accxscreations.com";
-        const STAFF_PORTAL_URL = "staff.html";
+        const STAFF_PORTAL_URL = "dashboard.html";
 
         const modal = document.getElementById('staffLoginModal');
         const backdrop = document.getElementById('staffLoginBackdrop');
