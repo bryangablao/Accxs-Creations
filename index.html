@@ -538,38 +538,56 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                             </div>
                         </div>
                     </div>
-
                     <!-- Contact Form Card -->
                     <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
-                        <h4 class="text-2xl font-bold mb-6">Request Your Project Quote</h4>
-                        <form id="contactForm" onsubmit="handleContact(event)" class="space-y-5">
+                        <div class="flex items-start justify-between gap-4 mb-6">
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Your Name</label>
-                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="John Doe">
+                                <h4 class="text-2xl font-bold">Request Your Project Quote</h4>
+                                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Send your project details directly to the Accxs Creations staff dashboard.</p>
                             </div>
-                            <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Email Address</label>
-                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="john@example.com">
+                            <div class="hidden sm:flex w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 items-center justify-center">
+                                <i class="fa-solid fa-paper-plane"></i>
                             </div>
+                        </div>
+
+                        <form id="contactForm" class="space-y-5">
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Type</label>
-                                <select class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all">
-                                    <option>Personal Website / Portfolio</option>
-                                    <option>Custom Software App</option>
-                                    <option>Live Business Website</option>
-                                    <option>E-Commerce Store</option>
+                                <label for="quoteName" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Your Name</label>
+                                <input id="quoteName" name="name" type="text" autocomplete="name" maxlength="100" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="John Doe">
+                            </div>
+
+                            <div>
+                                <label for="quoteEmail" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Email Address</label>
+                                <input id="quoteEmail" name="email" type="email" autocomplete="email" maxlength="160" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="john@example.com">
+                            </div>
+
+                            <div>
+                                <label for="quoteProjectType" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Type</label>
+                                <select id="quoteProjectType" name="projectType" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all">
+                                    <option value="Personal Website / Portfolio">Personal Website / Portfolio</option>
+                                    <option value="Custom Software App">Custom Software App</option>
+                                    <option value="Live Business Website">Live Business Website</option>
+                                    <option value="E-Commerce Store">E-Commerce Store</option>
                                 </select>
                             </div>
+
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Details</label>
-                                <textarea rows="3" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="Tell us about your personal website requirements..."></textarea>
+                                <label for="quoteDetails" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Details</label>
+                                <textarea id="quoteDetails" name="projectDetails" rows="4" maxlength="5000" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all resize-y" placeholder="Tell us about your project requirements..."></textarea>
+                                <div class="mt-2 text-right text-[11px] text-slate-400"><span id="quoteCharCount">0</span>/5000</div>
                             </div>
-                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/25 hover:scale-[1.01] active:scale-[0.99] transition-all">
-                                Send Message
+
+                            <button id="quoteSubmitBtn" type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all">
+                                <span id="quoteSubmitText"><i class="fa-solid fa-paper-plane mr-2"></i>Send Message</span>
                             </button>
                         </form>
+
                         <div id="formSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm text-center font-medium">
-                            Thank you! Your message has been sent successfully. We will get back to you within 24 hours.
+                            <i class="fa-solid fa-circle-check mr-2"></i>Your project request has been received successfully.
+                        </div>
+
+                        <div id="formError" class="hidden mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm text-center font-medium">
+                            <i class="fa-solid fa-triangle-exclamation mr-2"></i>We could not submit your request. Please try again.
                         </div>
                     </div>
                 </div>
@@ -641,8 +659,8 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
                 <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
                 <div class="flex space-x-6 mt-4 sm:mt-0">
-                    <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Terms of Service</a>
+                    <a href="privacypolicy.html" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Privacy Policy</a>
+                    <a href="termsofservice.html" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -750,22 +768,13 @@ brand.<span class="text-blue-400">deploy</span>()`,
             }, 4000);
         }
 
-        // Contact Form Handler
-        function handleContact(e) {
-            e.preventDefault();
-            document.getElementById('contactForm').reset();
-            const successDiv = document.getElementById('formSuccess');
-            successDiv.classList.remove('hidden');
-            setTimeout(() => {
-                successDiv.classList.add('hidden');
-            }, 6000);
-        }
     </script>
 
     <!-- Firebase Staff Authentication -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         const firebaseConfig = {
     apiKey: "AIzaSyAZrI3Y1l3dq9GCUfzB8RZyxKx8LE9cM_Y",
     authDomain: "accxs-3a962.firebaseapp.com",
@@ -777,6 +786,7 @@ brand.<span class="text-blue-400">deploy</span>()`,
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const STAFF_EMAIL_DOMAIN = "staff.accxscreations.com";
         const STAFF_PORTAL_URL = "dashboard.html";
 
@@ -870,6 +880,68 @@ brand.<span class="text-blue-400">deploy</span>()`,
                 }
             }
         });
+
+        // Project Quote -> Cloud Firestore
+        const quoteForm = document.getElementById('contactForm');
+        const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
+        const quoteSubmitText = document.getElementById('quoteSubmitText');
+        const quoteSuccess = document.getElementById('formSuccess');
+        const quoteError = document.getElementById('formError');
+        const quoteDetails = document.getElementById('quoteDetails');
+        const quoteCharCount = document.getElementById('quoteCharCount');
+
+        quoteDetails?.addEventListener('input', () => {
+            quoteCharCount.textContent = quoteDetails.value.length;
+        });
+
+        quoteForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            quoteSuccess.classList.add('hidden');
+            quoteError.classList.add('hidden');
+
+            const name = document.getElementById('quoteName').value.trim();
+            const email = document.getElementById('quoteEmail').value.trim().toLowerCase();
+            const projectType = document.getElementById('quoteProjectType').value;
+            const projectDetails = quoteDetails.value.trim();
+
+            if (!name || !email || !projectType || !projectDetails) {
+                quoteError.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i>Please complete all required fields.';
+                quoteError.classList.remove('hidden');
+                return;
+            }
+
+            quoteSubmitBtn.disabled = true;
+            quoteSubmitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+            quoteSubmitText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Sending request...';
+
+            try {
+                await addDoc(collection(db, 'projectQuotes'), {
+                    name,
+                    email,
+                    projectType,
+                    projectDetails,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+
+                quoteForm.reset();
+                quoteCharCount.textContent = '0';
+                quoteSuccess.classList.remove('hidden');
+
+                setTimeout(() => {
+                    quoteSuccess.classList.add('hidden');
+                }, 7000);
+            } catch (error) {
+                console.error('Project quote submission failed:', error);
+                quoteError.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i>We could not submit your request. Please try again or email accxscreations@gmail.com.';
+                quoteError.classList.remove('hidden');
+            } finally {
+                quoteSubmitBtn.disabled = false;
+                quoteSubmitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                quoteSubmitText.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send Message';
+            }
+        });
+
     </script>
 </body>
 </html>
