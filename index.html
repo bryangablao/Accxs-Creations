@@ -48,48 +48,22 @@
             background-image: radial-gradient(rgba(129, 140, 248, 0.1) 1px, transparent 1px);
             background-size: 32px 32px;
         }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 88px;
-        }
-        section {
-            scroll-margin-top: 88px;
-        }
-        img, video, iframe {
-            max-width: 100%;
-            height: auto;
-        }
-        @media (max-width: 639px) {
-            html { scroll-padding-top: 72px; }
-            section { scroll-margin-top: 72px; }
-            #hero { padding-top: 3.5rem; padding-bottom: 5rem; }
-            #hero h1 { font-size: clamp(2.15rem, 11vw, 3.25rem); line-height: 1.08; }
-            #hero p { font-size: 1rem; }
-            section.py-24 { padding-top: 4rem; padding-bottom: 4rem; }
-            .rounded-3xl { border-radius: 1.25rem; }
-            #codeContent { font-size: 0.75rem; }
-        }
-        @media (max-width: 380px) {
-            #siteHeader .space-x-3 { column-gap: .5rem; }
-            #siteHeader .text-base { font-size: .9rem; }
-        }
     </style>
 </head>
-<body class="overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between">
 
-    <header id="siteHeader" class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Brand Logo -->
             <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
                     <i class="fa-solid fa-code text-white text-lg"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-base sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
                         Accxs Creations
                     </span>
-                    <span class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">Software & Web Agency</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">Software & Web Agency</span>
                 </div>
             </a>
 
@@ -104,96 +78,103 @@
             </nav>
 
             <!-- Actions: Theme Toggle & CTA -->
-            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+            <div class="flex items-center space-x-4">
                 <!-- Theme Toggle Button -->
                 <button id="themeToggle" aria-label="Toggle Theme" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-500/50 focus:outline-none transition-all shadow-sm">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
                 </button>
                 
                 <!-- CTA Button -->
-                <a href="#contact" class="hidden md:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Start Your Project
                 </a>
 
+                <!-- Staff Login Button -->
+                <button id="staffLoginBtn" type="button" class="hidden sm:inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-semibold text-sm border border-slate-800 dark:border-white hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Staff Login
+                </button>
+
+                <!-- Mobile Staff Login -->
+                <button id="staffLoginBtnMobile" type="button" aria-label="Staff Login" class="sm:hidden w-10 h-10 inline-flex items-center justify-center rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-sm">
+                    <i class="fa-solid fa-user-lock"></i>
+                </button>
+
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" aria-label="Open navigation menu" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
+                <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
         </div>
 
+        <!-- Mobile Nav Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden px-4 pt-3 pb-6 space-y-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xl">
+            <a href="#hero" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Home</a>
+            <a href="#purpose" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Purpose & Goal</a>
+            <a href="#services" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">What We Do</a>
+            <a href="#personal-websites" class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Personal Websites & Portfolios</a>
+            <a href="#codestudio" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Code Studio</a>
+            <a href="#contact" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Contact</a>
+        </div>
     </header>
 
-        <!-- Mobile Navigation Overlay -->
-        <div id="mobileMenuOverlay" class="lg:hidden fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-sm opacity-0 invisible pointer-events-none transition-opacity duration-300 ease-out"></div>
-
-        <!-- Mobile Navigation Drawer -->
-        <aside id="mobileMenu" aria-hidden="true" class="lg:hidden fixed top-0 right-0 bottom-0 z-[70] w-full xs:w-[90%] sm:w-[420px] max-w-full bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 shadow-2xl translate-x-full opacity-0 invisible pointer-events-none transition-all duration-300 ease-out">
-            <div class="h-full flex flex-col overflow-hidden">
-                <div class="h-16 sm:h-20 px-4 sm:px-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shrink-0">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
-                            <i class="fa-solid fa-code text-white text-sm"></i>
+    <!-- Staff Login Modal -->
+    <div id="staffLoginModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="staffLoginBackdrop" class="absolute inset-0 bg-slate-950/65 backdrop-blur-md opacity-0 transition-opacity duration-300"></div>
+        <div id="staffLoginCard" role="dialog" aria-modal="true" aria-labelledby="staffLoginTitle" class="relative w-full max-w-md translate-y-4 scale-[0.98] opacity-0 transition-all duration-300 rounded-3xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden">
+            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-600 via-violet-500 to-pink-500"></div>
+            <div class="p-6 sm:p-8">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-user-shield"></i>
                         </div>
-                        <div class="min-w-0">
-                            <div class="font-extrabold text-slate-900 dark:text-white truncate">Accxs Creations</div>
-                            <div class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Navigation Menu</div>
+                        <div>
+                            <div class="text-[11px] uppercase tracking-[0.2em] font-bold text-indigo-600 dark:text-indigo-400">Secure Access</div>
+                            <h2 id="staffLoginTitle" class="text-2xl font-extrabold tracking-tight">Staff Login</h2>
                         </div>
                     </div>
-                    <button id="mobileMenuClose" type="button" aria-label="Close menu" class="w-10 h-10 shrink-0 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-95 transition-all">
-                        <i class="fa-solid fa-xmark text-lg"></i>
+                    <button id="staffLoginClose" type="button" aria-label="Close staff login" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-500 transition-all">
+                        <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
-                <div class="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 py-5 sm:py-6">
-                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-3 px-1">Explore</p>
-                    <nav class="grid gap-2">
-                        <a href="#hero" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
-                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-house"></i></span>
-                            <span class="min-w-0"><span class="block font-bold">Home</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Back to the main introduction</span></span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="#purpose" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
-                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-bullseye"></i></span>
-                            <span class="min-w-0"><span class="block font-bold">Purpose & Goal</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">What drives Accxs Creations</span></span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="#services" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
-                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-layer-group"></i></span>
-                            <span class="min-w-0"><span class="block font-bold">What We Do</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Explore our digital services</span></span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="#personal-websites" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-indigo-200/70 dark:border-indigo-500/20 bg-indigo-50/70 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 active:scale-[0.99] transition-all">
-                            <span class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-500/15 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-astronaut"></i></span>
-                            <span class="min-w-0"><span class="block font-bold">Personal Websites</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Portfolio and personal brand sites</span></span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-indigo-400 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="#codestudio" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
-                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-code"></i></span>
-                            <span class="min-w-0"><span class="block font-bold">Code Studio</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">See interactive code examples</span></span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                        <a href="#contact" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
-                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-envelope"></i></span>
-                            <span class="min-w-0"><span class="block font-bold">Contact</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Request your project quote</span></span>
-                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                    </nav>
-
-                    <div class="mt-6 rounded-2xl p-4 bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/20">
-                        <div class="font-bold">Ready to build something?</div>
-                        <p class="text-sm text-indigo-100 mt-1">Tell us about your website, app, or digital project.</p>
-                        <a href="#contact" class="mobile-nav-link mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-indigo-700 font-bold hover:bg-indigo-50 active:scale-[0.99] transition-all">
-                            Start Your Project <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
+                <div class="mt-5 p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i>
+                    Authorized Accxs Creations personnel only. Use the Staff ID and password issued by your administrator.
                 </div>
-            </div>
-        </aside>
 
-    <main class="flex-grow bg-grid-pattern relative pt-16 sm:pt-20">
+                <form id="staffLoginForm" class="mt-6 space-y-5" autocomplete="on">
+                    <div>
+                        <label for="staffUserId" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">User ID</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-id-badge absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input id="staffUserId" type="text" required autocomplete="username" spellcheck="false" class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-sm" placeholder="e.g. ACX001">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="staffPassword" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input id="staffPassword" type="password" required autocomplete="current-password" class="w-full pl-11 pr-12 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-sm" placeholder="Enter your password">
+                            <button id="toggleStaffPassword" type="button" aria-label="Show password" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-lg text-slate-400 hover:text-indigo-500">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="staffLoginError" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm" role="alert"></div>
+                    <button id="staffLoginSubmit" type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 active:scale-[0.99] transition-all">
+                        <span id="staffLoginSubmitText"><i class="fa-solid fa-right-to-bracket mr-2"></i>Sign In Securely</span>
+                    </button>
+                </form>
+                <p class="mt-5 text-center text-xs text-slate-400">Accounts are created and managed exclusively by the Accxs Creations administrator.</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow bg-grid-pattern relative">
         <!-- Ambient background lighting -->
-        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[360px] h-[360px] sm:w-[600px] sm:h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
 
         <!-- Hero Section -->
         <section id="hero" class="relative overflow-hidden pt-20 pb-28 lg:pt-32 lg:pb-36">
@@ -249,7 +230,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Our Core Foundation</h2>
-                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Our Purpose & Ultimate Goal</h3>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Our Purpose & Ultimate Goal</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Driven by innovation, precision, and an unyielding commitment to elevate every client's digital presence.</p>
                 </div>
 
@@ -286,7 +267,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Client Spotlight</h2>
-                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Want Your Own Personal Website?</h3>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Want Your Own Personal Website?</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Stand out from the crowd with a high-converting, gorgeous personal website or portfolio designed specifically for you.</p>
                 </div>
 
@@ -381,7 +362,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Core Expertise</h2>
-                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">What We Usually Do</h3>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">What We Usually Do</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Comprehensive digital capabilities tailored to elevate individuals and enterprises to new heights.</p>
                 </div>
 
@@ -460,13 +441,13 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Interactive Playground</h2>
-                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Accxs Code Studio</h3>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Accxs Code Studio</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Explore clean, modular code snippets that power our high-performance software and personal websites.</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
                     <!-- Code Editor Header / Tab bar -->
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-4 bg-slate-900/80 border-b border-slate-800">
+                    <div class="flex items-center justify-between px-6 py-4 bg-slate-900/80 border-b border-slate-800">
                         <div class="flex items-center space-x-2">
                             <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
                             <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
@@ -474,7 +455,7 @@
                             <span class="text-xs text-slate-400 font-mono ml-3 hidden sm:inline">~/accxs-creations/workspace</span>
                         </div>
                         <!-- Language Tabs -->
-                        <div class="w-full sm:w-auto grid grid-cols-3 sm:flex gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                        <div class="flex space-x-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
                             <button onclick="switchTab('js')" id="tab-js" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition-all">JavaScript</button>
                             <button onclick="switchTab('python')" id="tab-python" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">Python</button>
                             <button onclick="switchTab('html')" id="tab-html" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">HTML/CSS</button>
@@ -520,7 +501,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Get In Touch</h2>
-                        <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Your Personal Website Together</h3>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Your Personal Website Together</h3>
                         <p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed mb-8">
                             Ready for your own stunning personal website, software app, or live business website? Reach out to Accxs Creations today and let our engineers bring your vision to life.
                         </p>
@@ -532,7 +513,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                                 </div>
                                 <div>
                                     <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Email Us</div>
-                                    <a href="mailto:accxscreations@gmail.com" class="text-base font-semibold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">accxscreations@gmail.com</a>
+                                    <a href="mailto:contact@accxscreations.com" class="text-base font-semibold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">contact@accxscreations.com</a>
                                 </div>
                             </div>
 
@@ -542,10 +523,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                                 </div>
                                 <div>
                                     <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Global Headquarters</div>
-                                    <a href="https://maps.app.goo.gl/pQHwoYmF2X9AqZcb6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-base font-semibold hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
-                                        <span>Barangay 22-C, Davao City, Philippines</span>
-                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                                    </a>
+                                    <div class="text-base font-semibold">Digital Innovation Hub, Tech District</div>
                                 </div>
                             </div>
 
@@ -562,20 +540,20 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                     </div>
 
                     <!-- Contact Form Card -->
-                    <div class="p-5 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
+                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
                         <h4 class="text-2xl font-bold mb-6">Request Your Project Quote</h4>
                         <form id="contactForm" onsubmit="handleContact(event)" class="space-y-5">
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Your Name</label>
-                                <input id="quoteName" name="name" type="text" autocomplete="name" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="John Doe">
+                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="John Doe">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Email Address</label>
-                                <input id="quoteEmail" name="email" type="email" autocomplete="email" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="john@example.com">
+                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="john@example.com">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Type</label>
-                                <select id="quoteProjectType" name="project_type" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all">
+                                <select class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all">
                                     <option>Personal Website / Portfolio</option>
                                     <option>Custom Software App</option>
                                     <option>Live Business Website</option>
@@ -584,17 +562,14 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Details</label>
-                                <textarea id="quoteDetails" name="project_details" rows="3" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="Tell us about your personal website requirements..."></textarea>
+                                <textarea rows="3" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="Tell us about your personal website requirements..."></textarea>
                             </div>
-                            <button id="quoteSubmitBtn" type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/25 hover:scale-[1.01] active:scale-[0.99] transition-all">
+                            <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/25 hover:scale-[1.01] active:scale-[0.99] transition-all">
                                 Send Message
                             </button>
                         </form>
                         <div id="formSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm text-center font-medium">
-                            Thank you! Your project quote request was sent successfully. We will get back to you as soon as possible.
-                        </div>
-                        <div id="formError" class="hidden mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm text-center font-medium">
-                            We could not send your request automatically. Please email us directly at accxscreations@gmail.com.
+                            Thank you! Your message has been sent successfully. We will get back to you within 24 hours.
                         </div>
                     </div>
                 </div>
@@ -629,7 +604,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                             <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
                         <!-- Gmail -->
-                        <a href="mailto:accxscreations@gmail.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
+                        <a href="mailto:contact@accxscreations.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
                             <i class="fa-solid fa-envelope text-sm"></i>
                         </a>
                         <!-- Messenger -->
@@ -666,8 +641,8 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
                 <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
                 <div class="flex space-x-6 mt-4 sm:mt-0">
-                    <a href="https://bryangablao.github.io/Accxs-Creations/privacypolicy.html" target="_blank" rel="noopener noreferrer" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Privacy Policy</a>
-                    <a href="https://bryangablao.github.io/Accxs-Creations/privacypolicy.html" target="_blank" rel="noopener noreferrer" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -699,55 +674,11 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
             }
         });
 
-        // Mobile Menu: smooth slide/fade, close on link click, outside click, Escape, and resize
+        // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-        const mobileMenuClose = document.getElementById('mobileMenuClose');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-
-        function openMobileMenu() {
-            mobileMenu.classList.remove('translate-x-full', 'opacity-0', 'invisible', 'pointer-events-none');
-            mobileMenu.classList.add('translate-x-0', 'opacity-100', 'visible', 'pointer-events-auto');
-
-            mobileMenuOverlay.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
-            mobileMenuOverlay.classList.add('opacity-100', 'visible', 'pointer-events-auto');
-
-            mobileMenu.setAttribute('aria-hidden', 'false');
-            mobileMenuBtn.setAttribute('aria-expanded', 'true');
-            mobileMenuBtn.querySelector('i').className = 'fa-solid fa-xmark text-lg';
-            document.body.classList.add('overflow-hidden');
-        }
-
-        function closeMobileMenu() {
-            mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'visible', 'pointer-events-auto');
-            mobileMenu.classList.add('translate-x-full', 'opacity-0', 'invisible', 'pointer-events-none');
-
-            mobileMenuOverlay.classList.remove('opacity-100', 'visible', 'pointer-events-auto');
-            mobileMenuOverlay.classList.add('opacity-0', 'invisible', 'pointer-events-none');
-
-            mobileMenu.setAttribute('aria-hidden', 'true');
-            mobileMenuBtn.setAttribute('aria-expanded', 'false');
-            mobileMenuBtn.querySelector('i').className = 'fa-solid fa-bars text-lg';
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
         mobileMenuBtn.addEventListener('click', () => {
-            const isOpen = mobileMenu.getAttribute('aria-hidden') === 'false';
-            isOpen ? closeMobileMenu() : openMobileMenu();
-        });
-
-        mobileMenuClose.addEventListener('click', closeMobileMenu);
-        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-        mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') closeMobileMenu();
-        });
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024) closeMobileMenu();
+            mobileMenu.classList.toggle('hidden');
         });
 
         // Code Studio Tab Switcher
@@ -820,61 +751,132 @@ brand.<span class="text-blue-400">deploy</span>()`,
         }
 
         // Contact Form Handler
-        // Uses FormSubmit's AJAX endpoint so this static GitHub Pages site can send quote requests to Gmail.
-        // On the very first submission, FormSubmit may send an activation email to accxscreations@gmail.com.
-        async function handleContact(e) {
+        function handleContact(e) {
             e.preventDefault();
-
-            const form = document.getElementById('contactForm');
-            const submitBtn = document.getElementById('quoteSubmitBtn');
+            document.getElementById('contactForm').reset();
             const successDiv = document.getElementById('formSuccess');
-            const errorDiv = document.getElementById('formError');
+            successDiv.classList.remove('hidden');
+            setTimeout(() => {
+                successDiv.classList.add('hidden');
+            }, 6000);
+        }
+    </script>
 
-            successDiv.classList.add('hidden');
-            errorDiv.classList.add('hidden');
+    <!-- Firebase Staff Authentication -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-            const originalButton = submitBtn.innerHTML;
+        // STEP 1: Replace these placeholders with the exact config copied from
+        // Firebase Console > Project settings > Your apps > Web app.
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Employees enter only ACX001, ACX002, etc.
+        // Firebase Email/Password authentication requires an email internally,
+        // so the code converts the ID into an admin-only authentication address.
+        const STAFF_EMAIL_DOMAIN = "staff.accxscreations.com";
+        const STAFF_PORTAL_URL = "staff.html";
+
+        const modal = document.getElementById('staffLoginModal');
+        const backdrop = document.getElementById('staffLoginBackdrop');
+        const card = document.getElementById('staffLoginCard');
+        const form = document.getElementById('staffLoginForm');
+        const userIdInput = document.getElementById('staffUserId');
+        const passwordInput = document.getElementById('staffPassword');
+        const errorBox = document.getElementById('staffLoginError');
+        const submitBtn = document.getElementById('staffLoginSubmit');
+        const submitText = document.getElementById('staffLoginSubmitText');
+
+        function openStaffLogin() {
+            errorBox.classList.add('hidden');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+            requestAnimationFrame(() => {
+                backdrop.classList.remove('opacity-0');
+                card.classList.remove('translate-y-4', 'scale-[0.98]', 'opacity-0');
+                card.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+            });
+            setTimeout(() => userIdInput.focus(), 150);
+        }
+
+        function closeStaffLogin() {
+            backdrop.classList.add('opacity-0');
+            card.classList.add('translate-y-4', 'scale-[0.98]', 'opacity-0');
+            card.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+            }, 280);
+        }
+
+        document.getElementById('staffLoginBtn')?.addEventListener('click', openStaffLogin);
+        document.getElementById('staffLoginBtnMobile')?.addEventListener('click', openStaffLogin);
+        document.getElementById('staffLoginClose')?.addEventListener('click', closeStaffLogin);
+        backdrop.addEventListener('click', closeStaffLogin);
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeStaffLogin();
+        });
+
+        document.getElementById('toggleStaffPassword').addEventListener('click', function () {
+            const show = passwordInput.type === 'password';
+            passwordInput.type = show ? 'text' : 'password';
+            this.querySelector('i').className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            this.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        });
+
+        function normalizeStaffId(value) {
+            return value.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            errorBox.classList.add('hidden');
+
+            const staffId = normalizeStaffId(userIdInput.value);
+            if (!staffId) {
+                errorBox.textContent = 'Please enter your assigned Staff ID.';
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            // Example: ACX001 becomes acx001@staff.accxscreations.com
+            const firebaseEmail = `${staffId}@${STAFF_EMAIL_DOMAIN}`;
+
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
-            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Sending...';
-
-            const formData = new FormData(form);
-            formData.append('_subject', 'New Accxs Creations Project Quote Request');
-            formData.append('_template', 'table');
-            formData.append('_captcha', 'false');
+            submitText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Verifying credentials...';
 
             try {
-                const response = await fetch('https://formsubmit.co/ajax/accxscreations@gmail.com', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) throw new Error('Submission failed');
-
-                const result = await response.json();
-                if (result.success !== 'true' && result.success !== true) {
-                    throw new Error('Submission was not accepted');
-                }
-
-                form.reset();
-                successDiv.classList.remove('hidden');
-                successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-                setTimeout(() => {
-                    successDiv.classList.add('hidden');
-                }, 7000);
+                await signInWithEmailAndPassword(auth, firebaseEmail, passwordInput.value);
+                submitText.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i>Access granted';
+                window.location.replace(STAFF_PORTAL_URL);
             } catch (error) {
-                console.error(error);
-                errorDiv.classList.remove('hidden');
+                console.error('Staff login failed:', error.code);
+                // Deliberately generic so the page does not reveal whether an ID exists.
+                errorBox.textContent = 'Access denied. Please check your Staff ID and password or contact your administrator.';
+                errorBox.classList.remove('hidden');
+                passwordInput.value = '';
+                passwordInput.focus();
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-                submitBtn.innerHTML = originalButton;
+                if (!errorBox.classList.contains('hidden')) {
+                    submitText.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-2"></i>Sign In Securely';
+                }
             }
-        }
+        });
     </script>
 </body>
 </html>
