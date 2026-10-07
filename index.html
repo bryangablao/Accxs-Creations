@@ -149,7 +149,7 @@
                         <label for="staffUserId" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">User ID</label>
                         <div class="relative">
                             <i class="fa-solid fa-id-badge absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input id="staffUserId" type="text" required autocomplete="username" spellcheck="false" class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-sm" placeholder="e.g. ACX001">
+                            <input id="staffUserId" type="text" required autocomplete="username" spellcheck="false" class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-sm" placeholder="Enter your UserID">
                         </div>
                     </div>
                     <div>
@@ -854,7 +854,6 @@ brand.<span class="text-blue-400">deploy</span>()`,
                 return;
             }
 
-            // Example: ACX001 becomes acx001@staff.accxscreations.com
             const firebaseEmail = `${staffId}@${STAFF_EMAIL_DOMAIN}`;
 
             submitBtn.disabled = true;
