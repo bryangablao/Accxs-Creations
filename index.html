@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accxs Creations | Software & Web App Development</title>
+    <title>Accxs Creations | Elite Software Apps & Personal Websites</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -26,7 +26,7 @@
     </script>
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
+    <!-- Google Fonts Inter & Fira Code -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body {
@@ -36,13 +36,22 @@
             font-family: 'Fira Code', monospace;
         }
         * {
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        /* Custom smooth glowing grid background */
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .dark .bg-grid-pattern {
+            background-image: radial-gradient(rgba(129, 140, 248, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between">
 
-    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800">
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Brand Logo -->
             <a href="#" class="flex items-center space-x-3 group">
@@ -53,15 +62,16 @@
                     <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
                         Accxs Creations
                     </span>
-                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">Digital Engineering</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">Software & Web Agency</span>
                 </div>
             </a>
 
             <!-- Navigation Links (Desktop) -->
-            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-slate-600 dark:text-slate-300">
+            <nav class="hidden lg:flex items-center space-x-7 font-medium text-sm text-slate-600 dark:text-slate-300">
                 <a href="#hero" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
                 <a href="#purpose" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Purpose & Goal</a>
                 <a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">What We Do</a>
+                <a href="#personal-websites" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-semibold text-indigo-600 dark:text-indigo-400">Personal Sites</a>
                 <a href="#codestudio" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Code Studio</a>
                 <a href="#contact" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</a>
             </nav>
@@ -75,198 +85,298 @@
                 
                 <!-- CTA Button -->
                 <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    Get Started
+                    Start Your Project
                 </a>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
+                <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Nav Drawer -->
-        <div id="mobileMenu" class="hidden md:hidden px-4 pt-2 pb-6 space-y-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-            <a href="#hero" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Home</a>
-            <a href="#purpose" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Purpose & Goal</a>
-            <a href="#services" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">What We Do</a>
-            <a href="#codestudio" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Code Studio</a>
-            <a href="#contact" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">Contact</a>
+        <div id="mobileMenu" class="hidden lg:hidden px-4 pt-3 pb-6 space-y-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xl">
+            <a href="#hero" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Home</a>
+            <a href="#purpose" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Purpose & Goal</a>
+            <a href="#services" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">What We Do</a>
+            <a href="#personal-websites" class="block py-2 text-indigo-600 dark:text-indigo-400 font-bold">Personal Websites & Portfolios</a>
+            <a href="#codestudio" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Code Studio</a>
+            <a href="#contact" class="block py-2 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Contact</a>
         </div>
     </header>
 
-    <main class="flex-grow">
-        <section id="hero" class="relative overflow-hidden pt-20 pb-28 lg:pt-32 lg:pb-40">
-            <!-- Background glow effects -->
-            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/10 dark:bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="absolute top-1/3 right-10 w-[350px] h-[350px] bg-violet-500/10 dark:bg-violet-600/15 rounded-full blur-3xl pointer-events-none"></div>
+    <main class="flex-grow bg-grid-pattern relative">
+        <!-- Ambient background lighting -->
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
 
+        <!-- Hero Section -->
+        <section id="hero" class="relative overflow-hidden pt-20 pb-28 lg:pt-32 lg:pb-36">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-6 tracking-wide uppercase">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-6 tracking-wide uppercase shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse"></span>
-                    <span>Next-Gen Software & Live Web Solutions</span>
+                    <span>Transforming Ideas into Elite Digital Realities</span>
                 </div>
                 
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight">
-                    Engineering Digital Realities at <span class="bg-gradient-to-r from-indigo-600 via-violet-600 to-pink-600 dark:from-indigo-400 dark:via-violet-400 dark:to-pink-500 bg-clip-text text-transparent">Accxs Creations</span>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl mx-auto leading-tight">
+                    Build Your Brand & Apps with <span class="bg-gradient-to-r from-indigo-600 via-violet-600 to-pink-600 dark:from-indigo-400 dark:via-violet-400 dark:to-pink-400 bg-clip-text text-transparent">Accxs Creations</span>
                 </h1>
                 
-                <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
-                    We bridge the gap between imagination and robust software architecture. From high-performance live websites to scalable cloud applications.
+                <p class="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto font-normal leading-relaxed">
+                    We specialize in crafting jaw-dropping personal websites, professional portfolios, lightning-fast live websites, and scalable software applications that elevate your professional authority.
                 </p>
 
                 <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/30 hover:scale-105 active:scale-95 transition-all text-center">
-                        Explore Our Services
+                    <a href="#personal-websites" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/30 hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                        <span>Get Your Personal Website</span>
                     </a>
-                    <a href="#codestudio" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold text-base transition-all text-center flex items-center justify-center space-x-2 shadow-sm">
-                        <i class="fa-solid fa-terminal text-indigo-600 dark:text-indigo-500"></i>
-                        <span>Try Code Studio</span>
+                    <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold text-base transition-all text-center flex items-center justify-center space-x-2 shadow-sm">
+                        <i class="fa-solid fa-layer-group text-indigo-600 dark:text-indigo-500"></i>
+                        <span>Explore All Services</span>
                     </a>
                 </div>
 
-                <!-- Stats overview -->
-                <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto border-t border-slate-200 dark:border-slate-800/80 pt-10">
-                    <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm shadow-sm">
-                        <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">100+</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Projects Delivered</div>
+                <!-- Live Client Banner / Trust badges -->
+                <div class="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800/80 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800 backdrop-blur-md shadow-sm">
+                        <div class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">4</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Websites Launched</div>
                     </div>
-                    <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm shadow-sm">
-                        <div class="text-3xl font-extrabold text-violet-600 dark:text-violet-400">99.9%</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Uptime Guarantee</div>
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800 backdrop-blur-md shadow-sm">
+                        <div class="text-3xl font-extrabold text-violet-600 dark:text-violet-400">100%</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Custom Designed</div>
                     </div>
-                    <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm shadow-sm">
-                        <div class="text-3xl font-extrabold text-pink-600 dark:text-pink-400">24/7</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Expert Support</div>
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800 backdrop-blur-md shadow-sm">
+                        <div class="text-3xl font-extrabold text-pink-600 dark:text-pink-400">&lt; 1s</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Lightning Load Time</div>
                     </div>
-                    <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/50 backdrop-blur-sm shadow-sm">
-                        <div class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">100%</div>
-                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Client Satisfaction</div>
+                    <div class="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/50 border border-slate-200/80 dark:border-slate-800 backdrop-blur-md shadow-sm">
+                        <div class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">24/7</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider font-medium">Dedicated Support</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="purpose" class="py-24 bg-slate-100/50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800/60">
+        <!-- Purpose & Goal Section -->
+        <section id="purpose" class="py-24 bg-slate-100/60 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
-                    <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Our Foundation</h2>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Our Core Foundation</h2>
                     <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Our Purpose & Ultimate Goal</h3>
-                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Driven by innovation, precision, and an unyielding commitment to digital excellence.</p>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Driven by innovation, precision, and an unyielding commitment to elevate every client's digital presence.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Purpose Card -->
-                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 shadow-xl relative overflow-hidden group hover:border-indigo-500/50 transition-all">
+                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden group hover:border-indigo-500/50 transition-all">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
                         <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl mb-6">
                             <i class="fa-solid fa-bullseye"></i>
                         </div>
                         <h4 class="text-2xl font-bold mb-4">Our Purpose</h4>
                         <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">
-                            Empowering businesses and individuals through cutting-edge software engineering, robust mobile/desktop applications, and high-performance live websites. We believe that technology should be intuitive, lightning-fast, and universally accessible.
+                            Empowering professionals, creators, and enterprises through bespoke software apps and stunning personal websites. We believe everyone deserves a digital storefront that truly reflects their unique value and expertise.
                         </p>
                     </div>
 
                     <!-- Goal Card -->
-                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 shadow-xl relative overflow-hidden group hover:border-violet-500/50 transition-all">
+                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl relative overflow-hidden group hover:border-violet-500/50 transition-all">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
                         <div class="w-14 h-14 rounded-2xl bg-violet-500/10 border border-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center text-2xl mb-6">
                             <i class="fa-solid fa-flag-checkered"></i>
                         </div>
                         <h4 class="text-2xl font-bold mb-4">Our Goal</h4>
                         <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">
-                            To bridge the gap between imagination and digital reality by delivering scalable, intuitive, and future-proof digital solutions. We strive to be the definitive technology partner for forward-thinking brands globally.
+                            To bridge the gap between imagination and digital reality by delivering scalable, intuitive, and future-proof digital solutions. We strive to be the definitive technology partner for individuals and businesses globally.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="services" class="py-24">
+        <!-- Personal Websites Spotlight Section (Attracting Clients) -->
+        <section id="personal-websites" class="py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Client Spotlight</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Want Your Own Personal Website?</h3>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Stand out from the crowd with a high-converting, gorgeous personal website or portfolio designed specifically for you.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1: Personal Branding -->
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col justify-between hover:border-indigo-500/50 transition-all">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-3">Personal Portfolios & CVs</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                                Showcase your resume, past achievements, client testimonials, and project case studies in an immersive digital layout that recruiters and high-paying clients love.
+                            </p>
+                        </div>
+                        <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-4">
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Custom domain setup (.com / .me)</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Interactive contact forms</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Dark/Light mode switch built-in</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 2: Creator & Freelancer Hubs -->
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col justify-between hover:border-violet-500/50 transition-all relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-28 h-28 bg-violet-500/10 rounded-full blur-xl pointer-events-none"></div>
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-3">Creator & Freelancer Sites</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                                Sell your services, digital products, or book consultations directly through your own branded landing page equipped with instant booking and payment links.
+                            </p>
+                        </div>
+                        <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-4">
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Service pricing tier tables</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Direct booking integrations</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>SEO optimized for Google search</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 3: Fast Turnaround -->
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col justify-between hover:border-pink-500/50 transition-all">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-bolt-lightning"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-3">Rapid 7-Day Launch</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                                Don't wait months to get online. Our streamlined engineering process takes your vision from concept to a live, fully responsive personal website in just 7 days.
+                            </p>
+                        </div>
+                        <ul class="space-y-2.5 text-xs text-slate-600 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-4">
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Dedicated web engineer assigned</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Fully mobile-responsive tested</span></li>
+                            <li class="flex items-center space-x-2"><i class="fa-solid fa-check text-emerald-500"></i><span>Free 30-day post-launch support</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Interactive Personal Website Estimator Widget -->
+                <div class="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl">
+                    <div class="max-w-3xl mx-auto text-center">
+                        <h4 class="text-2xl sm:text-3xl font-extrabold mb-3">Estimate Your Personal Website</h4>
+                        <p class="text-slate-400 text-sm mb-8">Select your preferred options below to calculate estimated delivery time and get started instantly.</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left mb-8">
+                            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/60">
+                                <span class="text-xs text-indigo-400 font-semibold uppercase">Type</span>
+                                <div class="text-lg font-bold mt-1">Portfolio & Blog</div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/60">
+                                <span class="text-xs text-indigo-400 font-semibold uppercase">Timeline</span>
+                                <div class="text-lg font-bold mt-1">5 – 7 Business Days</div>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/60">
+                                <span class="text-xs text-indigo-400 font-semibold uppercase">Includes</span>
+                                <div class="text-lg font-bold mt-1">Hosting + Domain</div>
+                            </div>
+                        </div>
+
+                        <a href="#contact" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-semibold text-base shadow-lg shadow-indigo-500/25 hover:scale-105 transition-all">
+                            Claim Your Personal Website Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Usually Do (Services) -->
+        <section id="services" class="py-24 bg-slate-100/60 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Core Expertise</h2>
                     <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">What We Usually Do</h3>
-                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Comprehensive digital capabilities tailored to elevate your enterprise to new heights.</p>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Comprehensive digital capabilities tailored to elevate individuals and enterprises to new heights.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Service 1 -->
-                    <div class="p-8 rounded-3xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-indigo-500/40 transition-all group shadow-sm">
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 transition-all group shadow-sm">
                         <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-laptop-code"></i>
+                            <i class="fa-solid fa-user-tie"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Custom Software Development</h4>
+                        <h4 class="text-xl font-bold mb-3">Personal & Portfolio Websites</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Bespoke software architecture designed precisely around your business workflows, ensuring maximum operational efficiency and security.
+                            Bespoke personal websites designed to showcase your unique identity, professional portfolio, and creative works with stunning aesthetics.
                         </p>
                     </div>
 
                     <!-- Service 2 -->
-                    <div class="p-8 rounded-3xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-violet-500/40 transition-all group shadow-sm">
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-violet-500/40 transition-all group shadow-sm">
                         <div class="w-12 h-12 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center text-xl mb-6 group-hover:bg-violet-600 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-globe"></i>
+                            <i class="fa-solid fa-laptop-code"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Web Application Engineering</h4>
+                        <h4 class="text-xl font-bold mb-3">Custom Software Apps</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Lightning-fast, responsive live websites and progressive web apps built with modern frameworks and robust backend servers.
+                            Robust software applications designed around your business workflows, ensuring maximum operational efficiency and security.
                         </p>
                     </div>
 
                     <!-- Service 3 -->
-                    <div class="p-8 rounded-3xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-pink-500/40 transition-all group shadow-sm">
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-pink-500/40 transition-all group shadow-sm">
                         <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center text-xl mb-6 group-hover:bg-pink-600 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-mobile-screen-button"></i>
+                            <i class="fa-solid fa-globe"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Mobile App Development</h4>
+                        <h4 class="text-xl font-bold mb-3">Live Websites & E-Commerce</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Engaging cross-platform iOS and Android mobile applications crafted to deliver seamless user experiences on any device.
+                            Lightning-fast, responsive live websites and fully integrated e-commerce stores built with modern frameworks and secure checkout.
                         </p>
                     </div>
 
                     <!-- Service 4 -->
-                    <div class="p-8 rounded-3xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-cyan-500/40 transition-all group shadow-sm">
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/40 transition-all group shadow-sm">
                         <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-xl mb-6 group-hover:bg-cyan-600 group-hover:text-white transition-all">
-                            <i class="fa-solid fa-pen-nib"></i>
+                            <i class="fa-solid fa-mobile-screen-button"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">UI/UX Design</h4>
+                        <h4 class="text-xl font-bold mb-3">Mobile App Development</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            User-centric interface design systems that blend aesthetic brilliance with intuitive navigation and high conversion rates.
+                            Engaging cross-platform iOS and Android mobile apps crafted to deliver seamless user experiences on any device.
                         </p>
                     </div>
 
                     <!-- Service 5 -->
-                    <div class="p-8 rounded-3xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-amber-500/40 transition-all group shadow-sm">
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500/40 transition-all group shadow-sm">
                         <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl mb-6 group-hover:bg-amber-600 group-hover:text-white transition-all">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Cloud Integration</h4>
+                        <h4 class="text-xl font-bold mb-3">Cloud Integration & Hosting</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Scalable cloud deployment, serverless architecture configuration, and secure database management across AWS and GCP.
+                            Scalable cloud deployment, serverless architecture configuration, and 99.9% uptime guarantees for all live projects.
                         </p>
                     </div>
 
                     <!-- Service 6 -->
-                    <div class="p-8 rounded-3xl bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/40 transition-all group shadow-sm">
+                    <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 transition-all group shadow-sm">
                         <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all">
                             <i class="fa-solid fa-screwdriver-wrench"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Maintenance & Optimization</h4>
+                        <h4 class="text-xl font-bold mb-3">Maintenance & SEO</h4>
                         <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Ongoing performance audits, security patches, feature upgrades, and 24/7 reliability monitoring for live products.
+                            Ongoing performance audits, security patches, feature upgrades, and search engine optimization to keep you ranking #1.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="codestudio" class="py-24 bg-slate-100/50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800/60">
+        <!-- Code Studio Feature Section -->
+        <section id="codestudio" class="py-24">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Interactive Playground</h2>
                     <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Accxs Code Studio</h3>
-                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Explore clean, modular code snippets that power our high-performance software applications.</p>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Explore clean, modular code snippets that power our high-performance software and personal websites.</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
@@ -288,21 +398,21 @@
 
                     <!-- Code Body Content -->
                     <div class="p-6 sm:p-8 overflow-x-auto code-font text-sm leading-relaxed bg-slate-950 text-slate-200 min-h-[260px]">
-                        <pre id="codeContent"><span class="text-purple-400">class</span> <span class="text-yellow-400">AccxsEngine</span> {
-  <span class="text-blue-400">constructor</span>() {
-    <span class="text-blue-300">this</span>.company = <span class="text-emerald-300">"Accxs Creations"</span>;
-    <span class="text-blue-300">this</span>.mission = <span class="text-emerald-300">"Empowering digital futures"</span>;
+                        <pre id="codeContent"><span class="text-purple-400">class</span> <span class="text-yellow-400">AccxsPersonalWebsite</span> {
+  <span class="text-blue-400">constructor</span>(clientName) {
+    <span class="text-blue-300">this</span>.client = clientName;
+    <span class="text-blue-300">this</span>.status = <span class="text-emerald-300">"Ready for deployment"</span>;
   }
 
-  <span class="text-blue-400">deploySolution</span>(appName) {
-    <span class="text-purple-400">console</span>.<span class="text-yellow-300">log</span>(<span class="text-emerald-300">`Launching \${appName} with 99.9% uptime...`</span>);
-    <span class="text-purple-400">return</span> <span class="text-emerald-300">"Status: Success"</span>;
+  <span class="text-blue-400">launchPortfolio</span>() {
+    <span class="text-purple-400">console</span>.<span class="text-yellow-300">log</span>(<span class="text-emerald-300">`Launching stunning personal website for \${this.client}...`</span>);
+    <span class="text-purple-400">return</span> <span class="text-emerald-300">"Success: Live in 7 days!"</span>;
   }
 }
 
-<span class="text-slate-500">// Initialize application core</span>
-<span class="text-indigo-400">const</span> app = <span class="text-purple-400">new</span> <span class="text-yellow-400">AccxsEngine</span>();
-app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-300">"Enterprise Live Web App"</span>);</pre>
+<span class="text-slate-500">// Initialize client web project</span>
+<span class="text-indigo-400">const</span> mySite = <span class="text-purple-400">new</span> <span class="text-yellow-400">AccxsPersonalWebsite</span>(<span class="text-emerald-300">"You"</span>);
+mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                     </div>
 
                     <!-- Code Studio Footer Status -->
@@ -311,7 +421,7 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
                             <i class="fa-solid fa-circle-check text-emerald-400"></i>
                             <span>Syntax Verified & Ready</span>
                         </div>
-                        <button onclick="runSimulation()" class="px-3 py-1 rounded bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-500/30 font-semibold transition-all">
+                        <button onclick="runSimulation()" class="px-3 py-1.5 rounded bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-500/30 font-semibold transition-all">
                             <i class="fa-solid fa-play mr-1"></i> Run Simulation
                         </button>
                     </div>
@@ -319,14 +429,15 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
             </div>
         </section>
 
-        <section id="contact" class="py-24">
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-slate-100/60 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Get In Touch</h2>
-                        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Something Exceptional Together</h3>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Your Personal Website Together</h3>
                         <p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed mb-8">
-                            Have a software app idea or need a high-performance live website? Reach out to Accxs Creations today and let our engineers turn your vision into reality.
+                            Ready for your own stunning personal website, software app, or live business website? Reach out to Accxs Creations today and let our engineers bring your vision to life.
                         </p>
 
                         <div class="space-y-6">
@@ -364,7 +475,7 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
 
                     <!-- Contact Form Card -->
                     <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
-                        <h4 class="text-2xl font-bold mb-6">Send Us a Message</h4>
+                        <h4 class="text-2xl font-bold mb-6">Request Your Project Quote</h4>
                         <form id="contactForm" onsubmit="handleContact(event)" class="space-y-5">
                             <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Your Name</label>
@@ -375,15 +486,24 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
                                 <input type="email" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="john@example.com">
                             </div>
                             <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Type</label>
+                                <select class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all">
+                                    <option>Personal Website / Portfolio</option>
+                                    <option>Custom Software App</option>
+                                    <option>Live Business Website</option>
+                                    <option>E-Commerce Store</option>
+                                </select>
+                            </div>
+                            <div>
                                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Project Details</label>
-                                <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="Tell us about your software app or live website requirements..."></textarea>
+                                <textarea rows="3" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:outline-none text-slate-900 dark:text-slate-200 text-sm transition-all" placeholder="Tell us about your personal website requirements..."></textarea>
                             </div>
                             <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/25 hover:scale-[1.01] active:scale-[0.99] transition-all">
                                 Send Message
                             </button>
                         </form>
                         <div id="formSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm text-center font-medium">
-                            Thank you! Your message has been sent successfully. We will get back to you shortly.
+                            Thank you! Your message has been sent successfully. We will get back to you within 24 hours.
                         </div>
                     </div>
                 </div>
@@ -391,10 +511,10 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
         </section>
     </main>
 
-    <footer class="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-12">
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 pt-16 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800">
-                <!-- Col 1: Brand Info -->
+                <!-- Col 1: Brand Info & Socials -->
                 <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center space-x-3">
                         <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow">
@@ -405,24 +525,24 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
                         </span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-sm max-w-sm leading-relaxed">
-                        Empowering businesses and individuals through cutting-edge software engineering, robust applications, and high-performance live websites.
+                        Empowering individuals and businesses through stunning personal websites, custom software apps, and high-performance live websites.
                     </p>
                     <!-- 4 Social Media Icons -->
                     <div class="flex items-center space-x-3 pt-2">
                         <!-- Facebook -->
-                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-indigo-600 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-indigo-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
                             <i class="fa-brands fa-facebook-f text-sm"></i>
                         </a>
                         <!-- Instagram -->
-                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-pink-600 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-pink-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
                             <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
                         <!-- Gmail -->
-                        <a href="mailto:contact@accxscreations.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-rose-600 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
+                        <a href="mailto:contact@accxscreations.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
                             <i class="fa-solid fa-envelope text-sm"></i>
                         </a>
                         <!-- Messenger -->
-                        <a href="https://m.me" target="_blank" aria-label="Messenger" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-blue-600 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
+                        <a href="https://m.me" target="_blank" aria-label="Messenger" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-blue-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
                             <i class="fa-brands fa-facebook-messenger text-sm"></i>
                         </a>
                     </div>
@@ -434,18 +554,18 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
                     <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
                         <li><a href="#hero" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a></li>
                         <li><a href="#purpose" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Purpose & Goal</a></li>
+                        <li><a href="#personal-websites" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Personal Websites</a></li>
                         <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">What We Do</a></li>
-                        <li><a href="#codestudio" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Code Studio</a></li>
                     </ul>
                 </div>
 
                 <!-- Col 3: Services -->
                 <div>
-                    <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-4">Services</h5>
+                    <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-4">Solutions</h5>
                     <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Portfolios & CVs</a></li>
                         <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Software Apps</a></li>
                         <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Live Websites</a></li>
-                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">UI/UX Design</a></li>
                         <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Cloud Solutions</a></li>
                     </ul>
                 </div>
@@ -453,7 +573,7 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
 
             <!-- Copyright Notice -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
-                <p>&copy; 2026 Accxs Creations. All rights reserved.</p>
+                <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
                 <div class="flex space-x-6 mt-4 sm:mt-0">
                     <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Privacy Policy</a>
                     <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Terms of Service</a>
@@ -463,12 +583,11 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
     </footer>
 
     <script>
-        // Theme Toggle Logic
+        // Theme Toggle Logic across entire document
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
 
-        // Check for saved theme preference or system preference
         if (localStorage.getItem('theme') === 'light') {
             htmlElement.classList.remove('dark');
             themeIcon.className = 'fa-solid fa-moon text-indigo-600';
@@ -498,40 +617,39 @@ app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-
 
         // Code Studio Tab Switcher
         const snippets = {
-            js: `<span class="text-purple-400">class</span> <span class="text-yellow-400">AccxsEngine</span> {
-  <span class="text-blue-400">constructor</span>() {
-    <span class="text-blue-300">this</span>.company = <span class="text-emerald-300">"Accxs Creations"</span>;
-    <span class="text-blue-300">this</span>.mission = <span class="text-emerald-300">"Empowering digital futures"</span>;
+            js: `<span class="text-purple-400">class</span> <span class="text-yellow-400">AccxsPersonalWebsite</span> {
+  <span class="text-blue-400">constructor</span>(clientName) {
+    <span class="text-blue-300">this</span>.client = clientName;
+    <span class="text-blue-300">this</span>.status = <span class="text-emerald-300">"Ready for deployment"</span>;
   }
 
-  <span class="text-blue-400">deploySolution</span>(appName) {
-    <span class="text-purple-400">console</span>.<span class="text-yellow-300">log</span>(<span class="text-emerald-300">"Launching "</span> + appName + <span class="text-emerald-300">" with 99.9% uptime..."</span>);
-    <span class="text-purple-400">return</span> <span class="text-emerald-300">"Status: Success"</span>;
+  <span class="text-blue-400">launchPortfolio</span>() {
+    <span class="text-purple-400">console</span>.<span class="text-yellow-300">log</span>(<span class="text-emerald-300">"Launching stunning personal website for "</span> + <span class="text-blue-300">this</span>.client + <span class="text-emerald-300">"..."</span>);
+    <span class="text-purple-400">return</span> <span class="text-emerald-300">"Success: Live in 7 days!"</span>;
   }
 }
 
-<span class="text-slate-500">// Initialize application core</span>
-<span class="text-indigo-400">const</span> app = <span class="text-purple-400">new</span> <span class="text-yellow-400">AccxsEngine</span>();
-app.<span class="text-blue-400">deploySolution</span>(<span class="text-emerald-300">"Enterprise Live Web App"</span>);`,
+<span class="text-slate-500">// Initialize client web project</span>
+<span class="text-indigo-400">const</span> mySite = <span class="text-purple-400">new</span> <span class="text-yellow-400">AccxsPersonalWebsite</span>(<span class="text-emerald-300">"You"</span>);
+mySite.<span class="text-blue-400">launchPortfolio</span>();`,
             
-            python: `<span class="text-purple-400">class</span> <span class="text-yellow-400">AccxsCloudBackend</span>:
-    <span class="text-purple-400">def</span> <span class="text-blue-400">__init__</span>(<span class="text-blue-300">self</span>):
-        <span class="text-blue-300">self</span>.hub = <span class="text-emerald-300">"Accxs Creations"</span>
-        <span class="text-blue-300">self</span>.status = <span class="text-emerald-300">"Active & Scalable"</span>
+            python: `<span class="text-purple-400">class</span> <span class="text-yellow-400">AccxsPersonalBrand</span>:
+    <span class="text-purple-400">def</span> <span class="text-blue-400">__init__</span>(<span class="text-blue-300">self</span>, name):
+        <span class="text-blue-300">self</span>.name = name
+        <span class="text-blue-300">self</span>.platform = <span class="text-emerald-300">"Personal Website"</span>
 
-    <span class="text-purple-400">def</span> <span class="text-blue-400">optimize_performance</span>(<span class="text-blue-300">self</span>):
-        <span class="text-purple-400">print</span>(<span class="text-emerald-300">"Optimizing servers for "</span> + <span class="text-blue-300">self</span>.hub + <span class="text-emerald-300">"..."</span>)
-        <span class="text-purple-400">return</span> <span class="text-emerald-300">"Latency reduced by 45%"</span>
+    <span class="text-purple-400">def</span> <span class="text-blue-400">deploy</span>(<span class="text-blue-300">self</span>):
+        <span class="text-purple-400">print</span>(<span class="text-emerald-300">"Deploying high-performance site for "</span> + <span class="text-blue-300">self</span>.name)
+        <span class="text-purple-400">return</span> <span class="text-emerald-300">"Status: Online & Optimized"</span>
 
-<span class="text-slate-500"># Run backend service</span>
-backend = <span class="text-yellow-400">AccxsCloudBackend</span>()
-backend.<span class="text-blue-400">optimize_performance</span>()`,
+brand = <span class="text-yellow-400">AccxsPersonalBrand</span>(<span class="text-emerald-300">"Client"</span>)
+brand.<span class="text-blue-400">deploy</span>()`,
 
-            html: `<span class="text-slate-500">&lt;!-- Accxs Creations Live Web Module --&gt;</span>
-<span class="text-pink-400">&lt;div</span> <span class="text-indigo-300">class</span>=<span class="text-emerald-300">"accxs-showcase"</span><span class="text-pink-400">&gt;</span>
-    <span class="text-pink-400">&lt;h1</span> <span class="text-indigo-300">class</span>=<span class="text-emerald-300">"text-gradient"</span><span class="text-pink-400">&gt;</span>Digital Excellence<span class="text-pink-400">&lt;/h1&gt;</span>
-    <span class="text-pink-400">&lt;p&gt;</span>Building robust software & live websites.<span class="text-pink-400">&lt;/p&gt;</span>
-    <span class="text-pink-400">&lt;button</span> <span class="text-indigo-300">onclick</span>=<span class="text-emerald-300">"initApp()"</span><span class="text-pink-400">&gt;</span>Launch App<span class="text-pink-400">&lt;/button&gt;</span>
+            html: `<span class="text-slate-500">&lt;!-- Accxs Personal Website Module --&gt;</span>
+<span class="text-pink-400">&lt;div</span> <span class="text-indigo-300">class</span>=<span class="text-emerald-300">"personal-card"</span><span class="text-pink-400">&gt;</span>
+    <span class="text-pink-400">&lt;h1&gt;</span>Your Name - Professional Portfolio<span class="text-pink-400">&lt;/h1&gt;</span>
+    <span class="text-pink-400">&lt;p&gt;</span>Showcasing your work to the world.<span class="text-pink-400">&lt;/p&gt;</span>
+    <span class="text-pink-400">&lt;a</span> <span class="text-indigo-300">href</span>=<span class="text-emerald-300">"#contact"</span><span class="text-pink-400">&gt;</span>Hire Me<span class="text-pink-400">&lt;/a&gt;</span>
 <span class="text-pink-400">&lt;/div&gt;</span>`
         };
 
@@ -548,7 +666,7 @@ backend.<span class="text-blue-400">optimize_performance</span>()`,
         }
 
         function runSimulation() {
-            showNotification("Simulation executed successfully! Accxs Creations core modules are fully operational.");
+            showNotification("Simulation executed successfully! Your personal website project blueprint is ready.");
         }
 
         function showNotification(message) {
