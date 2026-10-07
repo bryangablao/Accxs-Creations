@@ -48,22 +48,48 @@
             background-image: radial-gradient(rgba(129, 140, 248, 0.1) 1px, transparent 1px);
             background-size: 32px 32px;
         }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 88px;
+        }
+        section {
+            scroll-margin-top: 88px;
+        }
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+        @media (max-width: 639px) {
+            html { scroll-padding-top: 72px; }
+            section { scroll-margin-top: 72px; }
+            #hero { padding-top: 3.5rem; padding-bottom: 5rem; }
+            #hero h1 { font-size: clamp(2.15rem, 11vw, 3.25rem); line-height: 1.08; }
+            #hero p { font-size: 1rem; }
+            section.py-24 { padding-top: 4rem; padding-bottom: 4rem; }
+            .rounded-3xl { border-radius: 1.25rem; }
+            #codeContent { font-size: 0.75rem; }
+        }
+        @media (max-width: 380px) {
+            #siteHeader .space-x-3 { column-gap: .5rem; }
+            #siteHeader .text-base { font-size: .9rem; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between">
+<body class="overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between">
 
     <header id="siteHeader" class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
             <!-- Brand Logo -->
             <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform">
                     <i class="fa-solid fa-code text-white text-lg"></i>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+                    <span class="text-base sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
                         Accxs Creations
                     </span>
-                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">Software & Web Agency</span>
+                    <span class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider uppercase">Software & Web Agency</span>
                 </div>
             </a>
 
@@ -78,50 +104,96 @@
             </nav>
 
             <!-- Actions: Theme Toggle & CTA -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center gap-2 sm:gap-4 shrink-0">
                 <!-- Theme Toggle Button -->
                 <button id="themeToggle" aria-label="Toggle Theme" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-500/50 focus:outline-none transition-all shadow-sm">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
                 </button>
                 
                 <!-- CTA Button -->
-                <a href="#contact" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <a href="#contact" class="hidden md:inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Start Your Project
                 </a>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
+                <button id="mobileMenuBtn" aria-label="Open navigation menu" class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Navigation Overlay + Animated Side Drawer -->
-        <div id="mobileMenuOverlay" class="lg:hidden fixed inset-0 top-20 z-40 bg-slate-950/45 backdrop-blur-[2px] opacity-0 invisible pointer-events-none transition-all duration-300 ease-out"></div>
-
-        <aside id="mobileMenu" aria-hidden="true" class="lg:hidden fixed top-20 right-0 bottom-0 z-50 w-[86%] max-w-sm bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl translate-x-full opacity-0 invisible pointer-events-none transition-all duration-300 ease-out">
-            <div class="h-full overflow-y-auto px-5 py-6">
-                <div class="flex items-center justify-between mb-5">
-                    <span class="text-sm font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Navigation</span>
-                    <button id="mobileMenuClose" type="button" aria-label="Close menu" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <nav class="space-y-2">
-                    <a href="#hero" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Home</a>
-                    <a href="#purpose" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Purpose & Goal</a>
-                    <a href="#services" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">What We Do</a>
-                    <a href="#personal-websites" class="mobile-nav-link block px-4 py-3 rounded-xl text-indigo-600 dark:text-indigo-400 bg-indigo-50/70 dark:bg-indigo-500/10 font-bold">Personal Websites & Portfolios</a>
-                    <a href="#codestudio" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Code Studio</a>
-                    <a href="#contact" class="mobile-nav-link block px-4 py-3 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Contact</a>
-                </nav>
-            </div>
-        </aside>
     </header>
 
-    <main class="flex-grow bg-grid-pattern relative pt-20">
+        <!-- Mobile Navigation Overlay -->
+        <div id="mobileMenuOverlay" class="lg:hidden fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-sm opacity-0 invisible pointer-events-none transition-opacity duration-300 ease-out"></div>
+
+        <!-- Mobile Navigation Drawer -->
+        <aside id="mobileMenu" aria-hidden="true" class="lg:hidden fixed top-0 right-0 bottom-0 z-[70] w-full xs:w-[90%] sm:w-[420px] max-w-full bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 shadow-2xl translate-x-full opacity-0 invisible pointer-events-none transition-all duration-300 ease-out">
+            <div class="h-full flex flex-col overflow-hidden">
+                <div class="h-16 sm:h-20 px-4 sm:px-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md shrink-0">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 shrink-0">
+                            <i class="fa-solid fa-code text-white text-sm"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-slate-900 dark:text-white truncate">Accxs Creations</div>
+                            <div class="text-[10px] sm:text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">Navigation Menu</div>
+                        </div>
+                    </div>
+                    <button id="mobileMenuClose" type="button" aria-label="Close menu" class="w-10 h-10 shrink-0 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-95 transition-all">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6 py-5 sm:py-6">
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-3 px-1">Explore</p>
+                    <nav class="grid gap-2">
+                        <a href="#hero" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
+                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-house"></i></span>
+                            <span class="min-w-0"><span class="block font-bold">Home</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Back to the main introduction</span></span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#purpose" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
+                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-bullseye"></i></span>
+                            <span class="min-w-0"><span class="block font-bold">Purpose & Goal</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">What drives Accxs Creations</span></span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#services" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
+                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-layer-group"></i></span>
+                            <span class="min-w-0"><span class="block font-bold">What We Do</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Explore our digital services</span></span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#personal-websites" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-indigo-200/70 dark:border-indigo-500/20 bg-indigo-50/70 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 active:scale-[0.99] transition-all">
+                            <span class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-500/15 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-astronaut"></i></span>
+                            <span class="min-w-0"><span class="block font-bold">Personal Websites</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Portfolio and personal brand sites</span></span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-indigo-400 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#codestudio" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
+                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-code"></i></span>
+                            <span class="min-w-0"><span class="block font-bold">Code Studio</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">See interactive code examples</span></span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <a href="#contact" class="mobile-nav-link group flex items-center gap-4 px-4 py-3.5 rounded-2xl border border-transparent hover:border-indigo-200 dark:hover:border-indigo-500/20 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-700 dark:text-slate-200 hover:text-indigo-700 dark:hover:text-indigo-300 active:scale-[0.99] transition-all">
+                            <span class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/15 flex items-center justify-center shrink-0 transition-colors"><i class="fa-solid fa-envelope"></i></span>
+                            <span class="min-w-0"><span class="block font-bold">Contact</span><span class="block text-xs text-slate-500 dark:text-slate-400 mt-0.5">Request your project quote</span></span>
+                            <i class="fa-solid fa-chevron-right ml-auto text-xs text-slate-400 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </nav>
+
+                    <div class="mt-6 rounded-2xl p-4 bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/20">
+                        <div class="font-bold">Ready to build something?</div>
+                        <p class="text-sm text-indigo-100 mt-1">Tell us about your website, app, or digital project.</p>
+                        <a href="#contact" class="mobile-nav-link mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-indigo-700 font-bold hover:bg-indigo-50 active:scale-[0.99] transition-all">
+                            Start Your Project <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    <main class="flex-grow bg-grid-pattern relative pt-16 sm:pt-20">
         <!-- Ambient background lighting -->
-        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[360px] h-[360px] sm:w-[600px] sm:h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
 
         <!-- Hero Section -->
         <section id="hero" class="relative overflow-hidden pt-20 pb-28 lg:pt-32 lg:pb-36">
@@ -177,7 +249,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Our Core Foundation</h2>
-                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Our Purpose & Ultimate Goal</h3>
+                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Our Purpose & Ultimate Goal</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Driven by innovation, precision, and an unyielding commitment to elevate every client's digital presence.</p>
                 </div>
 
@@ -214,7 +286,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Client Spotlight</h2>
-                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Want Your Own Personal Website?</h3>
+                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Want Your Own Personal Website?</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Stand out from the crowd with a high-converting, gorgeous personal website or portfolio designed specifically for you.</p>
                 </div>
 
@@ -309,7 +381,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Core Expertise</h2>
-                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">What We Usually Do</h3>
+                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">What We Usually Do</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Comprehensive digital capabilities tailored to elevate individuals and enterprises to new heights.</p>
                 </div>
 
@@ -388,13 +460,13 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Interactive Playground</h2>
-                    <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Accxs Code Studio</h3>
+                    <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Accxs Code Studio</h3>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Explore clean, modular code snippets that power our high-performance software and personal websites.</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
                     <!-- Code Editor Header / Tab bar -->
-                    <div class="flex items-center justify-between px-6 py-4 bg-slate-900/80 border-b border-slate-800">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-4 bg-slate-900/80 border-b border-slate-800">
                         <div class="flex items-center space-x-2">
                             <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
                             <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
@@ -402,7 +474,7 @@
                             <span class="text-xs text-slate-400 font-mono ml-3 hidden sm:inline">~/accxs-creations/workspace</span>
                         </div>
                         <!-- Language Tabs -->
-                        <div class="flex space-x-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                        <div class="w-full sm:w-auto grid grid-cols-3 sm:flex gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
                             <button onclick="switchTab('js')" id="tab-js" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition-all">JavaScript</button>
                             <button onclick="switchTab('python')" id="tab-python" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">Python</button>
                             <button onclick="switchTab('html')" id="tab-html" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">HTML/CSS</button>
@@ -448,7 +520,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Get In Touch</h2>
-                        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Your Personal Website Together</h3>
+                        <h3 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Your Personal Website Together</h3>
                         <p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed mb-8">
                             Ready for your own stunning personal website, software app, or live business website? Reach out to Accxs Creations today and let our engineers bring your vision to life.
                         </p>
@@ -490,7 +562,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                     </div>
 
                     <!-- Contact Form Card -->
-                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
+                    <div class="p-5 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
                         <h4 class="text-2xl font-bold mb-6">Request Your Project Quote</h4>
                         <form id="contactForm" onsubmit="handleContact(event)" class="space-y-5">
                             <div>
@@ -592,7 +664,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
 
             <!-- Copyright Notice -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
-                <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
+                <p>&copy; 2026 Accxs Creations. All rights reserved.</p>
                 <div class="flex space-x-6 mt-4 sm:mt-0">
                     <a href="https://bryangablao.github.io/Accxs-Creations/privacypolicy.html" target="_blank" rel="noopener noreferrer" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Privacy Policy</a>
                     <a href="https://bryangablao.github.io/Accxs-Creations/privacypolicy.html" target="_blank" rel="noopener noreferrer" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">Terms of Service</a>
