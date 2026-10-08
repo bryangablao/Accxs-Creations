@@ -102,6 +102,15 @@
             100% { transform: translateX(100%); }
         }
 
+        .themed-scroll { scrollbar-width: thin; scrollbar-color: #a5b4fc #eef2ff; scrollbar-gutter: stable; }
+        .dark .themed-scroll { scrollbar-color: #6366f1 #0f172a; }
+        .themed-scroll::-webkit-scrollbar { width: 9px; height: 9px; }
+        .themed-scroll::-webkit-scrollbar-track { background: #eef2ff; border-radius: 12px; margin: 12px 0; }
+        .dark .themed-scroll::-webkit-scrollbar-track { background: #0f172a; }
+        .themed-scroll::-webkit-scrollbar-thumb { background: #a5b4fc; border: 2px solid #eef2ff; border-radius: 12px; }
+        .dark .themed-scroll::-webkit-scrollbar-thumb { background: #6366f1; border-color: #0f172a; }
+        .themed-scroll::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
+        .log-checkbox { width: 18px; height: 18px; accent-color: #4f46e5; cursor: pointer; }
         @media (max-width: 639px) {
             .dashboard-title { font-size: 1.8rem; }
         }
@@ -234,12 +243,19 @@
                             <input id="searchInput" type="search" placeholder="Search customer, email, project type, or details..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 focus:outline-none text-sm">
                         </div>
 
-                        <div class="grid grid-cols-2 sm:flex gap-2">
+                        <div id="statusFilters" class="grid grid-cols-2 sm:flex gap-2">
                             <button data-filter="all" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">All</button>
                             <button data-filter="pending" class="filter-btn active px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Pending</button>
                             <button data-filter="in_progress" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">In Progress</button>
                             <button data-filter="completed" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Completed</button>
+                            <button id="logsTab" type="button" class="filter-btn px-4 py-2.5 rounded-xl border border-rose-300/60 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 text-sm font-semibold">Logs <span id="logsCount">0</span></button>
                         </div>
+                    </div>
+                    <div id="logsActions" class="hidden mt-4 flex flex-wrap items-center gap-2 border-t border-slate-200 dark:border-slate-800 pt-4">
+                        <button id="selectAllLogs" type="button" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-semibold">Select All</button>
+                        <button id="recoverLogs" type="button" disabled class="px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold disabled:opacity-40">Recover</button>
+                        <button id="permanentDeleteLogs" type="button" disabled class="px-4 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-semibold disabled:opacity-40">Permanently Delete</button>
+                        <span id="selectedLogCount" class="text-xs text-slate-500 dark:text-slate-400">0 selected</span>
                     </div>
                 </div>
 
@@ -251,6 +267,7 @@
                     </div>
 
                     <div id="quotesGrid" class="hidden grid grid-cols-1 xl:grid-cols-2 gap-5"></div>
+                    <div id="logsGrid" class="hidden space-y-3"></div>
 
                     <div id="emptyState" class="hidden py-20 text-center rounded-3xl bg-white/75 dark:bg-slate-900/75 border border-dashed border-slate-300 dark:border-slate-700">
                         <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl">
@@ -273,9 +290,9 @@
             <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl">
                 <i class="fa-solid fa-trash-can"></i>
             </div>
-            <h2 class="mt-5 text-2xl font-extrabold">Delete project request?</h2>
+            <h2 class="mt-5 text-2xl font-extrabold">Move project to Logs?</h2>
             <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                This permanently removes the request from Firestore. This action cannot be undone.
+                This archives the request in Logs without deleting its Firestore record. You can recover it or permanently delete it later.
             </p>
 
             <label for="deleteReason" class="block mt-5 mb-2 text-sm font-semibold">Reason for deletion</label>
@@ -308,11 +325,30 @@
     <!-- Profile modal -->
     <div id="profileModal" class="fixed inset-0 z-[105] hidden items-center justify-center p-4" role="presentation">
         <div data-close-modal class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
-        <div role="dialog" aria-modal="true" aria-labelledby="profileTitle" class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl p-6 sm:p-8">
+        <div role="dialog" aria-modal="true" aria-labelledby="profileTitle" class="relative w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl">
+            <div class="themed-scroll overflow-y-auto min-h-0 p-6 sm:p-8">
             <div class="flex justify-between items-center"><h2 id="profileTitle" class="text-2xl font-extrabold">My Profile</h2><button type="button" data-close-modal aria-label="Close profile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><i class="fa-solid fa-xmark"></i></button></div>
             <p class="mt-2 text-xs text-slate-500">Your account details and editable personal information.</p>
             <div id="profileFields" class="mt-6 space-y-3"></div>
             <p id="profileError" class="hidden mt-4 text-sm text-rose-500" role="alert"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project details editor -->
+    <div id="detailsModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+        <div data-close-details class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
+        <div role="dialog" aria-modal="true" aria-labelledby="detailsTitle" class="relative w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl">
+            <div class="themed-scroll overflow-y-auto min-h-0 p-6 sm:p-8 space-y-4">
+                <div class="flex justify-between items-center gap-3"><h2 id="detailsTitle" class="text-xl font-bold">Edit Project Details</h2><button type="button" data-close-details class="p-2 rounded-lg" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Update the details based on customer replies. Changes are recorded in the history below. Email replies are not imported automatically.</p>
+                <label for="detailsInput" class="block text-sm font-semibold">Current Project Details</label>
+                <textarea id="detailsInput" maxlength="5000" rows="9" class="themed-scroll w-full rounded-xl p-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y"></textarea>
+                <label for="detailsNote" class="block text-sm font-semibold">Customer reply / change summary (required)</label>
+                <textarea id="detailsNote" maxlength="2000" rows="3" placeholder="Summarize the customer's latest reply or requested change..." class="themed-scroll w-full rounded-xl p-3 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                <div id="detailsError" class="hidden text-sm text-rose-500"></div>
+                <div class="flex justify-end gap-3"><button type="button" data-close-details class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700">Cancel</button><button id="saveDetails" type="button" class="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold">Save Changes</button></div>
+            </div>
         </div>
     </div>
 
@@ -437,7 +473,9 @@
             doc,
             updateDoc,
             deleteDoc,
-            serverTimestamp
+            serverTimestamp,
+            arrayUnion,
+            writeBatch
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -465,7 +503,7 @@
         const emptyStateText = document.getElementById('emptyStateText');
         const dashboardError = document.getElementById('dashboardError');
         const searchInput = document.getElementById('searchInput');
-        const filterButtons = document.querySelectorAll('.filter-btn');
+        const filterButtons = document.querySelectorAll('[data-filter]');
 
         const countAll = document.getElementById('countAll');
         const countPending = document.getElementById('countPending');
@@ -480,6 +518,8 @@
 
         let allQuotes = [];
         let currentFilter = 'pending';
+        let selectedLogs = new Set();
+        let editingQuoteId = null;
         let quoteToDelete = null;
         let unsubscribeQuotes = null;
         let employeeProfile = null;
@@ -488,11 +528,15 @@
         let actionBusy = false;
         const actionModal = document.getElementById('actionModal');
         const profileModal = document.getElementById('profileModal');
+        const detailsModal = document.getElementById('detailsModal');
+        const logsTab = document.getElementById('logsTab');
+        const logsGrid = document.getElementById('logsGrid');
+        const logsActions = document.getElementById('logsActions');
         const actionExtra = document.getElementById('actionExtra');
         const actionYes = document.getElementById('actionYes');
         const actionNo = document.getElementById('actionNo');
         function showModal(modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.classList.add('overflow-hidden'); }
-        function hideModal(modal) { if (actionBusy && modal === actionModal) return; modal.classList.add('hidden'); modal.classList.remove('flex'); if (![actionModal, profileModal, deleteModal].some(el => !el.classList.contains('hidden'))) document.body.classList.remove('overflow-hidden'); }
+        function hideModal(modal) { if (actionBusy && modal === actionModal) return; modal.classList.add('hidden'); modal.classList.remove('flex'); if (![actionModal, profileModal, deleteModal, detailsModal].some(el => !el.classList.contains('hidden'))) document.body.classList.remove('overflow-hidden'); }
         function openAction(title, description, onConfirm, extraHtml = '', yesText = 'Yes, Confirm', noText = 'No, Cancel') {
             document.getElementById('actionTitle').textContent = title;
             document.getElementById('actionDescription').textContent = description;
@@ -591,7 +635,8 @@
         }
 
         function updateCounts() {
-            countAll.textContent = allQuotes.length;
+            countAll.textContent = allQuotes.filter(item => item.status !== 'deleted').length;
+            document.getElementById('logsCount').textContent = allQuotes.filter(item => item.status === 'deleted').length;
             countPending.textContent = allQuotes.filter(item => item.status === 'pending').length;
             countProgress.textContent = allQuotes.filter(item => item.status === 'in_progress').length;
             countCompleted.textContent = allQuotes.filter(item => item.status === 'completed').length;
@@ -601,7 +646,7 @@
             const search = searchInput.value.trim().toLowerCase();
 
             return allQuotes.filter(item => {
-                const matchesFilter = currentFilter === 'all' || item.status === currentFilter;
+                const matchesFilter = item.status !== 'deleted' && (currentFilter === 'all' || item.status === currentFilter);
 
                 const haystack = [
                     item.name,
@@ -616,8 +661,22 @@
             });
         }
 
+        function renderHistory(item) {
+            if (!Array.isArray(item.detailHistory) || !item.detailHistory.length) return '';
+            const rows = item.detailHistory.slice().reverse().map(h => {
+                const date = h.at ? new Intl.DateTimeFormat('en-PH', {timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'}).format(new Date(h.at)) : '';
+                return `<div class="border border-slate-200 dark:border-slate-700 rounded-lg p-2 text-xs"><strong>${escapeHtml(h.staffName || 'Staff')}</strong> · ${escapeHtml(date)}<p class="mt-1 whitespace-pre-wrap break-words">${escapeHtml(h.note || '')}</p></div>`;
+            }).join('');
+            return `<details class="mt-3"><summary class="cursor-pointer text-xs text-indigo-600 dark:text-indigo-400">Change History (${item.detailHistory.length})</summary><div class="themed-scroll mt-2 max-h-44 overflow-y-auto space-y-2">${rows}</div></details>`;
+        }
         function renderQuotes() {
             updateCounts();
+            const inLogs = currentFilter === 'logs';
+            logsTab.classList.toggle('active', inLogs);
+            logsActions.classList.toggle('hidden', !inLogs);
+            document.getElementById('statusFilters').classList.toggle('hidden', inLogs);
+            if (inLogs) { renderLogs(); return; }
+            logsGrid.classList.add('hidden');
 
             const quotes = getFilteredQuotes();
             quotesGrid.innerHTML = '';
@@ -690,9 +749,9 @@
                         <div class="text-[11px] uppercase tracking-[0.2em] font-bold text-slate-500 dark:text-slate-400">
                             Project Details
                         </div>
-                        <p class="mt-2 text-sm sm:text-[15px] leading-7 text-slate-600 dark:text-slate-300 whitespace-pre-wrap break-words">
-                            ${escapeHtml(item.projectDetails)}
-                        </p>
+                        <div class="flex items-center justify-between gap-2"><button type="button" data-action="edit" data-id="${item.id}" class="px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold">Edit Project Details</button></div>
+                        <div class="themed-scroll mt-2 max-h-52 overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 p-3 text-sm leading-7 whitespace-pre-wrap break-words">${escapeHtml(item.projectDetails)}</div>
+                        ${renderHistory(item)}
                     </div>
 
                     <div class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-2.5">
@@ -757,6 +816,7 @@
             const item = allQuotes.find(q => q.id === id);
             if (!item) return;
             if (action === 'delete') { openDeleteModal(id); return; }
+            if (action === 'edit') { openDetailsEditor(id); return; }
             if (action === 'progress') {
                 if (item.status === 'in_progress') {
                     openAction('Return project to Pending?', `Move ${item.name}'s request back to Pending? The original three-day review deadline will be displayed again.`, async () => {
@@ -797,9 +857,14 @@
             confirmDeleteBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Deleting...';
 
             try {
-                await deleteDoc(doc(db, 'projectQuotes', id));
+                await updateDoc(doc(db, 'projectQuotes', id), {
+                    status: 'deleted', deletedReason: reason,
+                    deletedBy: `${employeeProfile?.firstName || ''} ${employeeProfile?.lastName || ''}`.trim() || employeeProfile?.userId || 'Staff',
+                    deletedByUid: auth.currentUser.uid,
+                    deletedAt: serverTimestamp()
+                });
                 closeDeleteModal();
-                showToast('Project request deleted. Reason: ' + reason);
+                showToast('Project moved to Logs. Reason: ' + reason);
             } catch (error) {
                 console.error(error);
                 showToast('Could not delete this project.');
@@ -817,6 +882,11 @@
 
         searchInput.addEventListener('input', renderQuotes);
 
+        logsTab.addEventListener('click', () => {
+            currentFilter = 'logs';
+            filterButtons.forEach(b => b.classList.remove('active'));
+            renderQuotes();
+        });
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 currentFilter = button.dataset.filter;
@@ -879,6 +949,95 @@
             save.disabled = true; save.textContent = 'Saving...';
             try { await updateDoc(doc(db, 'employees', employeeDocId), { [field]: field === 'age' ? Number(value) : value }); employeeProfile[field] = field === 'age' ? Number(value) : value; profileError.classList.add('hidden'); renderProfile(); showToast('Profile updated successfully.'); }
             catch (error) { console.error('Profile update failed:', error); profileError.textContent = 'Unable to save profile changes. Your account may not have permission to edit employee records. (' + (error.code || 'unknown error') + ')'; profileError.classList.remove('hidden'); save.disabled = false; save.textContent = 'Save'; }
+        });
+
+        function openDetailsEditor(id) {
+            const item = allQuotes.find(q => q.id === id);
+            if (!item || item.status === 'deleted') return;
+            editingQuoteId = id;
+            document.getElementById('detailsTitle').textContent = `Edit Details: ${item.name}`;
+            document.getElementById('detailsInput').value = item.projectDetails || '';
+            document.getElementById('detailsNote').value = '';
+            document.getElementById('detailsError').classList.add('hidden');
+            showModal(detailsModal);
+        }
+        detailsModal.querySelectorAll('[data-close-details]').forEach(el => el.addEventListener('click', () => hideModal(detailsModal)));
+        document.getElementById('saveDetails').addEventListener('click', async () => {
+            const details = document.getElementById('detailsInput').value.trim();
+            const note = document.getElementById('detailsNote').value.trim();
+            const err = document.getElementById('detailsError');
+            if (!details || details.length > 5000 || !note || note.length > 2000) {
+                err.textContent = 'Enter project details (up to 5,000 characters) and a change summary (up to 2,000 characters).';
+                err.classList.remove('hidden'); return;
+            }
+            const btn = document.getElementById('saveDetails'); btn.disabled = true;
+            try {
+                const staffName = `${employeeProfile?.firstName || ''} ${employeeProfile?.lastName || ''}`.trim() || 'Staff';
+                await updateDoc(doc(db, 'projectQuotes', editingQuoteId), {
+                    projectDetails: details,
+                    detailHistory: arrayUnion({ note, staffName, staffUid: auth.currentUser.uid, at: new Date().toISOString() })
+                });
+                hideModal(detailsModal); showToast('Project details saved with a history entry.');
+            } catch (e) { console.error(e); err.textContent = 'Could not save changes (' + (e.code || 'unknown error') + ').'; err.classList.remove('hidden'); }
+            finally { btn.disabled = false; }
+        });
+        function updateLogSelection() {
+            const ids = new Set(allQuotes.filter(q => q.status === 'deleted').map(q => q.id));
+            selectedLogs = new Set([...selectedLogs].filter(id => ids.has(id)));
+            document.getElementById('selectedLogCount').textContent = `${selectedLogs.size} selected`;
+            document.getElementById('recoverLogs').disabled = !selectedLogs.size;
+            document.getElementById('permanentDeleteLogs').disabled = !selectedLogs.size;
+            document.getElementById('selectAllLogs').textContent = selectedLogs.size && selectedLogs.size === ids.size ? 'Deselect All' : 'Select All';
+        }
+        function renderLogs() {
+            quotesGrid.classList.add('hidden');
+            const search = searchInput.value.trim().toLowerCase();
+            const logs = allQuotes.filter(q => q.status === 'deleted' && [q.name,q.email,q.projectType,q.deletedReason,q.deletedBy].join(' ').toLowerCase().includes(search));
+            logsGrid.innerHTML = '';
+            emptyState.classList.toggle('hidden', !!logs.length);
+            if (!logs.length) emptyStateText.textContent = 'No archived project requests found.';
+            logsGrid.classList.toggle('hidden', !logs.length);
+            logs.forEach(q => {
+                const row = document.createElement('label');
+                row.className = 'flex items-start gap-4 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/85 dark:bg-slate-900/85 shadow-sm cursor-pointer';
+                const date = dateFromTimestamp(q.deletedAt);
+                const dateText = date ? new Intl.DateTimeFormat('en-PH', { timeZone:'Asia/Manila', dateStyle:'medium', timeStyle:'short' }).format(date) : 'Pending timestamp';
+                row.innerHTML = `<input type="checkbox" class="log-checkbox mt-1 shrink-0" data-log-id="${escapeHtml(q.id)}" ${selectedLogs.has(q.id) ? 'checked' : ''}><div class="min-w-0 flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4 text-sm"><div><div class="text-xs text-slate-500">Customer</div><div class="font-semibold break-words">${escapeHtml(q.name)}</div></div><div><div class="text-xs text-slate-500">Project Type</div><div class="break-words">${escapeHtml(q.projectType)}</div></div><div><div class="text-xs text-slate-500">Reason for Deletion</div><div class="break-words">${escapeHtml(q.deletedReason || 'Not recorded')}</div></div><div><div class="text-xs text-slate-500">Deleted By</div><div class="break-words">${escapeHtml(q.deletedBy || 'Unknown')}</div></div><div><div class="text-xs text-slate-500">Date and Time (PHT)</div><div>${escapeHtml(dateText)}</div></div></div>`;
+                logsGrid.appendChild(row);
+            });
+            updateLogSelection();
+        }
+        logsGrid.addEventListener('change', e => {
+            const box = e.target.closest('[data-log-id]'); if (!box) return;
+            if (box.checked) selectedLogs.add(box.dataset.logId); else selectedLogs.delete(box.dataset.logId);
+            updateLogSelection();
+        });
+        document.getElementById('selectAllLogs').addEventListener('click', () => {
+            const visible = [...logsGrid.querySelectorAll('[data-log-id]')].map(el => el.dataset.logId);
+            if (visible.every(id => selectedLogs.has(id))) visible.forEach(id => selectedLogs.delete(id));
+            else visible.forEach(id => selectedLogs.add(id));
+            renderLogs();
+        });
+        async function processLogs(mode) {
+            const ids = [...selectedLogs].filter(id => allQuotes.some(q => q.id === id && q.status === 'deleted'));
+            if (!ids.length) return;
+            if (ids.length > 450) throw new Error('Select no more than 450 records at a time.');
+            const batch = writeBatch(db);
+            for (const id of ids) {
+                const ref = doc(db, 'projectQuotes', id);
+                if (mode === 'recover') batch.update(ref, { status:'pending', deletedReason:null, deletedBy:null, deletedByUid:null, deletedAt:null, priorityLevel:null, progressStartedAt:null, progressDueAt:null, completedAt:null });
+                else batch.delete(ref);
+            }
+            await batch.commit(); selectedLogs.clear();
+            showToast(mode === 'recover' ? `${ids.length} request(s) recovered to Pending.` : `${ids.length} request(s) permanently deleted.`);
+        }
+        document.getElementById('recoverLogs').addEventListener('click', () => {
+            if (!selectedLogs.size) return;
+            openAction('Recover selected requests?', `Restore ${selectedLogs.size} archived request(s) to Pending?`, () => processLogs('recover'), '', 'Yes, Recover');
+        });
+        document.getElementById('permanentDeleteLogs').addEventListener('click', () => {
+            if (!selectedLogs.size) return;
+            openAction('Permanently delete selected requests?', `Permanently delete ${selectedLogs.size} request(s) from Firestore? This cannot be undone.`, () => processLogs('delete'), '', 'Permanently Delete');
         });
 
         async function loadEmployeeProfile(user) {
