@@ -868,8 +868,9 @@
         profileFields.addEventListener('click', async e => {
             if (e.target.closest('[data-cancel-profile]')) { renderProfile(); return; }
             const save = e.target.closest('[data-save-profile]'); if (!save) return;
-            const row = save.closest('div.flex'); const field = row.querySelector('[data-value]').dataset.value;
-            const input = row.querySelector('#editProfileInput');
+            const valueElement = save.closest('[data-value]');
+            const field = valueElement.dataset.value;
+            const input = valueElement.querySelector('#editProfileInput');
             if (!input.reportValidity()) return;
             const value = input.value.trim();
             if (field === 'age' && (!Number.isInteger(Number(value)) || Number(value) < 1 || Number(value) > 120)) { input.setCustomValidity('Please enter a valid age from 1 to 120.'); input.reportValidity(); return; }
@@ -927,7 +928,7 @@
                 error => {
                     console.error('Quote listener error:', error);
                     quotesLoading.classList.add('hidden');
-                    dashboardError.textContent = 'The dashboard could not load project requests. Check your Firestore rules and make sure the projectQuotes collection is accessible to signed-in staff.';
+                    dashboardError.textContent = 'Unable to load project requests (' + (error.code || 'unknown error') + '). Check the browser console and published Firestore rules.';
                     dashboardError.classList.remove('hidden');
                 }
             );
