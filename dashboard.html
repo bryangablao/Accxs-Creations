@@ -127,7 +127,7 @@
     <!-- Header -->
     <header class="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
-            <a href="index.html" class="flex items-center gap-3 group min-w-0">
+            <a href="dashboard.html" class="flex items-center gap-3 group min-w-0">
                 <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105">
                     <i class="fa-solid fa-code text-white text-lg"></i>
                 </div>
@@ -142,7 +142,7 @@
             </a>
 
             <div class="flex items-center gap-2 sm:gap-3">
-                <div class="hidden md:flex items-center gap-3 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <button id="profileTrigger" type="button" title="View your profile" class="flex items-center gap-3 px-2 sm:px-3.5 py-2 rounded-xl hover:ring-2 hover:ring-indigo-500/30 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                     <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                         <i class="fa-solid fa-user"></i>
                     </div>
@@ -150,7 +150,7 @@
                         <div id="headerFullName" class="text-sm font-bold">Loading...</div>
                         <div id="headerRole" class="text-[11px] text-slate-500 dark:text-slate-400">Staff</div>
                     </div>
-                </div>
+                </button>
 
                 <button id="themeToggle" type="button" aria-label="Toggle Theme" class="w-10 h-10 inline-flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
@@ -175,7 +175,7 @@
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Secure Staff Workspace
+                            Secure Team Workspace
                         </div>
                         <h1 class="dashboard-title mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight">
                             Project Quote Dashboard
@@ -235,8 +235,8 @@
                         </div>
 
                         <div class="grid grid-cols-2 sm:flex gap-2">
-                            <button data-filter="all" class="filter-btn active px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">All</button>
-                            <button data-filter="pending" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Pending</button>
+                            <button data-filter="all" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">All</button>
+                            <button data-filter="pending" class="filter-btn active px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Pending</button>
                             <button data-filter="in_progress" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">In Progress</button>
                             <button data-filter="completed" class="filter-btn px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-sm font-semibold">Completed</button>
                         </div>
@@ -278,12 +278,41 @@
                 This permanently removes the request from Firestore. This action cannot be undone.
             </p>
 
+            <label for="deleteReason" class="block mt-5 mb-2 text-sm font-semibold">Reason for deletion</label>
+            <select id="deleteReason" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 text-sm">
+                <option value="">Select a reason...</option><option>Spam</option><option>Fraudulent Request</option><option>Customer Cannot Afford</option><option>Duplicate Request</option><option>Customer Requested Deletion</option><option>Outside Our Services</option><option>Other</option>
+            </select>
+            <p id="deleteReasonError" class="hidden mt-2 text-xs text-rose-500">Please select a deletion reason.</p>
             <div class="mt-6 grid grid-cols-2 gap-3">
                 <button id="cancelDeleteBtn" type="button" class="px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold text-sm">Cancel</button>
                 <button id="confirmDeleteBtn" type="button" class="px-4 py-3 rounded-xl bg-rose-600 text-white font-semibold text-sm shadow-lg shadow-rose-500/20">
                     Delete
                 </button>
             </div>
+        </div>
+    </div>
+
+
+    <!-- Shared action confirmation modal -->
+    <div id="actionModal" class="fixed inset-0 z-[105] hidden items-center justify-center p-4" role="presentation">
+        <div data-close-modal class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
+        <div role="dialog" aria-modal="true" aria-labelledby="actionTitle" class="relative w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl p-6 sm:p-8">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center"><i class="fa-solid fa-circle-question text-xl"></i></div>
+            <h2 id="actionTitle" class="mt-4 text-2xl font-extrabold"></h2>
+            <p id="actionDescription" class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300"></p>
+            <div id="actionExtra" class="mt-4 hidden"></div>
+            <div id="actionError" class="hidden mt-3 text-sm text-rose-500" role="alert"></div>
+            <div class="mt-6 flex gap-3"><button id="actionNo" type="button" class="flex-1 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 font-semibold">No, Cancel</button><button id="actionYes" type="button" class="flex-1 py-3 rounded-xl bg-indigo-600 text-white font-semibold">Yes, Confirm</button></div>
+        </div>
+    </div>
+    <!-- Profile modal -->
+    <div id="profileModal" class="fixed inset-0 z-[105] hidden items-center justify-center p-4" role="presentation">
+        <div data-close-modal class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
+        <div role="dialog" aria-modal="true" aria-labelledby="profileTitle" class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl p-6 sm:p-8">
+            <div class="flex justify-between items-center"><h2 id="profileTitle" class="text-2xl font-extrabold">My Profile</h2><button type="button" data-close-modal aria-label="Close profile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><i class="fa-solid fa-xmark"></i></button></div>
+            <p class="mt-2 text-xs text-slate-500">Your account details and editable personal information.</p>
+            <div id="profileFields" class="mt-6 space-y-3"></div>
+            <p id="profileError" class="hidden mt-4 text-sm text-rose-500" role="alert"></p>
         </div>
     </div>
 
@@ -345,6 +374,7 @@
                 </div>
             </div>
 
+            <div class="mt-8 flex justify-center sm:justify-start"><div class="inline-flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-sm text-slate-600 dark:text-slate-300"><i class="fa-regular fa-clock text-indigo-600 dark:text-indigo-400"></i><time id="philippineClock">Philippine Standard Time — Loading...</time></div></div>
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
                 <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
                 <div class="flex space-x-6 mt-4 sm:mt-0">
@@ -356,6 +386,10 @@
     </footer>
 
     <script>
+        const philippineClock = document.getElementById('philippineClock');
+        const phFormatter = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+        function tickPhilippineClock() { philippineClock.textContent = 'Philippine Standard Time — ' + phFormatter.format(new Date()); }
+        tickPhilippineClock(); setInterval(tickPhilippineClock, 1000);
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
@@ -402,7 +436,8 @@
             onSnapshot,
             doc,
             updateDoc,
-            deleteDoc
+            deleteDoc,
+            serverTimestamp
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -444,9 +479,66 @@
         const toast = document.getElementById('toast');
 
         let allQuotes = [];
-        let currentFilter = 'all';
+        let currentFilter = 'pending';
         let quoteToDelete = null;
         let unsubscribeQuotes = null;
+        let employeeProfile = null;
+        let employeeDocId = null;
+        let actionCallback = null;
+        let actionBusy = false;
+        const actionModal = document.getElementById('actionModal');
+        const profileModal = document.getElementById('profileModal');
+        const actionExtra = document.getElementById('actionExtra');
+        const actionYes = document.getElementById('actionYes');
+        const actionNo = document.getElementById('actionNo');
+        function showModal(modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.classList.add('overflow-hidden'); }
+        function hideModal(modal) { if (actionBusy && modal === actionModal) return; modal.classList.add('hidden'); modal.classList.remove('flex'); if (![actionModal, profileModal, deleteModal].some(el => !el.classList.contains('hidden'))) document.body.classList.remove('overflow-hidden'); }
+        function openAction(title, description, onConfirm, extraHtml = '', yesText = 'Yes, Confirm', noText = 'No, Cancel') {
+            document.getElementById('actionTitle').textContent = title;
+            document.getElementById('actionDescription').textContent = description;
+            document.getElementById('actionError').classList.add('hidden');
+            actionExtra.innerHTML = extraHtml; actionExtra.classList.toggle('hidden', !extraHtml);
+            actionYes.textContent = yesText; actionNo.textContent = noText; actionNo.classList.remove('hidden');
+            actionCallback = onConfirm; showModal(actionModal);
+        }
+        actionNo.addEventListener('click', () => hideModal(actionModal));
+        actionModal.querySelector('[data-close-modal]').addEventListener('click', () => hideModal(actionModal));
+        actionYes.addEventListener('click', async () => {
+            if (!actionCallback || actionBusy) return;
+            actionBusy = true; actionYes.disabled = true; actionNo.disabled = true;
+            const original = actionYes.textContent; actionYes.textContent = 'Please wait...';
+            try { const result = await actionCallback(); if (result !== false) { actionBusy = false; hideModal(actionModal); } }
+            catch (error) { console.error('Action failed:', error); const el = document.getElementById('actionError'); el.textContent = 'Unable to complete this action. Please try again. (' + (error.code || 'unknown error') + ')'; el.classList.remove('hidden'); }
+            finally { actionBusy = false; actionYes.disabled = false; actionNo.disabled = false; if (actionYes.textContent === 'Please wait...') actionYes.textContent = original; }
+        });
+        profileModal.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', () => hideModal(profileModal)));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { hideModal(actionModal); hideModal(profileModal); } });
+        const MS_DAY = 86400000;
+        function daysLabel(n) { return `${n} ${n === 1 ? 'day' : 'days'}`; }
+        function dateFromTimestamp(timestamp) { if (!timestamp) return null; if (typeof timestamp.toDate === 'function') return timestamp.toDate(); const d = new Date(timestamp); return Number.isNaN(d.getTime()) ? null : d; }
+        function deadlineLabel(deadline) {
+            if (!deadline) return 'Deadline unavailable';
+            const remaining = Math.ceil((deadline.getTime() - Date.now()) / MS_DAY);
+            if (remaining < 0) return `${daysLabel(Math.ceil((Date.now() - deadline.getTime()) / MS_DAY))} overdue`;
+            if (remaining === 0) return 'Due today';
+            return `${daysLabel(remaining)} remaining`;
+        }
+        function addBusinessDays(start, count) { const d = new Date(start); let added = 0; while (added < count) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6) added++; } return d; }
+        function getPendingDeadline(item) { const start = dateFromTimestamp(item.createdAt); return start ? new Date(start.getTime() + 3 * MS_DAY) : null; }
+        function getProgressDeadline(item) {
+            const saved = dateFromTimestamp(item.progressDueAt);
+            if (saved) return saved;
+            const start = dateFromTimestamp(item.progressStartedAt);
+            return start ? (item.priorityLevel === 'priority' ? new Date(start.getTime() + 7 * MS_DAY) : addBusinessDays(start, 14)) : null;
+        }
+        function quoteDeadlineBadge(item) {
+            if (item.status === 'completed') return '';
+            const deadline = item.status === 'in_progress' ? getProgressDeadline(item) : getPendingDeadline(item);
+            const label = deadlineLabel(deadline);
+            const overdue = label.includes('overdue');
+            return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[11px] font-bold ${overdue ? 'border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400' : 'border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'}"><i class="fa-regular fa-hourglass-half"></i>${escapeHtml(label)}</span>`;
+        }
+
 
         function escapeHtml(value = '') {
             return String(value)
@@ -578,10 +670,10 @@
                                 ${formatTimestamp(item.createdAt)}
                             </div>
 
-                            <div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${meta.badge}">
+                             <div class="mt-2 inline-flex flex-wrap items-center gap-2"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-bold uppercase tracking-wider ${meta.badge}">
                                 <i class="${meta.icon}"></i>
                                 ${meta.label}
-                            </div>
+                             </div>${quoteDeadlineBadge(item)}</div>
                         </div>
                     </div>
 
@@ -604,17 +696,17 @@
                     </div>
 
                     <div class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-2.5">
-                        <button data-action="complete" data-id="${item.id}" type="button"
+                        ${item.status !== 'completed' ? `<button data-action="complete" data-id="${item.id}" type="button"
                             class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 active:scale-[0.99]">
                             <i class="fa-solid fa-check"></i>
-                            Completed
-                        </button>
+                                                         Completed
+                         </button>` : ''}
 
-                        <button data-action="progress" data-id="${item.id}" type="button"
+                         ${item.status !== 'completed' ? `<button data-action="progress" data-id="${item.id}" type="button"
                             class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-amber-500 text-white font-semibold text-sm hover:bg-amber-400 active:scale-[0.99]">
-                            <i class="fa-solid fa-screwdriver-wrench"></i>
-                            In Progress
-                        </button>
+                                                         <i class="fa-solid fa-screwdriver-wrench"></i>
+                             ${item.status === 'in_progress' ? 'Return to Pending' : 'In Progress'}
+                         </button>` : ''}
 
                         <button data-action="delete" data-id="${item.id}" type="button"
                             class="sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold text-sm hover:bg-rose-600 hover:text-white active:scale-[0.99]">
@@ -638,40 +730,58 @@
             }, 3200);
         }
 
-        async function updateQuoteStatus(id, status) {
+        async function updateQuoteStatus(id, status, extra = {}) {
             try {
-                await updateDoc(doc(db, 'projectQuotes', id), { status });
-                showToast(status === 'completed' ? 'Project marked as completed.' : 'Project marked as in progress.');
+                await updateDoc(doc(db, 'projectQuotes', id), { status, ...extra });
+                showToast(status === 'completed' ? 'Project marked as completed.' : status === 'pending' ? 'Project returned to pending.' : 'Project marked as in progress.');
             } catch (error) {
                 console.error(error);
-                showToast('Could not update this project.');
+                throw error;
             }
         }
 
         function openDeleteModal(id) {
             quoteToDelete = id;
-            deleteModal.classList.remove('hidden');
-            deleteModal.classList.add('flex');
-            document.body.classList.add('overflow-hidden');
+            document.getElementById('deleteReason').value = ''; document.getElementById('deleteReasonError').classList.add('hidden'); showModal(deleteModal);
         }
 
         function closeDeleteModal() {
             quoteToDelete = null;
-            deleteModal.classList.add('hidden');
-            deleteModal.classList.remove('flex');
-            document.body.classList.remove('overflow-hidden');
+            hideModal(deleteModal);
         }
 
         quotesGrid.addEventListener('click', event => {
             const button = event.target.closest('[data-action]');
             if (!button) return;
-
-            const id = button.dataset.id;
-            const action = button.dataset.action;
-
-            if (action === 'complete') updateQuoteStatus(id, 'completed');
-            if (action === 'progress') updateQuoteStatus(id, 'in_progress');
-            if (action === 'delete') openDeleteModal(id);
+            const id = button.dataset.id, action = button.dataset.action;
+            const item = allQuotes.find(q => q.id === id);
+            if (!item) return;
+            if (action === 'delete') { openDeleteModal(id); return; }
+            if (action === 'progress') {
+                if (item.status === 'in_progress') {
+                    openAction('Return project to Pending?', `Move ${item.name}'s request back to Pending? The original three-day review deadline will be displayed again.`, async () => {
+                        await updateQuoteStatus(id, 'pending', { progressStartedAt: null, progressDueAt: null, priorityLevel: null });
+                    }, '', 'Yes, Return to Pending');
+                } else {
+                    openAction('Start working on this project?', `Review ${item.name}'s ${item.projectType} request. Choose a completion timeframe. Normal allows 14 business days, while Priority allows 7 calendar days from the time you confirm.`, async () => {
+                        const priority = document.getElementById('progressPriority').value;
+                        const started = new Date();
+                        const due = priority === 'priority' ? new Date(started.getTime() + 7 * MS_DAY) : addBusinessDays(started, 14);
+                        await updateQuoteStatus(id, 'in_progress', { priorityLevel: priority, progressStartedAt: started, progressDueAt: due });
+                    }, `<label for="progressPriority" class="block text-xs font-bold uppercase tracking-wide mb-2">Project priority</label><select id="progressPriority" class="w-full px-4 py-3 rounded-xl border border-indigo-500/30 bg-slate-50 dark:bg-slate-950 text-sm font-semibold"><option value="normal">Normal — 14 business days</option><option value="priority">Priority — 7 calendar days</option></select>`, 'Yes, Start Project');
+                }
+            }
+            if (action === 'complete') {
+                const deadline = getProgressDeadline(item);
+                const remaining = deadline ? Math.ceil((deadline.getTime() - Date.now()) / MS_DAY) : null;
+                const summary = remaining === null ? 'No in-progress deadline was recorded.' : remaining >= 0 ? `Completion is ${daysLabel(remaining)} ahead of the expected deadline (or due today).` : `Completion is ${daysLabel(Math.ceil((Date.now() - deadline.getTime()) / MS_DAY))} past the expected deadline.`;
+                openAction('Mark project as completed?', `${item.name}'s ${item.projectType} project will be marked Completed. ${summary} The card will turn green and only Delete will remain.`, async () => {
+                    await updateQuoteStatus(id, 'completed', { completedAt: serverTimestamp() });
+                    openAction('Project completed', `${item.name}'s project is now completed. ${summary}`, async () => {}, '', 'Close', 'Close');
+                    actionNo.classList.add('hidden');
+                    return false;
+                }, '', 'Yes, Complete');
+            }
         });
 
         cancelDeleteBtn.addEventListener('click', closeDeleteModal);
@@ -679,6 +789,8 @@
 
         confirmDeleteBtn.addEventListener('click', async () => {
             if (!quoteToDelete) return;
+            const reason = document.getElementById('deleteReason').value;
+            if (!reason) { document.getElementById('deleteReasonError').classList.remove('hidden'); return; }
 
             const id = quoteToDelete;
             confirmDeleteBtn.disabled = true;
@@ -687,7 +799,7 @@
             try {
                 await deleteDoc(doc(db, 'projectQuotes', id));
                 closeDeleteModal();
-                showToast('Project request deleted.');
+                showToast('Project request deleted. Reason: ' + reason);
             } catch (error) {
                 console.error(error);
                 showToast('Could not delete this project.');
@@ -716,7 +828,7 @@
             });
         });
 
-        logoutBtn.addEventListener('click', async () => {
+        logoutBtn.addEventListener('click', () => openAction('Are you sure you want to log out?', 'You will be signed out of your account and returned to the Accxs Creations home page.', async () => {
             logoutBtn.disabled = true;
 
             try {
@@ -725,8 +837,47 @@
             } catch (error) {
                 console.error(error);
                 logoutBtn.disabled = false;
-                showToast('Logout failed. Please try again.');
+                throw error;
             }
+        }, '', 'Yes, Log Out', 'No, Stay'));
+
+
+        const profileFields = document.getElementById('profileFields');
+        const profileError = document.getElementById('profileError');
+        function profileRow(label, value, field = null) {
+            const display = value === undefined || value === null || value === '' ? 'Not provided' : String(value);
+            return `<div class="flex items-start justify-between gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950"><div class="min-w-0"><div class="text-xs font-bold uppercase text-slate-500">${label}</div><div class="mt-1 text-sm font-semibold break-words" data-value="${field || ''}">${escapeHtml(display)}</div></div>${field ? `<button type="button" data-edit-profile="${field}" aria-label="Edit ${label}" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10"><i class="fa-solid fa-pencil"></i></button>` : ''}</div>`;
+        }
+        function renderProfile() {
+            const p = employeeProfile || {};
+            profileFields.innerHTML = profileRow('Full Name', `${p.firstName || ''} ${p.lastName || ''}`.trim()) + profileRow('Role', p.role || 'Staff') + profileRow('User ID', p.userId) + profileRow('Age', p.age, 'age') + profileRow('Gender', p.gender, 'gender') + profileRow('Address', p.address, 'address') + profileRow('Personal Email', p.personalEmail, 'personalEmail');
+        }
+        document.getElementById('profileTrigger').addEventListener('click', () => { profileError.classList.add('hidden'); renderProfile(); showModal(profileModal); });
+        profileFields.addEventListener('click', async e => {
+            const edit = e.target.closest('[data-edit-profile]');
+            if (!edit) return;
+            const field = edit.dataset.editProfile;
+            const row = edit.closest('div.flex');
+            const valueElement = row.querySelector('[data-value]');
+            const old = employeeProfile?.[field] ?? '';
+            const inputId = 'editProfileInput';
+            let control = field === 'gender' ? `<select id="${inputId}" class="w-full px-3 py-2 rounded-lg border dark:bg-slate-900"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option></select>` : `<input id="${inputId}" class="w-full px-3 py-2 rounded-lg border dark:bg-slate-900" type="${field === 'age' ? 'number' : field === 'personalEmail' ? 'email' : 'text'}" ${field === 'age' ? 'min="1" max="120"' : ''} maxlength="${field === 'address' ? 300 : 160}" required>`;
+            valueElement.innerHTML = `<div class="mt-2 space-y-2">${control}<div class="flex gap-2"><button type="button" data-save-profile class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs">Save</button><button type="button" data-cancel-profile class="px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 text-xs">Cancel</button></div></div>`;
+            const input = document.getElementById(inputId); input.value = old; input.focus();
+        });
+        profileFields.addEventListener('click', async e => {
+            if (e.target.closest('[data-cancel-profile]')) { renderProfile(); return; }
+            const save = e.target.closest('[data-save-profile]'); if (!save) return;
+            const row = save.closest('div.flex'); const field = row.querySelector('[data-value]').dataset.value;
+            const input = row.querySelector('#editProfileInput');
+            if (!input.reportValidity()) return;
+            const value = input.value.trim();
+            if (field === 'age' && (!Number.isInteger(Number(value)) || Number(value) < 1 || Number(value) > 120)) { input.setCustomValidity('Please enter a valid age from 1 to 120.'); input.reportValidity(); return; }
+            if (field === 'personalEmail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) { input.setCustomValidity('Enter a valid email address.'); input.reportValidity(); return; }
+            if (!value) { input.setCustomValidity('This field is required.'); input.reportValidity(); return; }
+            save.disabled = true; save.textContent = 'Saving...';
+            try { await updateDoc(doc(db, 'employees', employeeDocId), { [field]: field === 'age' ? Number(value) : value }); employeeProfile[field] = field === 'age' ? Number(value) : value; profileError.classList.add('hidden'); renderProfile(); showToast('Profile updated successfully.'); }
+            catch (error) { console.error('Profile update failed:', error); profileError.textContent = 'Unable to save profile changes. Your account may not have permission to edit employee records. (' + (error.code || 'unknown error') + ')'; profileError.classList.remove('hidden'); save.disabled = false; save.textContent = 'Save'; }
         });
 
         async function loadEmployeeProfile(user) {
@@ -742,7 +893,8 @@
                 throw new Error('No employee profile is assigned to this account.');
             }
 
-            const profile = snapshot.docs[0].data();
+            employeeDocId = snapshot.docs[0].id;
+            const profile = snapshot.docs[0].data(); employeeProfile = profile;
 
             const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'Staff Member';
 
@@ -753,6 +905,7 @@
             return profile;
         }
 
+        setInterval(() => { if (allQuotes.length) renderQuotes(); }, 60000);
         function startQuoteListener() {
             const quotesQuery = query(
                 collection(db, 'projectQuotes'),
