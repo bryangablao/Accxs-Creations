@@ -172,6 +172,32 @@
         </div>
     </div>
 
+
+    <!-- Project request confirmation modal -->
+    <div id="quoteConfirmModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4" role="presentation">
+        <div id="quoteConfirmBackdrop" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+        <div role="dialog" aria-modal="true" aria-labelledby="quoteConfirmTitle" aria-describedby="quoteConfirmDescription" class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl p-6 sm:p-8">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-3"><div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center"><i class="fa-solid fa-clipboard-check text-xl"></i></div><h2 id="quoteConfirmTitle" class="text-xl sm:text-2xl font-extrabold">Confirm Your Project Request</h2></div>
+                <button id="quoteConfirmClose" type="button" aria-label="Close confirmation" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p id="quoteConfirmDescription" class="mt-5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Please review your project details before submitting. By proceeding, your request will be sent to the Accxs Creations staff dashboard for review. Our Customer Service team will contact you via the email address you provided within 1–3 business days. Submission does not guarantee project acceptance or pricing.</p>
+            <div class="mt-5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-4 text-sm space-y-2">
+                <p><strong>Project:</strong> <span id="quoteConfirmProject"></span></p>
+                <p><strong>Contact email:</strong> <span id="quoteConfirmEmail" class="break-all"></span></p>
+            </div>
+            <div class="mt-6 space-y-4">
+                <label class="flex items-start gap-3 text-sm cursor-pointer"><input id="quotePrivacyAgree" type="checkbox" class="mt-1 h-4 w-4 accent-indigo-600 shrink-0"><span>I have read and agree to the <a href="privacypolicy.html" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold underline">Privacy Policy</a>.</span></label>
+                <label class="flex items-start gap-3 text-sm cursor-pointer"><input id="quoteTermsAgree" type="checkbox" class="mt-1 h-4 w-4 accent-indigo-600 shrink-0"><span>I have read and agree to the <a href="termsofservice.html" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold underline">Terms of Service</a>.</span></label>
+            </div>
+            <div id="quoteConfirmError" role="alert" class="hidden mt-4 text-sm text-rose-600 dark:text-rose-400"></div>
+            <div class="mt-7 flex flex-col-reverse sm:flex-row gap-3">
+                <button id="quoteConfirmCancel" type="button" class="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 font-semibold">Go Back</button>
+                <button id="quoteConfirmSend" type="button" disabled class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed"><span id="quoteConfirmSendText"><i class="fa-solid fa-paper-plane mr-2"></i>Confirm &amp; Submit</span></button>
+            </div>
+        </div>
+    </div>
+
     <main class="flex-grow bg-grid-pattern relative">
         <!-- Ambient background lighting -->
         <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
@@ -583,7 +609,7 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                         </form>
 
                         <div id="formSuccess" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm text-center font-medium">
-                            <i class="fa-solid fa-circle-check mr-2"></i>Your project request has been received successfully.
+                            <i class="fa-solid fa-circle-check mr-2"></i>Your project request has been received successfully. Please wait for our Customer Service team to contact you via email within 1–3 business days.
                         </div>
 
                         <div id="formError" class="hidden mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm text-center font-medium">
@@ -655,6 +681,14 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
                 </div>
             </div>
 
+
+            <div class="mt-8 flex justify-center sm:justify-start">
+                <div class="inline-flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-sm text-slate-600 dark:text-slate-300" aria-label="Current Philippine Standard Time">
+                    <i class="fa-regular fa-clock text-indigo-600 dark:text-indigo-400"></i>
+                    <time id="philippineClock" aria-live="off">Philippine Standard Time — Loading...</time>
+                </div>
+            </div>
+
             <!-- Copyright Notice -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
                 <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
@@ -667,6 +701,19 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
     </footer>
 
     <script>
+
+        // Live Philippine Standard Time, independent of the visitor's local time zone.
+        const philippineClock = document.getElementById('philippineClock');
+        const philippineFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Manila', weekday: 'long', year: 'numeric', month: 'long',
+            day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
+        });
+        function updatePhilippineClock() {
+            philippineClock.textContent = 'Philippine Standard Time — ' + philippineFormatter.format(new Date());
+        }
+        updatePhilippineClock();
+        setInterval(updatePhilippineClock, 1000);
+
         // Theme Toggle Logic across entire document
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
@@ -893,51 +940,101 @@ brand.<span class="text-blue-400">deploy</span>()`,
             quoteCharCount.textContent = quoteDetails.value.length;
         });
 
-        quoteForm?.addEventListener('submit', async (event) => {
+        const confirmModal = document.getElementById('quoteConfirmModal');
+        const confirmSend = document.getElementById('quoteConfirmSend');
+        const confirmSendText = document.getElementById('quoteConfirmSendText');
+        const privacyAgree = document.getElementById('quotePrivacyAgree');
+        const termsAgree = document.getElementById('quoteTermsAgree');
+        const confirmError = document.getElementById('quoteConfirmError');
+        let pendingQuote = null;
+        let quoteSending = false;
+        let priorFocus = null;
+
+        function updateConfirmButton() {
+            confirmSend.disabled = quoteSending || !privacyAgree.checked || !termsAgree.checked;
+        }
+        privacyAgree.addEventListener('change', updateConfirmButton);
+        termsAgree.addEventListener('change', updateConfirmButton);
+
+        function closeQuoteConfirm() {
+            if (quoteSending) return;
+            confirmModal.classList.add('hidden');
+            confirmModal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+            pendingQuote = null;
+            priorFocus?.focus();
+        }
+        document.getElementById('quoteConfirmClose').addEventListener('click', closeQuoteConfirm);
+        document.getElementById('quoteConfirmCancel').addEventListener('click', closeQuoteConfirm);
+        document.getElementById('quoteConfirmBackdrop').addEventListener('click', closeQuoteConfirm);
+        confirmModal.addEventListener('keydown', event => {
+            if (event.key === 'Escape') { event.preventDefault(); closeQuoteConfirm(); }
+            if (event.key === 'Tab') {
+                const focusable = [...confirmModal.querySelectorAll('button:not([disabled]), input:not([disabled]), a[href]')];
+                const first = focusable[0], last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            }
+        });
+
+        quoteForm?.addEventListener('submit', (event) => {
             event.preventDefault();
+            if (quoteSending || !quoteForm.reportValidity()) return;
             quoteSuccess.classList.add('hidden');
             quoteError.classList.add('hidden');
-
             const name = document.getElementById('quoteName').value.trim();
             const email = document.getElementById('quoteEmail').value.trim().toLowerCase();
             const projectType = document.getElementById('quoteProjectType').value;
             const projectDetails = quoteDetails.value.trim();
-
             if (!name || !email || !projectType || !projectDetails) {
-                quoteError.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i>Please complete all required fields.';
+                quoteError.textContent = 'Please complete all required fields.';
                 quoteError.classList.remove('hidden');
                 return;
             }
+            pendingQuote = { name, email, projectType, projectDetails };
+            document.getElementById('quoteConfirmProject').textContent = projectType;
+            document.getElementById('quoteConfirmEmail').textContent = email;
+            privacyAgree.checked = false;
+            termsAgree.checked = false;
+            confirmError.classList.add('hidden');
+            updateConfirmButton();
+            priorFocus = document.activeElement;
+            confirmModal.classList.remove('hidden');
+            confirmModal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+            document.getElementById('quoteConfirmClose').focus();
+        });
 
+        confirmSend.addEventListener('click', async () => {
+            if (!pendingQuote || quoteSending || !privacyAgree.checked || !termsAgree.checked) return;
+            quoteSending = true;
+            updateConfirmButton();
             quoteSubmitBtn.disabled = true;
-            quoteSubmitBtn.classList.add('opacity-70', 'cursor-not-allowed');
-            quoteSubmitText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Sending request...';
-
+            confirmError.classList.add('hidden');
+            confirmSendText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Submitting...';
             try {
                 await addDoc(collection(db, 'projectQuotes'), {
-                    name,
-                    email,
-                    projectType,
-                    projectDetails,
+                    ...pendingQuote,
+                    privacyPolicyAccepted: true,
+                    termsOfServiceAccepted: true,
+                    consentRecordedAt: serverTimestamp(),
                     status: 'pending',
                     createdAt: serverTimestamp()
                 });
-
                 quoteForm.reset();
                 quoteCharCount.textContent = '0';
                 quoteSuccess.classList.remove('hidden');
-
-                setTimeout(() => {
-                    quoteSuccess.classList.add('hidden');
-                }, 7000);
+                quoteSending = false;
+                closeQuoteConfirm();
             } catch (error) {
                 console.error('Project quote submission failed:', error);
-                quoteError.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i>We could not submit your request. Please try again or email accxscreations@gmail.com.';
-                quoteError.classList.remove('hidden');
+                confirmError.textContent = 'We could not submit your request. Please try again or email contact@accxscreations.com.';
+                confirmError.classList.remove('hidden');
             } finally {
+                quoteSending = false;
                 quoteSubmitBtn.disabled = false;
-                quoteSubmitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-                quoteSubmitText.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send Message';
+                confirmSendText.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Confirm &amp; Submit';
+                updateConfirmButton();
             }
         });
 
