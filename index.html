@@ -101,14 +101,23 @@
 
         /* Slow, seamless review and logo marquees */
         .marquee-window { overflow:hidden; width:100%; mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent); }
-        .marquee-track { display:flex; width:max-content; gap:20px; animation:accxs-marquee 65s linear infinite; }
-        .marquee-track.logos { animation-duration:75s; align-items:center; gap:64px; }
+        .marquee-track { display:flex; width:max-content; gap:20px; animation:accxs-marquee 90s linear infinite; }
+        .marquee-track.logos { animation-duration:95s; align-items:center; gap:64px; }
         .marquee-window:hover .marquee-track { animation-play-state:paused; }
-        @keyframes accxs-marquee { to { transform:translateX(-50%); } }
-        .review-card { width:290px; min-width:290px; min-height:225px; }
+        @keyframes accxs-marquee { to { transform:translateX(calc(-50% - 10px)); } }
+        .review-card { width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-height:245px; }
+        @media(max-width:900px){.review-card{width:280px;min-width:280px}}
+        .contact-logo-band { position:relative; z-index:0; width:100%; margin-bottom:-22px; padding:4px 0 30px; }
+        .contact-logo-band .marquee-window { width:100%; }
+        .contact-logo-band .marquee-track { padding-right:64px; }
+        #contact .grid > div:first-child { position:relative; z-index:1; }
+        @media (min-width:1024px) { .contact-logo-band { width:100%; margin-bottom:-40px; } #contact .grid > div:last-child { margin-top:-38px; } }
         .logo-wordmark { display:flex; align-items:center; gap:12px; white-space:nowrap; font-size:23px; font-weight:800; opacity:.7; }
         .logo-wordmark i { font-size:30px; }
-        #codeEditor { display:block; width:100%; min-height:300px; max-height:420px; resize:vertical; outline:none; tab-size:2; white-space:pre; overflow:auto; }
+        #nameInput { width:155px; max-width:60%; background:transparent; color:#86efac; border:0; border-bottom:2px solid #818cf8; outline:none; font:inherit; caret-color:#fff; animation:cursor-glow 1s step-end infinite; }
+        @keyframes cursor-glow {50%{border-bottom-color:transparent}}
+        .code-keyword{color:#c084fc}.code-string{color:#86efac}.code-tag{color:#f472b6}.code-comment{color:#94a3b8}.code-number{color:#fbbf24}.code-function{color:#60a5fa}
+        .code-line {white-space:pre-wrap;overflow-wrap:anywhere}
         #codeContent { max-height:420px; min-height:300px; overflow:auto; white-space:pre; }
         #simulationStage { position:relative; isolation:isolate; overflow:hidden; min-height:260px; background:radial-gradient(circle at 50% 40%,#312e81,#0f172a 75%); }
         .sim-particle { position:absolute; width:6px; height:6px; border-radius:50%; pointer-events:none; animation:particle-burst var(--duration) ease-out forwards; }
@@ -537,7 +546,7 @@
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Interactive Playground</h2>
                     <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Accxs Code Studio</h3>
-                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Edit HTML/CSS to personalize an animated greeting, then run the simulation. Explore the read-only JavaScript and Python implementations.</p>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 text-base">Enter your name in the HTML/CSS example and run an animated greeting. JavaScript and Python examples are syntax-highlighted and read-only.</p>
                 </div>
 
                 <div class="max-w-4xl mx-auto rounded-3xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden">
@@ -559,8 +568,20 @@
 
                                          <!-- Editable HTML/CSS and read-only JavaScript/Python examples -->
                      <div class="p-4 sm:p-6 bg-slate-950 text-slate-200 code-font text-sm">
-                         <label id="editorLabel" for="codeEditor" class="block mb-3 text-xs text-indigo-300">HTML/CSS · Edit your greeting and styling below</label>
-                         <textarea id="codeEditor" spellcheck="false" aria-label="Editable HTML and CSS" class="code-font rounded-xl border border-slate-700 bg-slate-950 text-slate-100 p-4 leading-relaxed"></textarea>
+                         <div id="editorLabel" class="mb-3 text-xs text-indigo-300">HTML/CSS · Enter your name in the highlighted field</div>
+                         <div id="htmlNameCode" class="code-font rounded-xl border border-slate-700 bg-slate-950 text-slate-200 p-4 leading-relaxed max-h-[420px] overflow-auto" role="group" aria-label="HTML greeting code with editable name">
+                           <div class="code-line"><span class="code-comment">&lt;!-- Interactive greeting animation --&gt;</span></div>
+                           <div class="code-line"><span class="code-tag">&lt;section</span> <span class="code-function">class</span>=<span class="code-string">"greeting"</span><span class="code-tag">&gt;</span></div>
+                           <div class="code-line">  <span class="code-tag">&lt;h1&gt;</span>Hello, <span class="code-tag">&lt;/h1&gt;</span></div>
+                           <div class="code-line">  <span class="code-tag">&lt;label&gt;</span>Please enter your name: <span class="code-tag">&lt;/label&gt;</span></div>
+                           <div class="code-line">  <span class="code-tag">&lt;input</span> <span class="code-function">value</span>=<span class="code-string">"</span><input id="nameInput" type="text" maxlength="32" placeholder="Your name" aria-label="Please enter your name" autocomplete="off" spellcheck="false"><span class="code-string">"</span> <span class="code-tag">/&gt;</span></div>
+                           <div class="code-line">  <span class="code-tag">&lt;p&gt;</span>Welcome to Accxs Creations!<span class="code-tag">&lt;/p&gt;</span></div>
+                           <div class="code-line"><span class="code-tag">&lt;/section&gt;</span></div>
+                           <div class="code-line"><span class="code-tag">&lt;style&gt;</span></div>
+                           <div class="code-line">  <span class="code-function">.greeting</span> { <span class="code-function">color</span>: <span class="code-string">#ffffff</span>; }</div>
+                           <div class="code-line">  <span class="code-function">.particles</span> { <span class="code-function">animation</span>: <span class="code-string">celebrate 2s ease-out</span>; }</div>
+                           <div class="code-line"><span class="code-tag">&lt;/style&gt;</span></div>
+                         </div>
                          <pre id="codeContent" tabindex="0" aria-label="Read-only code example" class="hidden code-font rounded-xl border border-slate-700 bg-slate-950 text-slate-100 p-4 leading-relaxed"></pre>
                      </div>
                      <div id="simulationStage" class="hidden flex-col items-center justify-center text-center p-8 border-t border-slate-800" aria-live="polite">
@@ -585,7 +606,10 @@
         <!-- Contact Section -->
         <section id="contact" class="py-24 bg-slate-100/60 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="contact-logo-band" aria-label="Scrolling technology logos">
+                    <div class="marquee-window"><div id="logoTrack" class="marquee-track logos py-5"></div></div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative">
                     <div>
                         <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-500 mb-3">Get In Touch</h2>
                         <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-6">Let's Build Your Personal Website Together</h3>
@@ -626,7 +650,7 @@
                         </div>
                     </div>
                     <!-- Contact Form Card -->
-                    <div class="p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
+                    <div class="relative z-10 p-8 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl">
                         <div class="flex items-start justify-between gap-4 mb-6">
                             <div>
                                 <h4 class="text-2xl font-bold">Request Your Project Quote</h4>
@@ -689,11 +713,10 @@
         <!-- Customer reviews: only publish reviews with independently confirmed source details -->
         <section id="reviews" class="py-20 border-t border-slate-200 dark:border-slate-800">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10"><h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-3">Customer Experiences</h2><h3 class="text-3xl sm:text-4xl font-extrabold">What Our Clients Say</h3><p class="mt-3 text-slate-500 dark:text-slate-400">Customer reviews from connected sources, when available.</p></div>
+            <div class="text-center mb-10"><h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-3">Customer Experiences</h2><h3 class="text-3xl sm:text-4xl font-extrabold">What Our Clients Say</h3><p class="mt-3 text-slate-500 dark:text-slate-400">Sample reviews for layout demonstration only. Not actual customer testimonials.</p></div>
           </div>
-          <div class="marquee-window" aria-label="Customer reviews"><div id="reviewTrack" class="marquee-track py-4"></div></div>
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 text-center"><h3 class="text-2xl font-extrabold">Technologies We Work With</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-2 mb-8">Platforms and tools used in modern digital projects.</p></div>
-          <div class="marquee-window" aria-label="Technology logos"><div id="logoTrack" class="marquee-track logos py-5"></div></div>
+          <div class="marquee-window max-w-7xl mx-auto" aria-label="Sample customer reviews"><div id="reviewTrack" class="marquee-track py-4"></div></div>
+          <div class="text-center mt-7"><a href="reviews.html" class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">See More Reviews <i class="fa-solid fa-arrow-right"></i></a></div>
         </section>
     </main>
 
@@ -896,40 +919,42 @@ while running:
     clock.tick(60)
 pygame.quit()`;
          let activeCodeTab = 'html';
-         const editor = document.getElementById('codeEditor');
          const readOnlyCode = document.getElementById('codeContent');
-         editor.value = initialHtml;
+         const htmlNameCode = document.getElementById('htmlNameCode');
+         const nameInput = document.getElementById('nameInput');
+         function highlightCode(code, lang) {
+             const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+             const regex = lang === 'python'
+                 ? /(#.*$|(?:\b(?:class|def|return|for|in|if|else|import|while|not|and|or|True|False|None)\b)|\b\d+(?:\.\d+)?\b|(?:"[^"\n]*"|'[^'\n]*'))/gm
+                 : /(\/\/[^\n]*|\b(?:const|let|class|function|return|new|if|for|while|this|async|await)\b|\b\d+(?:\.\d+)?\b|(?:"[^"\n]*"|'[^'\n]*'|`[^`]*`))/gm;
+             return escaped.replace(regex, token => {
+                 const type = token.startsWith('//') || token.startsWith('#') ? 'comment' : /^['"`]/.test(token) ? 'string' : /^\d/.test(token) ? 'number' : 'keyword';
+                 return `<span class="code-${type}">${token}</span>`;
+             });
+         }
          function switchTab(lang) {
              activeCodeTab = lang;
              const editable = lang === 'html';
-             editor.classList.toggle('hidden', !editable);
+             htmlNameCode.classList.toggle('hidden', !editable);
              readOnlyCode.classList.toggle('hidden', editable);
-             document.getElementById('editorLabel').textContent = editable ? 'HTML/CSS · Edit your greeting and styling below' : `${lang === 'js' ? 'JavaScript' : 'Python'} · Read-only example (scroll to explore)`;
-             if (!editable) readOnlyCode.textContent = lang === 'js' ? exampleJS : examplePython;
+             document.getElementById('editorLabel').textContent = editable ? 'HTML/CSS · Only the name field is editable' : `${lang === 'js' ? 'JavaScript' : 'Python'} · Read-only example (scroll to explore)`;
+             if (!editable) readOnlyCode.innerHTML = highlightCode(lang === 'js' ? exampleJS : examplePython,lang);
              ['js','python','html'].forEach(l => {
                  document.getElementById('tab-'+l).className = 'px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ' + (l === lang ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white');
              });
          }
+         nameInput.addEventListener('input',()=>{nameInput.value=nameInput.value.replace(/[^\p{L}\p{M}]/gu,'').slice(0,32)});
+         nameInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();runSimulation();}});
          function runSimulation() {
-             if (activeCodeTab !== 'html') {
-                 switchTab('html');
-                 showNotification('Edit the HTML/CSS tab, then run the greeting simulation.');
-                 return;
-             }
-             const doc = new DOMParser().parseFromString(editor.value, 'text/html');
-             const title = (doc.querySelector('h1,h2,h3')?.textContent || 'Hello, World!').trim().slice(0,120);
-             const subtitle = (doc.querySelector('p')?.textContent || 'Welcome to Accxs Creations!').trim().slice(0,180);
-             const css = doc.querySelector('style')?.textContent || '';
+             if (activeCodeTab !== 'html') {switchTab('html');nameInput.focus();return;}
+             const name=nameInput.value.trim();
+             if (!name) {nameInput.focus();showNotification('Please enter your name before running the simulation.');return;}
              const stage = document.getElementById('simulationStage');
              const greeting = document.getElementById('simulationGreeting');
              const caption = document.getElementById('simulationSubtitle');
-             // Parse supported presentation values instead of injecting arbitrary user HTML/CSS.
-             const colorMatch = css.match(/\.greeting\s*\{[^}]*\bcolor\s*:\s*(#[0-9a-fA-F]{3,8}|(?:white|gold|cyan|pink|yellow|orange))\s*;/);
-             const sizeMatch = css.match(/\.greeting\s*\{[^}]*\bfont-size\s*:\s*(\d{1,3})px\s*;/);
-             greeting.style.color = colorMatch ? colorMatch[1] : '#ffffff';
-             greeting.style.fontSize = sizeMatch ? Math.min(72,Math.max(18,Number(sizeMatch[1])))+'px' : '48px';
-             greeting.textContent = title;
-             caption.textContent = subtitle;
+             greeting.style.color='#ffffff';greeting.style.fontSize='48px';
+             greeting.textContent = 'Hello, '+name+'!';
+             caption.textContent = 'Welcome to Accxs Creations!';
              stage.classList.remove('hidden'); stage.classList.add('flex');
              greeting.classList.remove('sim-greeting'); void greeting.offsetWidth; greeting.classList.add('sim-greeting');
              stage.querySelectorAll('.sim-particle').forEach(p => p.remove());
@@ -952,11 +977,19 @@ pygame.quit()`;
 
          // Replace this empty array with genuine customer reviews with consent and source links.
          // Example schema: {name, message, rating:5, date:'2026-09-01', platform:'google', photo:'https://...', url:'https://...'}
-         const customerReviews = [];
+         const customerReviews = [
+             {name:'Alex Morgan',message:'Sample: The website layout looks modern and works smoothly on mobile.',rating:5,date:'2026-09-12',platform:'google'},
+             {name:'Jamie Cruz',message:'Sample: Communication throughout the design process was excellent.',rating:5,date:'2026-09-16',platform:'facebook'},
+             {name:'Taylor Reyes',message:'Sample: The portfolio design made my work much easier to present.',rating:4,date:'2026-09-19',platform:'google'},
+             {name:'Casey Santos',message:'Sample: Fast turnaround and a polished final experience.',rating:5,date:'2026-09-22',platform:'facebook'},
+             {name:'Jordan Lee',message:'Sample: A clean, responsive website with thoughtful details.',rating:5,date:'2026-09-25',platform:'google'},
+             {name:'Sam Rivera',message:'Sample: The project interface is intuitive and easy to navigate.',rating:4,date:'2026-09-28',platform:'facebook'}
+         ];
          const reviewTrack = document.getElementById('reviewTrack');
          function buildReviewCard(review) {
              const card = document.createElement('article');
              card.className = 'review-card flex flex-col p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg';
+             const sample=document.createElement('p');sample.className='text-[10px] uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold mb-3';sample.textContent='Demo review · Fictional';card.appendChild(sample);
              const head=document.createElement('div'); head.className='flex items-center gap-3';
              const avatar=document.createElement('div'); avatar.className='w-12 h-12 rounded-full overflow-hidden bg-indigo-500/10 flex items-center justify-center shrink-0';
              if (review.photo && /^https:\/\//.test(review.photo)) { const img=document.createElement('img');img.src=review.photo;img.alt='';img.referrerPolicy='no-referrer';img.className='w-full h-full object-cover';avatar.appendChild(img); }
