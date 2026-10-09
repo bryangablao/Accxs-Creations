@@ -208,15 +208,17 @@
             </a>
 
             <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-                <button id="profileTrigger" type="button" title="View your profile" class="flex items-center gap-3 px-2 sm:px-3.5 py-2 rounded-xl hover:ring-2 hover:ring-indigo-500/30 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div id="profileTrigger" role="button" tabindex="0" title="View your profile" class="flex items-center gap-3 px-2 sm:px-3.5 py-2 rounded-xl hover:ring-2 hover:ring-indigo-500/30 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                     <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="leading-tight">
                         <div id="headerFullName" class="text-sm font-bold">Loading...</div>
-                        <div id="headerRole" class="text-[11px] text-slate-500 dark:text-slate-400">Staff</div>
+                        <button id="headerRole" type="button" title="View roles and permissions" class="text-[11px] font-bold text-emerald-500 hover:underline text-left">Staff</button>
                     </div>
-                </button>
+                </div>
+
+                <button id="accountsTrigger" type="button" class="hidden px-2 sm:px-3 py-2 rounded-xl border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-xs sm:text-sm font-bold hover:bg-indigo-500/10"><i class="fa-solid fa-users mr-1"></i><span class="hidden sm:inline">Accounts</span><span class="sm:hidden">Users</span></button>
 
                 <button id="themeToggle" type="button" aria-label="Toggle Theme" class="w-10 h-10 inline-flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
@@ -369,7 +371,7 @@
 
 
     <!-- Shared action confirmation modal -->
-    <div id="actionModal" class="fixed inset-0 z-[105] hidden items-center justify-center p-3 sm:p-4" role="presentation">
+    <div id="actionModal" class="fixed inset-0 z-[150] hidden items-center justify-center p-3 sm:p-4" role="presentation">
         <div data-close-modal class="absolute inset-0 bg-slate-950/70 backdrop-blur-md"></div>
         <div role="dialog" aria-modal="true" aria-labelledby="actionTitle" class="modal-safe relative w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl p-6 sm:p-8">
             <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center"><i class="fa-solid fa-circle-question text-xl"></i></div>
@@ -408,6 +410,27 @@
                 <div class="flex justify-end gap-3"><button type="button" data-close-details class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700">Cancel</button><button id="saveDetails" type="button" class="px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold">Save Changes</button></div>
             </div>
         </div>
+    </div>
+
+
+    <!-- Role information -->
+    <div id="rolesModal" class="fixed inset-0 z-[130] hidden items-center justify-center p-3 sm:p-5" role="presentation">
+      <div data-close-role class="absolute inset-0 bg-slate-950/75 backdrop-blur-md"></div>
+      <div role="dialog" aria-modal="true" aria-labelledby="rolesTitle" class="modal-safe relative w-full max-w-3xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-5 sm:p-7 shadow-2xl">
+        <div class="flex justify-between items-center gap-3"><h2 id="rolesTitle" class="text-xl sm:text-2xl font-extrabold">Roles & Permissions</h2><button data-close-role type="button" aria-label="Close roles"><i class="fa-solid fa-xmark"></i></button></div>
+        <p class="mt-2 text-sm text-slate-500">Your assigned role is highlighted. Permissions are enforced by Firebase.</p>
+        <div id="rolesList" class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      </div>
+    </div>
+    <!-- Account directory -->
+    <div id="accountsModal" class="fixed inset-0 z-[130] hidden items-center justify-center p-3 sm:p-5" role="presentation">
+      <div data-close-accounts class="absolute inset-0 bg-slate-950/75 backdrop-blur-md"></div>
+      <div role="dialog" aria-modal="true" aria-labelledby="accountsTitle" class="modal-safe relative w-full max-w-5xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-5 sm:p-7 shadow-2xl">
+        <div class="flex items-center justify-between gap-3"><h2 id="accountsTitle" class="text-xl sm:text-2xl font-extrabold">Account Management</h2><button data-close-accounts type="button" aria-label="Close accounts"><i class="fa-solid fa-xmark"></i></button></div>
+        <p class="mt-2 text-sm text-slate-500">Firebase Authentication accounts linked to employee profiles. Actions depend on your role.</p>
+        <div class="mt-4 flex gap-2"><input id="accountsSearch" type="search" placeholder="Search name, email, or role" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950"><button id="refreshAccounts" type="button" class="px-3 rounded-xl bg-indigo-600 text-white">Refresh</button></div>
+        <p id="accountsMessage" class="mt-3 text-sm text-slate-500" role="status"></p><div id="accountsList" class="mt-4 space-y-3"></div>
+      </div>
     </div>
 
     <!-- Toast -->
@@ -519,6 +542,7 @@
             signOut
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
+        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
         import {
             getFirestore,
             collection,
@@ -548,6 +572,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const functions = getFunctions(app, "us-central1");
 
         const authLoadingScreen = document.getElementById('authLoadingScreen');
         const headerFullName = document.getElementById('headerFullName');
@@ -873,7 +898,7 @@
             const id = button.dataset.id, action = button.dataset.action;
             const item = allQuotes.find(q => q.id === id);
             if (!item) return;
-            if (action === 'delete') { openDeleteModal(id); return; }
+            if (action === 'delete') { if(canArchive())openDeleteModal(id); return; }
             if (action === 'edit') { openDetailsEditor(id); return; }
             if (action === 'progress') {
                 if (item.status === 'in_progress') {
@@ -906,7 +931,7 @@
         deleteBackdrop.addEventListener('click', closeDeleteModal);
 
         confirmDeleteBtn.addEventListener('click', async () => {
-            if (!quoteToDelete) return;
+            if (!quoteToDelete || !canArchive()) return;
             const reason = document.getElementById('deleteReason').value;
             if (!reason) { document.getElementById('deleteReasonError').classList.remove('hidden'); return; }
 
@@ -946,6 +971,7 @@
             renderQuotes();
         });
         logsTab.addEventListener('click', () => {
+            if (!canArchive()) return;
             currentFilter = 'logs';
             filterButtons.forEach(b => b.classList.remove('active'));
             renderQuotes();
@@ -985,7 +1011,7 @@
             const p = employeeProfile || {};
             profileFields.innerHTML = profileRow('Full Name', `${p.firstName || ''} ${p.lastName || ''}`.trim()) + profileRow('Role', p.role || 'Staff') + profileRow('User ID', p.userId) + profileRow('Age', p.age, 'age') + profileRow('Gender', p.gender, 'gender') + profileRow('Address', p.address, 'address') + profileRow('Personal Email', p.personalEmail, 'personalEmail');
         }
-        document.getElementById('profileTrigger').addEventListener('click', () => { profileError.classList.add('hidden'); renderProfile(); showModal(profileModal); });
+        document.getElementById('profileTrigger').addEventListener('click', (e) => { if(e.target.closest('#headerRole')) return; profileError.classList.add('hidden'); renderProfile(); showModal(profileModal); });
         profileFields.addEventListener('click', async e => {
             const edit = e.target.closest('[data-edit-profile]');
             if (!edit) return;
@@ -1049,7 +1075,8 @@
             selectedLogs = new Set([...selectedLogs].filter(id => ids.has(id)));
             document.getElementById('selectedLogCount').textContent = `${selectedLogs.size} selected`;
             document.getElementById('recoverLogs').disabled = !selectedLogs.size;
-            document.getElementById('permanentDeleteLogs').disabled = !selectedLogs.size;
+            document.getElementById('permanentDeleteLogs').disabled = !selectedLogs.size || !canPermanentlyDelete();
+            document.getElementById('permanentDeleteLogs').classList.toggle('hidden', !canPermanentlyDelete());
             document.getElementById('selectAllLogs').textContent = selectedLogs.size && selectedLogs.size === ids.size ? 'Deselect All' : 'Select All';
         }
         function renderLogs() {
@@ -1095,13 +1122,73 @@
             showToast(mode === 'recover' ? `${ids.length} request(s) recovered to Pending.` : `${ids.length} request(s) permanently deleted.`);
         }
         document.getElementById('recoverLogs').addEventListener('click', () => {
-            if (!selectedLogs.size) return;
+            if (!selectedLogs.size || !canArchive()) return;
             openAction('Recover selected requests?', `Restore ${selectedLogs.size} archived request(s) to Pending?`, () => processLogs('recover'), '', 'Yes, Recover');
         });
         document.getElementById('permanentDeleteLogs').addEventListener('click', () => {
-            if (!selectedLogs.size) return;
+            if (!selectedLogs.size || !canPermanentlyDelete()) return;
             openAction('Permanently delete selected requests?', `Permanently delete ${selectedLogs.size} request(s) from Firestore? This cannot be undone.`, () => processLogs('delete'), '', 'Permanently Delete');
         });
+
+
+        // Role-aware interface. Firestore rules and callable functions enforce permissions.
+        const ROLE_INFO = [
+          {name:'Owner', color:'#f59e0b', icon:'crown', text:'Full business control; manage every role, project, employee and system setting.'},
+          {name:'Administrator', color:'#a78bfa', icon:'shield-halved', text:'Manage projects and non-Owner accounts; assign Manager, IT Support and Staff roles.'},
+          {name:'Manager', color:'#3b82f6', icon:'briefcase', text:'Supervise projects, priorities and archives; view employee directory (read only).'},
+          {name:'IT Support', color:'#06b6d4', icon:'code', text:'Review and edit technical project information; update project progress.'},
+          {name:'Staff', color:'#10b981', icon:'user', text:'Review requests, edit project details and update status. No archive or account administration.'}
+        ];
+        let activeRole = 'Staff';
+        let accountRows = [];
+        const roleModal = document.getElementById('rolesModal');
+        const accountsModal = document.getElementById('accountsModal');
+        const roleRank = {Owner:5,Administrator:4,Manager:3,'IT Support':2,Staff:1};
+        function roleColor(role) { return ROLE_INFO.find(r=>r.name===role)?.color || '#10b981'; }
+        function renderRoleInfo() {
+          document.getElementById('rolesList').innerHTML = ROLE_INFO.map(r=>`<section class="p-4 rounded-2xl border ${r.name===activeRole?'ring-2 ring-indigo-500 bg-indigo-500/10':'border-slate-200 dark:border-slate-700'}"><div class="flex items-center gap-2 font-extrabold" style="color:${r.color}"><i class="fa-solid fa-${r.icon}"></i>${r.name}${r.name===activeRole?'<span class="ml-auto text-xs rounded-full px-2 py-1 bg-indigo-600 text-white">Your Role</span>':''}</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">${r.text}</p></section>`).join('');
+        }
+        document.getElementById('headerRole').addEventListener('click', e=>{e.stopPropagation();renderRoleInfo();showModal(roleModal);});
+        document.querySelectorAll('[data-close-role]').forEach(e=>e.addEventListener('click',()=>hideModal(roleModal)));
+        document.querySelectorAll('[data-close-accounts]').forEach(e=>e.addEventListener('click',()=>hideModal(accountsModal)));
+        
+        const listAccountsCall = httpsCallable(functions,'listStaffAccounts');
+        const manageAccountCall = httpsCallable(functions,'manageStaffAccount');
+        function canManage(target) {
+          if (!['Owner','Administrator'].includes(activeRole) || target.uid===auth.currentUser?.uid) return false;
+          return activeRole==='Owner' || !['Owner','Administrator'].includes(target.role);
+        }
+        function renderAccounts() {
+          const needle = document.getElementById('accountsSearch').value.trim().toLowerCase();
+          const rows = accountRows.filter(a=>[a.name,a.email,a.role,a.userId].join(' ').toLowerCase().includes(needle));
+          document.getElementById('accountsList').innerHTML = rows.length?rows.map(a=>{
+            const allowed=canManage(a);const isSelf=a.uid===auth.currentUser?.uid;
+            const opts=ROLE_INFO.filter(r=>activeRole==='Owner'||!['Owner','Administrator'].includes(r.name)).map(r=>`<option value="${r.name}" ${r.name===a.role?'selected':''}>${r.name}</option>`).join('');
+            return `<div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950" data-account="${escapeHtml(a.uid)}"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div class="min-w-0"><div class="font-bold break-words">${escapeHtml(a.name||'Unnamed account')} ${isSelf?'<span class="text-xs text-indigo-500">(You)</span>':''}</div><div class="text-xs text-slate-500 break-all">${escapeHtml(a.email||'No email')}</div><div class="text-xs mt-1 font-bold" style="color:${roleColor(a.role)}">${escapeHtml(a.role)} · ${a.disabled?'<span class="text-rose-500">Muted</span>':'Active'}</div></div><div class="flex flex-wrap items-center gap-2"><select aria-label="Select role" data-account-role ${allowed?'':'disabled'} class="min-w-0 rounded-lg px-2 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs">${opts}</select><button data-account-action="role" ${allowed?'':'disabled'} class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-35">Adjust Role</button><button data-account-action="mute" ${allowed?'':'disabled'} class="px-3 py-2 rounded-lg bg-amber-600 text-white text-xs font-bold disabled:opacity-35">${a.disabled?'Unmute':'Mute'}</button><button data-account-action="delete" ${allowed?'':'disabled'} class="px-3 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold disabled:opacity-35">Delete Account</button></div></div></div>`;
+          }).join(''):'<p class="text-sm text-slate-500">No matching accounts.</p>';
+        }
+        async function refreshAccounts() {
+          const message=document.getElementById('accountsMessage');message.textContent='Loading accounts...';
+          try { const result=await listAccountsCall();accountRows=result.data.accounts||[];renderAccounts();message.textContent=`${accountRows.length} account(s) found.`; }
+          catch(e){message.textContent='Unable to load accounts: '+(e.message||e.code);}
+        }
+        document.getElementById('accountsTrigger').addEventListener('click',()=>{showModal(accountsModal);refreshAccounts();});
+        document.getElementById('refreshAccounts').addEventListener('click',refreshAccounts);
+        document.getElementById('accountsSearch').addEventListener('input',renderAccounts);
+        document.getElementById('accountsList').addEventListener('click',e=>{
+          const btn=e.target.closest('[data-account-action]');if(!btn)return;
+          const card=btn.closest('[data-account]');const target=accountRows.find(a=>a.uid===card.dataset.account);if(!target||!canManage(target))return;
+          const action=btn.dataset.accountAction;const role=card.querySelector('[data-account-role]').value;
+          const title=action==='delete'?'Permanently delete this account?':action==='mute'?(target.disabled?'Unmute this account?':'Mute this account?'):'Change employee role?';
+          const description=action==='delete'?`This permanently deletes ${target.name}'s Firebase Authentication account and employee profile. This cannot be undone.`:action==='mute'?`This will ${target.disabled?'restore':'suspend'} dashboard access for ${target.name}.`:`Change ${target.name}'s role from ${target.role} to ${role}?`;
+          openAction(title,description,async()=>{
+            await manageAccountCall({uid:target.uid,action,role:action==='role'?role:undefined});
+            await refreshAccounts();showToast('Account updated successfully.');
+          },'',action==='delete'?'Yes, Delete':'Yes, Confirm');
+        });
+        document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideModal(roleModal);hideModal(accountsModal);}});
+        function canArchive(){return ['Owner','Administrator','Manager'].includes(activeRole);}
+        function canPermanentlyDelete(){return ['Owner','Administrator'].includes(activeRole);}
 
         async function loadEmployeeProfile(user) {
             const employeeQuery = query(
@@ -1122,7 +1209,11 @@
             const fullName = `${profile.firstName || ''} ${profile.lastName || ''}`.trim() || 'Staff Member';
 
             headerFullName.textContent = fullName;
-            headerRole.textContent = `${profile.role || 'Staff'} • ${profile.userId || 'Employee'}`;
+            activeRole = profile.role || 'Staff';
+            headerRole.textContent = `${activeRole} • ${profile.userId || 'Employee'}`;
+            headerRole.style.color = roleColor(activeRole);
+            document.getElementById('accountsTrigger').classList.toggle('hidden', !['Owner','Administrator','Manager'].includes(activeRole));
+            document.getElementById('logsTab').classList.toggle('hidden', !canArchive());
             welcomeName.textContent = fullName;
 
             return profile;
