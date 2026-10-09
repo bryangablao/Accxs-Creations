@@ -30,8 +30,10 @@
     <!-- Google Fonts Inter & Fira Code -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        html { scroll-behavior: smooth; scroll-padding-top: 76px; }
         body {
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
         .code-font {
             font-family: 'Fira Code', monospace;
@@ -47,6 +49,54 @@
         .dark .bg-grid-pattern {
             background-image: radial-gradient(rgba(129, 140, 248, 0.1) 1px, transparent 1px);
             background-size: 32px 32px;
+        }
+        /* Responsive layouts for small phones, tablets, and desktop */
+        *, *::before, *::after { box-sizing: border-box; }
+        img, video, svg, canvas { max-width: 100%; }
+        input, select, textarea { min-width: 0; max-width: 100%; font-size: 16px; }
+        pre { max-width: 100%; }
+        section { scroll-margin-top: 76px; }
+        #mobileMenu { max-height: calc(100dvh - 72px); overflow-y: auto; }
+        #staffLoginModal, #quoteConfirmModal { overflow-y: auto; overscroll-behavior: contain; }
+        #staffLoginCard { max-height: calc(100dvh - 32px); overflow-y: auto; }
+        #customNotification { max-width: calc(100vw - 32px); }
+        @media (max-width: 639px) {
+            header > div:first-child { height: 72px; gap: 8px; }
+            header .space-x-4 { gap: 8px; }
+            header .space-x-4 > :not([hidden]) { margin-left: 0; }
+            header .group .text-xl { font-size: 1rem; }
+            header .group .tracking-wider { font-size: 9px; letter-spacing: .04em; }
+            header .group .w-10.h-10 { width: 36px; height: 36px; flex-shrink: 0; }
+            #hero { padding-top: 56px; padding-bottom: 64px; }
+            #hero h1 { font-size: clamp(2rem, 9vw, 3.5rem); line-height: 1.12; overflow-wrap: anywhere; }
+            #hero p { font-size: 1rem; }
+            #hero .inline-flex.uppercase { max-width: 100%; font-size: 10px; white-space: normal; text-align: left; }
+            section.py-24 { padding-top: 64px; padding-bottom: 64px; }
+            section .mb-16 { margin-bottom: 36px; }
+            section .gap-8 { gap: 16px; }
+            section .p-8 { padding: 20px; }
+            section .sm\:p-10 { padding: 20px; }
+            section h3.text-3xl { font-size: 1.75rem; line-height: 1.2; }
+            #codestudio .max-w-4xl > div:first-child { padding: 12px; gap: 10px; flex-wrap: wrap; }
+            #codestudio .max-w-4xl > div:first-child > div:last-child { width: 100%; display: flex; }
+            #codestudio .max-w-4xl > div:first-child button { flex: 1; padding: 10px 6px; }
+            #codeContent { font-size: 12px; }
+            #codestudio .code-font { padding: 16px; }
+            #codestudio .max-w-4xl > div:last-child { padding: 12px; gap: 12px; flex-wrap: wrap; }
+            #contact .flex.items-center.space-x-4 { align-items: flex-start; }
+            #contact .flex.items-center.space-x-4 > div:last-child { min-width: 0; overflow-wrap: anywhere; }
+            footer .flex.space-x-6 { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            footer .flex.space-x-6 > * { margin-left: 0; }
+            #philippineClock { overflow-wrap: anywhere; }
+        }
+        @media (max-width: 359px) {
+            header .group .text-xl { font-size: .88rem; }
+            header .group .tracking-wider { font-size: 8px; }
+            #themeToggle, #mobileMenuBtn { padding: 7px; }
+            #staffLoginBtnMobile { width: 36px; height: 36px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
@@ -101,7 +151,7 @@
                 </button>
 
                 <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
+                <button id="mobileMenuBtn" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobileMenu" class="lg:hidden p-2 rounded-lg bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
             </div>
@@ -749,7 +799,24 @@ mySite.<span class="text-blue-400">launchPortfolio</span>();</pre>
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            const isOpen = mobileMenu.classList.toggle('hidden') === false;
+            mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+            mobileMenuBtn.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+            mobileMenuBtn.querySelector('i').className = isOpen ? 'fa-solid fa-xmark text-lg' : 'fa-solid fa-bars text-lg';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            mobileMenuBtn.setAttribute('aria-label', 'Open navigation');
+            mobileMenuBtn.querySelector('i').className = 'fa-solid fa-bars text-lg';
+        }));
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                mobileMenuBtn.querySelector('i').className = 'fa-solid fa-bars text-lg';
+            }
         });
 
         // Code Studio Tab Switcher
@@ -998,6 +1065,7 @@ brand.<span class="text-blue-400">deploy</span>()`,
                 return;
             }
             pendingQuote = { name, email, projectType, projectDetails };
+            document.getElementById('quoteConfirmName').textContent = name;
             document.getElementById('quoteConfirmProject').textContent = projectType;
             document.getElementById('quoteConfirmEmail').textContent = email;
             privacyAgree.checked = false;
