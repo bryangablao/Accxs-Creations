@@ -107,20 +107,28 @@
         @keyframes accxs-marquee { to { transform:translateX(calc(-50% - 10px)); } }
         .review-card { width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-height:245px; }
         @media(max-width:900px){.review-card{width:280px;min-width:280px}}
-        .contact-logo-band { position:relative; z-index:0; width:100%; margin-bottom:-22px; padding:4px 0 30px; }
+        .contact-logo-band { position:relative; z-index:0; width:100%; margin-bottom:-38px; padding:4px 0 18px; }
         .contact-logo-band .marquee-window { width:100%; }
         .contact-logo-band .marquee-track { padding-right:64px; }
         #contact .grid > div:first-child { position:relative; z-index:1; }
-        @media (min-width:1024px) { .contact-logo-band { width:100%; margin-bottom:-40px; } #contact .grid > div:last-child { margin-top:-38px; } }
+        @media (min-width:1024px) { .contact-logo-band { width:100%; margin-bottom:-58px; } #contact .grid > div:last-child { margin-top:-38px; } }
         .logo-wordmark { display:flex; align-items:center; gap:12px; white-space:nowrap; font-size:23px; font-weight:800; opacity:.7; }
         .logo-wordmark i { font-size:30px; }
-        #nameInput { width:155px; max-width:60%; background:transparent; color:#86efac; border:0; border-bottom:2px solid #818cf8; outline:none; font:inherit; caret-color:#fff; animation:cursor-glow 1s step-end infinite; }
-        @keyframes cursor-glow {50%{border-bottom-color:transparent}}
+        #nameInput { width:155px; max-width:60%; background:transparent; color:#86efac; border:0; outline:none; font:inherit; caret-color:transparent; }
+        #nameInput { position:relative; }
+        .name-editor-wrap { position:relative; display:inline-flex; align-items:center; max-width:65%; vertical-align:middle; }
+        .name-editor-wrap::after { content:"▮"; color:#a5b4fc; position:absolute; left:var(--caret-x, 0px); top:50%; transform:translateY(-50%); pointer-events:none; animation:cursor-glow 1s steps(1,end) infinite; }
+        @keyframes cursor-glow {50%{opacity:0}}
+        #codeContent, #readOnlyCode, #htmlCodeEditor { scrollbar-width:thin; scrollbar-color:#6366f1 #0f172a; }
+        #codestudio ::-webkit-scrollbar {width:9px;height:9px}
+        #codestudio ::-webkit-scrollbar-track {background:#0f172a;border-radius:10px}
+        #codestudio ::-webkit-scrollbar-thumb {background:#4f46e5;border:2px solid #0f172a;border-radius:10px}
+        #codestudio ::-webkit-scrollbar-thumb:hover {background:#818cf8}
         .code-keyword{color:#c084fc}.code-string{color:#86efac}.code-tag{color:#f472b6}.code-comment{color:#94a3b8}.code-number{color:#fbbf24}.code-function{color:#60a5fa}
         .code-line {white-space:pre-wrap;overflow-wrap:anywhere}
         #codeContent { max-height:420px; min-height:300px; overflow:auto; white-space:pre; }
         #simulationStage { position:relative; isolation:isolate; overflow:hidden; min-height:260px; background:radial-gradient(circle at 50% 40%,#312e81,#0f172a 75%); }
-        .sim-particle { position:absolute; width:6px; height:6px; border-radius:50%; pointer-events:none; animation:particle-burst var(--duration) ease-out forwards; }
+        .sim-particle { position:absolute; width:12px; height:12px; box-shadow:0 0 13px currentColor; border-radius:50%; pointer-events:none; animation:particle-burst var(--duration) ease-out forwards; }
         @keyframes particle-burst { 0% { transform:translate(0,0) scale(.3);opacity:1 } 80% { opacity:1 } 100% { transform:translate(var(--dx),var(--dy)) scale(0);opacity:0 } }
         .sim-greeting { animation:greeting-entrance .9s cubic-bezier(.16,1,.3,1) both; }
         @keyframes greeting-entrance { from { opacity:0;transform:translateY(24px) scale(.85);filter:blur(10px) } to { opacity:1;transform:none;filter:blur(0) } }
@@ -574,7 +582,7 @@
                            <div class="code-line"><span class="code-tag">&lt;section</span> <span class="code-function">class</span>=<span class="code-string">"greeting"</span><span class="code-tag">&gt;</span></div>
                            <div class="code-line">  <span class="code-tag">&lt;h1&gt;</span>Hello, <span class="code-tag">&lt;/h1&gt;</span></div>
                            <div class="code-line">  <span class="code-tag">&lt;label&gt;</span>Please enter your name: <span class="code-tag">&lt;/label&gt;</span></div>
-                           <div class="code-line">  <span class="code-tag">&lt;input</span> <span class="code-function">value</span>=<span class="code-string">"</span><input id="nameInput" type="text" maxlength="32" placeholder="Your name" aria-label="Please enter your name" autocomplete="off" spellcheck="false"><span class="code-string">"</span> <span class="code-tag">/&gt;</span></div>
+                           <div class="code-line">  <span class="code-tag">&lt;input</span> <span class="code-function">value</span>=<span class="code-string">"</span><span class="name-editor-wrap"><input id="nameInput" type="text" maxlength="15" placeholder="Your name" aria-label="Please enter your name" autocomplete="off" spellcheck="false"></span><span class="code-string">"</span> <span class="code-tag">/&gt;</span></div>
                            <div class="code-line">  <span class="code-tag">&lt;p&gt;</span>Welcome to Accxs Creations!<span class="code-tag">&lt;/p&gt;</span></div>
                            <div class="code-line"><span class="code-tag">&lt;/section&gt;</span></div>
                            <div class="code-line"><span class="code-tag">&lt;style&gt;</span></div>
@@ -943,7 +951,15 @@ pygame.quit()`;
                  document.getElementById('tab-'+l).className = 'px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ' + (l === lang ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white');
              });
          }
-         nameInput.addEventListener('input',()=>{nameInput.value=nameInput.value.replace(/[^\p{L}\p{M}]/gu,'').slice(0,32)});
+         nameInput.addEventListener('input',()=>{nameInput.value=nameInput.value.replace(/[^\p{L}\p{M} ]/gu,'').replace(/ {2,}/g,' ').slice(0,15)});
+         const caretMeasure=document.createElement('canvas').getContext('2d');
+         function updateNameCaret(){
+             const css=getComputedStyle(nameInput);caretMeasure.font=css.font;
+             const text=nameInput.value.slice(0,nameInput.selectionStart ?? nameInput.value.length);
+             nameInput.parentElement.style.setProperty('--caret-x',Math.min(caretMeasure.measureText(text).width, nameInput.clientWidth-10)+'px');
+         }
+         ['input','click','keyup','focus'].forEach(evt=>nameInput.addEventListener(evt,updateNameCaret));
+         updateNameCaret();
          nameInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();runSimulation();}});
          function runSimulation() {
              if (activeCodeTab !== 'html') {switchTab('html');nameInput.focus();return;}
