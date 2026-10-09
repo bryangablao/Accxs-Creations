@@ -1187,7 +1187,7 @@
           },'',action==='delete'?'Yes, Delete':'Yes, Confirm');
         });
         document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideModal(roleModal);hideModal(accountsModal);}});
-        function canArchive(){return ['Owner','Administrator','Manager'].includes(activeRole);}
+        function canArchive(){return ['Owner','Administrator'].includes(activeRole);}
         function canPermanentlyDelete(){return ['Owner','Administrator'].includes(activeRole);}
 
         async function loadEmployeeProfile(user) {
@@ -1212,7 +1212,7 @@
             activeRole = profile.role || 'Staff';
             headerRole.textContent = `${activeRole} • ${profile.userId || 'Employee'}`;
             headerRole.style.color = roleColor(activeRole);
-            document.getElementById('accountsTrigger').classList.toggle('hidden', !['Owner','Administrator','Manager'].includes(activeRole));
+            document.getElementById('accountsTrigger').classList.toggle('hidden', !['Owner','Administrator'].includes(activeRole));
             document.getElementById('logsTab').classList.toggle('hidden', !canArchive());
             welcomeName.textContent = fullName;
 
