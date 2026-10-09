@@ -832,10 +832,16 @@
                         </div>
                         <div class="flex items-center justify-between gap-2"><button type="button" data-action="edit" data-id="${item.id}" class="px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold">Edit Project Details</button></div>
                         <div class="themed-scroll mt-2 max-h-52 overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 p-3 text-sm leading-7 whitespace-pre-wrap break-words">${escapeHtml(item.projectDetails)}</div>
-                        ${renderHistory(item)}
-                    </div>
+                         ${renderHistory(item)}
+                     </div>
 
-                    <div class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-2.5">
+                     ${item.status === 'completed' ? `
+                     <div class="mt-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-300">
+                         <div class="flex items-center gap-2 font-bold"><i class="fa-solid fa-circle-check"></i>Completed By: ${escapeHtml(item.completedBy || 'Not recorded')}</div>
+                         ${dateFromTimestamp(item.completedAt) ? '<div class="mt-1 text-xs text-emerald-700 dark:text-emerald-400">Completed on: ' + escapeHtml(new Intl.DateTimeFormat('en-PH', {timeZone:'Asia/Manila', dateStyle:'medium', timeStyle:'short'}).format(dateFromTimestamp(item.completedAt))) + ' (PHT)</div>' : ''}
+                     </div>` : ''}
+
+                     <div class="mt-7 pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-2.5">
                         ${item.status !== 'completed' ? `<button data-action="complete" data-id="${item.id}" type="button"
                             class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-500 active:scale-[0.99]">
                             <i class="fa-solid fa-check"></i>
@@ -917,7 +923,11 @@
                 const remaining = deadline ? Math.ceil((deadline.getTime() - Date.now()) / MS_DAY) : null;
                 const summary = remaining === null ? 'No in-progress deadline was recorded.' : remaining >= 0 ? `Completion is ${daysLabel(remaining)} ahead of the expected deadline (or due today).` : `Completion is ${daysLabel(Math.ceil((Date.now() - deadline.getTime()) / MS_DAY))} past the expected deadline.`;
                 openAction('Mark project as completed?', `${item.name}'s ${item.projectType} project will be marked Completed. ${summary} The card will turn green and only Delete will remain.`, async () => {
-                    await updateQuoteStatus(id, 'completed', { completedAt: serverTimestamp() });
+                    await updateQuoteStatus(id, 'completed', {
+                         completedAt: serverTimestamp(),
+                         completedBy: `${employeeProfile?.firstName || ''} ${employeeProfile?.lastName || ''}`.trim() || employeeProfile?.userId || 'Staff',
+                         completedByUid: auth.currentUser.uid
+                     });
                     openAction('Project completed', `${item.name}'s project is now completed. ${summary}`, async () => {}, '', 'Close', 'Close');
                     actionNo.classList.add('hidden');
                     return false;
@@ -1113,7 +1123,7 @@
             const batch = writeBatch(db);
             for (const id of ids) {
                 const ref = doc(db, 'projectQuotes', id);
-                if (mode === 'recover') batch.update(ref, { status:'pending', deletedReason:null, deletedBy:null, deletedByUid:null, deletedAt:null, priorityLevel:null, progressStartedAt:null, progressDueAt:null, completedAt:null });
+                if (mode === 'recover') batch.update(ref, { status:'pending', deletedReason:null, deletedBy:null, deletedByUid:null, deletedAt:null, priorityLevel:null, progressStartedAt:null, progressDueAt:null, completedAt:null, completedBy:null, completedByUid:null });
                 else batch.delete(ref);
             }
             await batch.commit(); selectedLogs.clear();
