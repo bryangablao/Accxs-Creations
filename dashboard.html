@@ -542,8 +542,7 @@
             signOut
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
-        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-functions.js";
-        import {
+                import {
             getFirestore,
             collection,
             query,
@@ -572,7 +571,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const functions = getFunctions(app, "us-central1");
 
         const authLoadingScreen = document.getElementById('authLoadingScreen');
         const headerFullName = document.getElementById('headerFullName');
@@ -1152,43 +1150,215 @@
         document.querySelectorAll('[data-close-role]').forEach(e=>e.addEventListener('click',()=>hideModal(roleModal)));
         document.querySelectorAll('[data-close-accounts]').forEach(e=>e.addEventListener('click',()=>hideModal(accountsModal)));
         
-        const listAccountsCall = httpsCallable(functions,'listStaffAccounts');
-        const manageAccountCall = httpsCallable(functions,'manageStaffAccount');
-        function canManage(target) {
-          if (!['Owner','Administrator'].includes(activeRole) || target.uid===auth.currentUser?.uid) return false;
-          return activeRole==='Owner' || !['Owner','Administrator'].includes(target.role);
+        // =========================================================
+        // Account / Role Management
+        // =========================================================
+        // This version uses Firestore directly. No Cloud Functions,
+        // Node.js, or Firebase Admin SDK is required for application
+        // role management.
+
+        function canManageAccount(target) {
+          if (!['Owner', 'Administrator'].includes(activeRole)) return false;
+          if (!target || target.uid === auth.currentUser?.uid) return false;
+          if (activeRole === 'Owner') return true;
+          return !['Owner', 'Administrator'].includes(target.role);
         }
+
+        function allowedRolesForCurrentUser() {
+          if (activeRole === 'Owner') {
+            return ['Owner', 'Administrator', 'Manager', 'IT Support', 'Staff'];
+          }
+          return ['Manager', 'IT Support', 'Staff'];
+        }
+
+        async function getAccountRows() {
+          if (!['Owner', 'Administrator'].includes(activeRole)) {
+            throw new Error('Only Owners and Administrators can manage accounts.');
+          }
+
+          const employeeSnapshot = await getDocs(collection(db, 'employees'));
+          const accessSnapshot = await getDocs(collection(db, 'access'));
+
+          const accessByUid = new Map();
+          accessSnapshot.forEach(d => accessByUid.set(d.id, d.data()));
+
+          return employeeSnapshot.docs
+            .map(d => {
+              const employee = d.data();
+              const uid = employee.authUid;
+              if (!uid) return null;
+
+              const access = accessByUid.get(uid) || {};
+              const employeeRole = employee.role || access.role || 'Staff';
+
+              return {
+                docId: d.id,
+                uid,
+                name: `${employee.firstName || ''} ${employee.lastName || ''}`.trim() || 'Unnamed account',
+                email: employee.email || access.email || '',
+                userId: employee.userId || '',
+                role: employeeRole,
+                active: access.active === true,
+                accessExists: accessSnapshot.docs.some(x => x.id === uid)
+              };
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.name.localeCompare(b.name));
+        }
+
         function renderAccounts() {
           const needle = document.getElementById('accountsSearch').value.trim().toLowerCase();
-          const rows = accountRows.filter(a=>[a.name,a.email,a.role,a.userId].join(' ').toLowerCase().includes(needle));
-          document.getElementById('accountsList').innerHTML = rows.length?rows.map(a=>{
-            const allowed=canManage(a);const isSelf=a.uid===auth.currentUser?.uid;
-            const opts=ROLE_INFO.filter(r=>activeRole==='Owner'||!['Owner','Administrator'].includes(r.name)).map(r=>`<option value="${r.name}" ${r.name===a.role?'selected':''}>${r.name}</option>`).join('');
-            return `<div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950" data-account="${escapeHtml(a.uid)}"><div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"><div class="min-w-0"><div class="font-bold break-words">${escapeHtml(a.name||'Unnamed account')} ${isSelf?'<span class="text-xs text-indigo-500">(You)</span>':''}</div><div class="text-xs text-slate-500 break-all">${escapeHtml(a.email||'No email')}</div><div class="text-xs mt-1 font-bold" style="color:${roleColor(a.role)}">${escapeHtml(a.role)} · ${a.disabled?'<span class="text-rose-500">Muted</span>':'Active'}</div></div><div class="flex flex-wrap items-center gap-2"><select aria-label="Select role" data-account-role ${allowed?'':'disabled'} class="min-w-0 rounded-lg px-2 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs">${opts}</select><button data-account-action="role" ${allowed?'':'disabled'} class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-35">Adjust Role</button><button data-account-action="mute" ${allowed?'':'disabled'} class="px-3 py-2 rounded-lg bg-amber-600 text-white text-xs font-bold disabled:opacity-35">${a.disabled?'Unmute':'Mute'}</button><button data-account-action="delete" ${allowed?'':'disabled'} class="px-3 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold disabled:opacity-35">Delete Account</button></div></div></div>`;
-          }).join(''):'<p class="text-sm text-slate-500">No matching accounts.</p>';
+          const rows = accountRows.filter(a =>
+            [a.name, a.email, a.role, a.userId].join(' ').toLowerCase().includes(needle)
+          );
+
+          const allowedRoles = allowedRolesForCurrentUser();
+
+          document.getElementById('accountsList').innerHTML = rows.length
+            ? rows.map(a => {
+                const allowed = canManageAccount(a);
+                const isSelf = a.uid === auth.currentUser?.uid;
+                const opts = allowedRoles.map(r =>
+                  `<option value="${escapeHtml(r)}" ${r === a.role ? 'selected' : ''}>${escapeHtml(r)}</option>`
+                ).join('');
+
+                return `
+                  <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950" data-account="${escapeHtml(a.uid)}">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                      <div class="min-w-0">
+                        <div class="font-bold break-words">
+                          ${escapeHtml(a.name)}
+                          ${isSelf ? '<span class="text-xs text-indigo-500">(You)</span>' : ''}
+                        </div>
+                        <div class="text-xs text-slate-500 break-all">${escapeHtml(a.email || 'No email')}</div>
+                        <div class="text-xs text-slate-500 mt-1">${escapeHtml(a.userId || 'No User ID')}</div>
+                        <div class="text-xs mt-1 font-bold" style="color:${roleColor(a.role)}">
+                          ${escapeHtml(a.role)} ·
+                          ${a.active
+                            ? '<span class="text-emerald-500">Active</span>'
+                            : '<span class="text-rose-500">Inactive</span>'}
+                        </div>
+                      </div>
+
+                      <div class="flex flex-wrap items-center gap-2">
+                        <select aria-label="Select role" data-account-role ${allowed ? '' : 'disabled'}
+                          class="min-w-0 rounded-lg px-2 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs">
+                          ${opts}
+                        </select>
+                        <button data-account-action="role" ${allowed ? '' : 'disabled'}
+                          class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-35">
+                          Adjust Role
+                        </button>
+                        <button data-account-action="active" ${allowed ? '' : 'disabled'}
+                          class="px-3 py-2 rounded-lg ${a.active ? 'bg-amber-600' : 'bg-emerald-600'} text-white text-xs font-bold disabled:opacity-35">
+                          ${a.active ? 'Deactivate' : 'Activate'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>`;
+              }).join('')
+            : '<p class="text-sm text-slate-500">No matching employee accounts.</p>';
         }
+
         async function refreshAccounts() {
-          const message=document.getElementById('accountsMessage');message.textContent='Loading accounts...';
-          try { const result=await listAccountsCall();accountRows=result.data.accounts||[];renderAccounts();message.textContent=`${accountRows.length} account(s) found.`; }
-          catch(e){message.textContent='Unable to load accounts: '+(e.message||e.code);}
+          const message = document.getElementById('accountsMessage');
+          message.textContent = 'Loading employee accounts...';
+          document.getElementById('accountsList').innerHTML =
+            '<div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 text-sm text-slate-500">Loading accounts...</div>';
+
+          try {
+            accountRows = await getAccountRows();
+            renderAccounts();
+            message.textContent = `${accountRows.length} employee account(s) found.`;
+          } catch (e) {
+            console.error('Account directory failed:', e);
+            message.textContent = 'Unable to load accounts: ' + (e.message || e.code || 'unknown error');
+            document.getElementById('accountsList').innerHTML =
+              '<p class="text-sm text-rose-500">The account directory could not be loaded. Check your Firestore Rules and make sure the employee has Owner or Administrator access.</p>';
+          }
         }
-        document.getElementById('accountsTrigger').addEventListener('click',()=>{showModal(accountsModal);refreshAccounts();});
-        document.getElementById('refreshAccounts').addEventListener('click',refreshAccounts);
-        document.getElementById('accountsSearch').addEventListener('input',renderAccounts);
-        document.getElementById('accountsList').addEventListener('click',e=>{
-          const btn=e.target.closest('[data-account-action]');if(!btn)return;
-          const card=btn.closest('[data-account]');const target=accountRows.find(a=>a.uid===card.dataset.account);if(!target||!canManage(target))return;
-          const action=btn.dataset.accountAction;const role=card.querySelector('[data-account-role]').value;
-          const title=action==='delete'?'Permanently delete this account?':action==='mute'?(target.disabled?'Unmute this account?':'Mute this account?'):'Change employee role?';
-          const description=action==='delete'?`This permanently deletes ${target.name}'s Firebase Authentication account and employee profile. This cannot be undone.`:action==='mute'?`This will ${target.disabled?'restore':'suspend'} dashboard access for ${target.name}.`:`Change ${target.name}'s role from ${target.role} to ${role}?`;
-          openAction(title,description,async()=>{
-            await manageAccountCall({uid:target.uid,action,role:action==='role'?role:undefined});
-            await refreshAccounts();showToast('Account updated successfully.');
-          },'',action==='delete'?'Yes, Delete':'Yes, Confirm');
+
+        document.getElementById('accountsTrigger').addEventListener('click', () => {
+          if (!['Owner', 'Administrator'].includes(activeRole)) return;
+          showModal(accountsModal);
+          refreshAccounts();
         });
-        document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideModal(roleModal);hideModal(accountsModal);}});
-        function canArchive(){return ['Owner','Administrator'].includes(activeRole);}
-        function canPermanentlyDelete(){return ['Owner','Administrator'].includes(activeRole);}
+
+        document.getElementById('refreshAccounts').addEventListener('click', refreshAccounts);
+        document.getElementById('accountsSearch').addEventListener('input', renderAccounts);
+
+        document.getElementById('accountsList').addEventListener('click', e => {
+          const btn = e.target.closest('[data-account-action]');
+          if (!btn) return;
+
+          const card = btn.closest('[data-account]');
+          const target = accountRows.find(a => a.uid === card?.dataset.account);
+          if (!target || !canManageAccount(target)) return;
+
+          const action = btn.dataset.accountAction;
+
+          if (action === 'role') {
+            const roleSelect = card.querySelector('[data-account-role]');
+            const newRole = roleSelect.value;
+
+            openAction(
+              'Change employee role?',
+              `Change ${target.name}'s role from ${target.role} to ${newRole}?`,
+              async () => {
+                if (!allowedRolesForCurrentUser().includes(newRole)) {
+                  throw new Error('You are not allowed to assign that role.');
+                }
+
+                const employeeRef = doc(db, 'employees', target.docId);
+                const accessRef = doc(db, 'access', target.uid);
+                const batch = writeBatch(db);
+
+                batch.update(employeeRef, { role: newRole });
+                batch.update(accessRef, { role: newRole });
+
+                await batch.commit();
+                await refreshAccounts();
+                showToast('Employee role updated successfully.');
+              },
+              '',
+              'Yes, Change Role'
+            );
+            return;
+          }
+
+          if (action === 'active') {
+            const newActive = !target.active;
+            const actionText = newActive ? 'activate' : 'deactivate';
+
+            openAction(
+              `${newActive ? 'Activate' : 'Deactivate'} employee access?`,
+              `This will ${actionText} ${target.name}'s access to the dashboard.`,
+              async () => {
+                const accessRef = doc(db, 'access', target.uid);
+                await updateDoc(accessRef, { active: newActive });
+                await refreshAccounts();
+                showToast(`Employee access ${newActive ? 'activated' : 'deactivated'}.`);
+              },
+              '',
+              newActive ? 'Yes, Activate' : 'Yes, Deactivate'
+            );
+          }
+        });
+
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') {
+            hideModal(roleModal);
+            hideModal(accountsModal);
+          }
+        });
+
+        function canArchive() {
+          return ['Owner', 'Administrator', 'Manager'].includes(activeRole);
+        }
+
+        function canPermanentlyDelete() {
+          return ['Owner', 'Administrator'].includes(activeRole);
+        }
 
         async function loadEmployeeProfile(user) {
             const employeeQuery = query(
