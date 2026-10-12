@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon - NextGen Platform</title>
+    <title>Reviews | Accxs Creationss</title>
+    <link rel="icon" type="image/png" href="a/1/a.png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,10 +14,10 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0fdf4',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
+                            50: '#f5f3ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
                         }
                     }
                 }
@@ -31,7 +32,6 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom styles for canvas and glassmorphism */
         canvas {
             position: fixed;
             top: 0;
@@ -42,14 +42,14 @@
             pointer-events: none;
         }
         .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+<body id="hero" class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
     <!-- Interactive Particle Background Canvas -->
     <canvas id="particleCanvas"></canvas>
@@ -57,14 +57,14 @@
     <!-- Header / Brand -->
     <header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
         <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                <i class="fa-solid fa-cube text-slate-950 text-xl font-bold"></i>
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                <i class="fa-solid fa-code text-white text-xl font-bold"></i>
             </div>
-            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Aetheris</span>
+            <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Accxs Creations</span>
         </div>
         <div class="flex items-center space-x-4">
-            <button onclick="openNotifyModal()" class="px-4 py-2 text-sm font-medium rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition shadow-sm hover:shadow">
-                <i class="fa-regular fa-bell mr-2 text-emerald-400"></i>Stay Updated
+            <button onclick="openNotifyModal()" class="px-4 py-2 text-sm font-medium rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-800 transition shadow-sm hover:shadow">
+                <i class="fa-regular fa-bell mr-2 text-indigo-400"></i>Stay Updated
             </button>
         </div>
     </header>
@@ -72,20 +72,23 @@
     <!-- Main Content Section -->
     <main class="relative z-10 w-full max-w-4xl mx-auto px-6 py-12 flex flex-col items-center text-center flex-grow justify-center">
         
+        <!-- Purpose & Goal Anchor Section -->
+        <div id="purpose" class="scroll-mt-24"></div>
+
         <!-- Badge -->
-        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-8 animate-pulse">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-8 animate-pulse">
+            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
             <span>Launching Soon</span>
         </div>
 
         <!-- Headline -->
         <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
-            We are building something <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">extraordinary.</span>
+            We are building something <span class="bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent">extraordinary.</span>
         </h1>
 
         <!-- Subtitle -->
         <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mb-12 font-normal leading-relaxed">
-            Our team is crafting the ultimate next-generation platform. Subscribe below to get exclusive early access and be the first to know when we go live.
+            Empowering individuals and businesses through stunning personal websites, custom software apps, and high-performance live websites. Subscribe below for early access!
         </p>
 
         <!-- Countdown Timer Card -->
@@ -104,7 +107,7 @@
                     <span class="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-wider">Minutes</span>
                 </div>
                 <div class="flex flex-col items-center bg-slate-900/60 rounded-2xl p-4 border border-slate-800">
-                    <span id="seconds" class="text-3xl sm:text-5xl font-black text-emerald-400 mb-1">00</span>
+                    <span id="seconds" class="text-3xl sm:text-5xl font-black text-indigo-400 mb-1">00</span>
                     <span class="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-wider">Seconds</span>
                 </div>
             </div>
@@ -113,13 +116,17 @@
             <div class="mt-8">
                 <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
                     <span>Development Progress</span>
-                    <span class="text-emerald-400">85% Complete</span>
+                    <span class="text-indigo-400">85% Complete</span>
                 </div>
                 <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                    <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2.5 rounded-full transition-all duration-1000" style="width: 85%"></div>
+                    <div class="bg-gradient-to-r from-indigo-600 to-violet-500 h-2.5 rounded-full transition-all duration-1000" style="width: 85%"></div>
                 </div>
             </div>
         </div>
+
+        <!-- Personal Websites & Services Anchors -->
+        <div id="personal-websites" class="scroll-mt-24"></div>
+        <div id="services" class="scroll-mt-24"></div>
 
         <!-- Subscription Form -->
         <div class="w-full max-w-md">
@@ -129,17 +136,17 @@
                         <i class="fa-regular fa-envelope"></i>
                     </div>
                     <input type="email" id="emailInput" required placeholder="Enter your email address..." 
-                        class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm shadow-inner transition">
+                        class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm shadow-inner transition">
                 </div>
-                <button type="submit" id="submitBtn" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-semibold text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer">
+                <button type="submit" id="submitBtn" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-semibold text-sm transition shadow-lg shadow-indigo-500/20 flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer">
                     <span>Notify Me</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
             </form>
             
             <!-- Success Message State (Hidden by default) -->
-            <div id="successMessage" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <div id="successMessage" class="hidden mt-4 p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-sm flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-circle-check text-indigo-400 text-lg"></i>
                 <span>Thank you! We've added you to our exclusive VIP list.</span>
             </div>
             
@@ -152,29 +159,75 @@
 
     </main>
 
-    <!-- Footer / Social Links -->
-    <footer class="relative z-10 w-full max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between border-t border-slate-900 gap-4">
-        <p class="text-xs text-slate-500">&copy; 2026 Aetheris Inc. All rights reserved.</p>
-        <div class="flex items-center space-x-4">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
-                <i class="fa-brands fa-x-twitter"></i>
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
-                <i class="fa-brands fa-github"></i>
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
-                <i class="fa-brands fa-discord"></i>
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
-                <i class="fa-brands fa-linkedin-in"></i>
-            </a>
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 pt-16 pb-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-200 dark:border-slate-800">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow">
+                            <i class="fa-solid fa-code text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
+                            Accxs Creations
+                        </span>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-400 text-sm max-w-sm leading-relaxed">
+                        Empowering individuals and businesses through stunning personal websites, custom software apps, and high-performance live websites.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <a href="https://www.facebook.com/profile.php?id=61595418386340" target="_blank" aria-label="Facebook" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-indigo-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="https://www.instagram.com/accxscreations/" target="_blank" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-pink-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="mailto:accxscreations@gmail.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-solid fa-envelope text-sm"></i>
+                        </a>
+                        <a href="https://www.messenger.com/t/1328882766980078" target="_blank" aria-label="Messenger" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-blue-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                            <i class="fa-brands fa-facebook-messenger text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-4">Quick Links</h5>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a href="#hero" class="hover:text-indigo-600 dark:hover:text-indigo-400">Home</a></li>
+                        <li><a href="#purpose" class="hover:text-indigo-600 dark:hover:text-indigo-400">Purpose & Goal</a></li>
+                        <li><a href="#personal-websites" class="hover:text-indigo-600 dark:hover:text-indigo-400">Personal Websites</a></li>
+                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">What We Do</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 mb-4">Solutions</h5>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Portfolios & CVs</a></li>
+                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Software Apps</a></li>
+                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Live Websites</a></li>
+                        <li><a href="#services" class="hover:text-indigo-600 dark:hover:text-indigo-400">Cloud Solutions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-center sm:justify-start min-w-0"><div class="inline-flex items-center gap-3 px-3 sm:px-4 py-3 min-w-0 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm text-sm text-slate-600 dark:text-slate-300"><i class="fa-regular fa-clock text-indigo-600 dark:text-indigo-400"></i><time id="philippineClock">Philippine Standard Time — Loading...</time></div></div>
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+                <p>&copy; 2025 Accxs Creations. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mt-2 sm:mt-0">
+                    <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-700 dark:hover:text-slate-400">Terms of Service</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- JavaScript Logic -->
     <script>
         // --- Countdown Timer Logic ---
-        // Set target date 30 days in the future from now
         const targetDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
 
         function updateCountdown() {
@@ -203,6 +256,34 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
+        // --- Philippine Standard Time Clock Logic ---
+        function updatePhilippineClock() {
+            const clockElement = document.getElementById('philippineClock');
+            if (!clockElement) return;
+
+            try {
+                const options = {
+                    timeZone: 'Asia/Manila',
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                const formatter = new Intl.DateTimeFormat('en-US', options);
+                const timeString = formatter.format(new Date());
+                clockElement.textContent = `Philippine Standard Time — ${timeString}`;
+            } catch (e) {
+                clockElement.textContent = 'Philippine Standard Time — ' + new Date().toLocaleTimeString();
+            }
+        }
+
+        setInterval(updatePhilippineClock, 1000);
+        updatePhilippineClock();
+
         // --- Form Submission Handler ---
         function handleSubscribe(event) {
             event.preventDefault();
@@ -222,9 +303,7 @@
 
             errorMsg.classList.add('hidden');
             
-            // Simulate API request loading state
             const submitBtn = document.getElementById('submitBtn');
-            const originalContent = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Submitting...</span>';
             submitBtn.disabled = true;
 
@@ -247,7 +326,7 @@
         const ctx = canvas.getContext('2d');
 
         let particlesArray = [];
-        const numberOfParticles = 60;
+        const numberOfParticles = 50;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -262,8 +341,8 @@
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
                 this.opacity = Math.random() * 0.5 + 0.2;
             }
             update() {
@@ -277,7 +356,7 @@
                 else if (this.y < 0) this.y = canvas.height;
             }
             draw() {
-                ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+                ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.closePath();
@@ -300,8 +379,8 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < 120) {
-                        const opacity = (1 - (distance / 120)) * 0.15;
-                        ctx.strokeStyle = `rgba(16, 185, 129, ${opacity})`;
+                        const opacity = (1 - (distance / 120)) * 0.12;
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
