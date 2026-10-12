@@ -105,6 +105,23 @@
         .marquee-track.logos { animation-duration:95s; align-items:center; gap:64px; }
         .marquee-window:hover .marquee-track { animation-play-state:paused; }
         @keyframes accxs-marquee { to { transform:translateX(calc(-50% - 10px)); } }
+        .accxs-review-card { position:relative; isolation:isolate; overflow:hidden; min-height:290px; border-radius:22px; box-shadow:0 10px 30px rgba(15,23,42,.07); transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+        .accxs-review-card::before { content:""; position:absolute; inset:0 0 auto; height:4px; background:linear-gradient(90deg,#6366f1,#a855f7,#ec4899); }
+        .accxs-review-card::after { content:""; position:absolute; top:-85px; right:-85px; width:175px; height:175px; border-radius:50%; background:radial-gradient(circle,rgba(129,140,248,.12),transparent 70%); pointer-events:none; z-index:-1; }
+        .accxs-review-card:hover { transform:translateY(-4px); box-shadow:0 18px 38px rgba(99,102,241,.13); border-color:rgba(129,140,248,.45); }
+        .accxs-review-top { min-height:30px; }
+        .accxs-quote-mark { color:#818cf8; font-family:Georgia,serif; font-size:55px; line-height:28px; font-weight:bold; }
+        .accxs-review-provider { display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(99,102,241,.15); background:rgba(99,102,241,.055); color:#475569; padding:7px 10px; border-radius:999px; font-size:11px; font-weight:700; white-space:nowrap; }
+        .dark .accxs-review-provider { color:#cbd5e1; background:rgba(129,140,248,.09); border-color:rgba(129,140,248,.2); }
+        .accxs-review-provider i { font-size:16px; }
+        .accxs-google-icon { color:#4285f4; }
+        .accxs-facebook-icon { color:#1877f2; }
+        .accxs-review-avatar { background:linear-gradient(135deg,#e0e7ff,#f3e8ff); border:2px solid rgba(129,140,248,.2); box-shadow:0 2px 10px rgba(99,102,241,.12); }
+        .dark .accxs-review-avatar { background:linear-gradient(135deg,#312e81,#581c87); }
+        .accxs-review-score { font-size:11px; font-weight:700; color:#64748b; white-space:nowrap; }
+        .dark .accxs-review-score { color:#94a3b8; }
+        .accxs-review-message { line-height:1.75; overflow-wrap:anywhere; }
+        .accxs-review-footer { border-top:1px solid rgba(148,163,184,.2); }
         .review-static { display:flex; flex-wrap:wrap; justify-content:center; align-items:stretch; gap:20px; width:100%; padding-left:16px; padding-right:16px; }
         .review-static .review-card { flex-shrink:0; }
         .review-card { width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-height:245px; }
@@ -1102,18 +1119,42 @@ pygame.quit()`;
          reviewStatus('Loading customer reviews...');
 
          function buildReviewCard(review) {
+             const providerValue = String(review.provider || review.providerId || review.signInProvider || review.authProvider || review.platform || '').toLowerCase();
+             const isGoogle = providerValue.includes('google');
+             const isFacebook = providerValue.includes('facebook');
+             const providerLabel = isGoogle ? 'Google verified' : isFacebook ? 'Facebook verified' : 'Customer review';
              const card = document.createElement('article');
-             card.className = 'review-card flex flex-col p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg';
+             card.className = 'review-card accxs-review-card flex flex-col p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg';
+             const top = document.createElement('div');
+             top.className = 'accxs-review-top flex items-center justify-between gap-2 mb-5';
+             const quote = document.createElement('span');
+             quote.className = 'accxs-quote-mark';
+             quote.textContent = '“';
+             quote.setAttribute('aria-hidden', 'true');
+             const source = document.createElement('span');
+             source.className = 'accxs-review-provider';
+             if (isGoogle || isFacebook) {
+                 const icon = document.createElement('i');
+                 icon.className = isGoogle ? 'fa-brands fa-google accxs-google-icon' : 'fa-brands fa-facebook accxs-facebook-icon';
+                 icon.setAttribute('aria-hidden', 'true');
+                 source.appendChild(icon);
+             }
+             const providerText = document.createElement('span');
+             providerText.textContent = providerLabel;
+             source.appendChild(providerText);
+             source.title = (isGoogle || isFacebook) ? 'Signed in with ' + (isGoogle ? 'Google' : 'Facebook') + '; not a verified purchase' : 'Customer-submitted review';
+             top.append(quote, source);
              const head = document.createElement('div');
              head.className = 'flex items-center gap-3';
              const avatar = document.createElement('div');
-             avatar.className = 'w-12 h-12 rounded-full overflow-hidden bg-indigo-500/10 flex items-center justify-center shrink-0';
+             avatar.className = 'accxs-review-avatar w-12 h-12 rounded-full overflow-hidden flex items-center justify-center shrink-0';
              const displayName = String(review.name || 'Customer');
              if (review.photo && /^https:\/\//.test(review.photo)) {
                  const img = document.createElement('img');
                  img.src = review.photo;
                  img.alt = '';
                  img.referrerPolicy = 'no-referrer';
+                 img.loading = 'lazy';
                  img.className = 'w-full h-full object-cover';
                  avatar.appendChild(img);
              } else {
@@ -1125,27 +1166,36 @@ pygame.quit()`;
              const name = document.createElement('p');
              name.className = 'font-bold text-sm truncate';
              name.textContent = displayName;
-             const source = document.createElement('p');
-             source.className = 'text-xs text-slate-500 dark:text-slate-400';
-             source.textContent = 'Verified submission';
-             info.append(name, source);
+             const caption = document.createElement('p');
+             caption.className = 'text-xs text-slate-500 dark:text-slate-400 mt-1';
+             caption.textContent = 'Client experience';
+             info.append(name, caption);
              head.append(avatar, info);
              const rating = Math.max(1, Math.min(5, Math.round(Number(review.rating) || 1)));
+             const starsRow = document.createElement('div');
+             starsRow.className = 'flex items-center justify-between gap-2 mt-5';
              const stars = document.createElement('p');
-             stars.className = 'text-amber-500 mt-4';
+             stars.className = 'text-amber-500 tracking-[0.13em] text-lg';
              stars.setAttribute('aria-label', `${rating} out of 5 stars`);
              stars.textContent = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+             const score = document.createElement('span');
+             score.className = 'accxs-review-score';
+             score.textContent = rating + '.0 / 5';
+             starsRow.append(stars, score);
              const message = document.createElement('p');
-             message.className = 'text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed flex-grow break-words';
+             message.className = 'accxs-review-message text-sm text-slate-600 dark:text-slate-300 mt-4 leading-relaxed flex-grow break-words';
              message.textContent = String(review.message || '');
              const foot = document.createElement('div');
-             foot.className = 'mt-4 text-xs text-slate-500';
+             foot.className = 'accxs-review-footer mt-5 pt-4 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400';
+             const calendar = document.createElement('i');
+             calendar.className = 'fa-regular fa-calendar';
+             calendar.setAttribute('aria-hidden', 'true');
+             const dateLabel = document.createElement('span');
              const rawDate = review.createdAt || review.date || review.updatedAt;
              const date = rawDate?.toDate ? rawDate.toDate() : rawDate ? new Date(rawDate) : null;
-             if (date && !Number.isNaN(date.getTime())) {
-                 foot.textContent = date.toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
-             }
-             card.append(head, stars, message, foot);
+             dateLabel.textContent = date && !Number.isNaN(date.getTime()) ? date.toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'}) : 'Customer feedback';
+             foot.append(calendar, dateLabel);
+             card.append(top, head, starsRow, message, foot);
              return card;
          }
          function displayLiveReviews(reviews) {
@@ -1264,6 +1314,7 @@ document.addEventListener("keydown", function(event) {
              ).map(item => ({
                  name: item.name || item.displayName || item.userName || 'Customer',
                  photo: item.photo || item.photoURL || item.avatar || '',
+                 provider: item.provider || item.providerId || item.signInProvider || item.authProvider || item.platform || '',
                  message: item.message,
                  rating: item.rating,
                  createdAt: item.createdAt || item.date || item.updatedAt
