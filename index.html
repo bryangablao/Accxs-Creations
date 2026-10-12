@@ -105,6 +105,8 @@
         .marquee-track.logos { animation-duration:95s; align-items:center; gap:64px; }
         .marquee-window:hover .marquee-track { animation-play-state:paused; }
         @keyframes accxs-marquee { to { transform:translateX(calc(-50% - 10px)); } }
+        .review-static { display:flex; flex-wrap:wrap; justify-content:center; align-items:stretch; gap:20px; width:100%; padding-left:16px; padding-right:16px; }
+        .review-static .review-card { flex-shrink:0; }
         .review-card { width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-width:calc((min(100vw - 32px, 1280px) - 60px) / 4); min-height:245px; }
         @media(max-width:900px){.review-card{width:280px;min-width:280px}}
         .contact-logo-band { position:relative; z-index:0; width:100%; margin-bottom:-38px; padding:4px 0 18px; }
@@ -1089,7 +1091,7 @@ pygame.quit()`;
          const reviewWindow = reviewTrack.parentElement;
          function reviewStatus(text) {
              reviewTrack.replaceChildren();
-             reviewTrack.classList.remove('marquee-track');
+             reviewTrack.classList.remove('marquee-track', 'review-static');
              reviewTrack.classList.add('justify-center', 'px-4', 'w-full');
              reviewTrack.style.animation = 'none';
              const empty = document.createElement('p');
@@ -1152,17 +1154,19 @@ pygame.quit()`;
                  return;
              }
              reviewTrack.replaceChildren();
-             reviewTrack.classList.remove('justify-center', 'px-4', 'w-full');
-             reviewTrack.classList.add('marquee-track');
+             reviewTrack.classList.remove('justify-center', 'px-4', 'w-full', 'review-static');
              reviewTrack.style.animation = '';
-             const shown = reviews.slice(0, 20);
-             if (shown.length < 4 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+             const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+             if (reviews.length <= 3 || reducedMotion) {
+                 reviewTrack.classList.remove('marquee-track');
+                 reviewTrack.classList.add('review-static');
                  reviewTrack.style.animation = 'none';
-                 reviewTrack.classList.add('px-4');
-                 for (const review of shown) reviewTrack.appendChild(buildReviewCard(review));
+                 for (const review of reviews) reviewTrack.appendChild(buildReviewCard(review));
              } else {
+                 reviewTrack.classList.add('marquee-track');
+                 // Two identical sets produce a continuous loop; every review appears.
                  for (let copy = 0; copy < 2; copy++) {
-                     for (const review of shown) reviewTrack.appendChild(buildReviewCard(review));
+                     for (const review of reviews) reviewTrack.appendChild(buildReviewCard(review));
                  }
              }
          }
@@ -1237,7 +1241,7 @@ document.addEventListener("keydown", function(event) {
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         const firebaseConfig = {
     apiKey: "AIzaSyAZrI3Y1l3dq9GCUfzB8RZyxKx8LE9cM_Y",
     authDomain: "accxs-3a962.firebaseapp.com",
@@ -1252,7 +1256,7 @@ document.addEventListener("keydown", function(event) {
         const db = getFirestore(app);
          // Share the reviews.html Firestore collection without requiring visitors to sign in.
          // Firestore security rules must permit public reads of customerReviews.
-         const liveReviewsQuery = query(collection(db, 'customerReviews'), orderBy('createdAt', 'desc'), limit(20));
+         const liveReviewsQuery = query(collection(db, 'customerReviews'), orderBy('createdAt', 'desc'));
          onSnapshot(liveReviewsQuery, snapshot => {
              const reviews = snapshot.docs.map(doc => doc.data()).filter(item =>
                  item && typeof item.message === 'string' && item.message.trim() &&
