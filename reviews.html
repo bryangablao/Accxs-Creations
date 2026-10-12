@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accxs Creations Customer Reviews</title>
+    <title>Coming Soon - NextGen Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -14,566 +14,316 @@
                     colors: {
                         brand: {
                             50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
                         }
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for canvas and glassmorphism */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-    <!-- Header / Navigation -->
-    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
-                    <i class="fa-solid fa-code text-white text-lg"></i>
-                </div>
-                <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-                    Accxs Creations
-                </span>
+    <!-- Interactive Particle Background Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Header / Brand -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <i class="fa-solid fa-cube text-slate-950 text-xl font-bold"></i>
             </div>
-            
-            <!-- Desktop Nav -->
-            <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-brand-500 transition-colors">Home</a>
-                <a href="index.html#services" class="text-sm font-medium text-slate-300 hover:text-brand-500 transition-colors">Services</a>
-                <a href="index.html#portfolio" class="text-sm font-medium text-slate-300 hover:text-brand-500 transition-colors">Portfolio</a>
-                <a href="reviews.html" class="text-sm font-medium text-brand-500 transition-colors">Reviews</a>
-                <a href="index.html#contact" class="text-sm font-medium text-slate-300 hover:text-brand-500 transition-colors">Contact</a>
-            </nav>
-
-            <div class="flex items-center space-x-4">
-                <!-- Philippine Standard Time Clock -->
-                <div class="hidden lg:flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-800/60 border border-slate-700/50 text-xs font-medium text-slate-300">
-                    <i class="fa-regular fa-clock text-brand-500"></i>
-                    <span id="pst-clock">Loading PST...</span>
-                </div>
-
-                <!-- Theme Toggle -->
-                <button id="theme-toggle" class="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white transition-colors">
-                    <i class="fa-solid fa-moon dark:hidden"></i>
-                    <i class="fa-solid fa-sun hidden dark:inline"></i>
-                </button>
-
-                <!-- Staff Login Trigger -->
-                <button onclick="openStaffModal()" class="hidden sm:inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium transition-all border border-slate-700">
-                    <i class="fa-solid fa-shield-halved text-brand-500"></i>
-                    <span>Staff Portal</span>
-                </button>
-
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white">
-                    <i class="fa-solid fa-bars text-lg"></i>
-                </button>
-            </div>
+            <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Aetheris</span>
         </div>
-
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 space-y-3 bg-slate-900 border-b border-slate-800">
-            <a href="index.html" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Home</a>
-            <a href="index.html#services" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Services</a>
-            <a href="index.html#portfolio" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Portfolio</a>
-            <a href="reviews.html" class="block px-3 py-2 rounded-lg text-base font-medium text-brand-500 bg-slate-800/50">Reviews</a>
-            <a href="index.html#contact" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:bg-slate-800">Contact</a>
-            <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-                <span class="text-xs text-slate-400" id="mobile-pst-clock">PST: --:--:--</span>
-                <button onclick="openStaffModal()" class="px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium">Staff Portal</button>
-            </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="openNotifyModal()" class="px-4 py-2 text-sm font-medium rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition shadow-sm hover:shadow">
+                <i class="fa-regular fa-bell mr-2 text-emerald-400"></i>Stay Updated
+            </button>
         </div>
     </header>
 
-    <!-- Main Content Area: Reviews Hub -->
-    <main class="flex-grow">
-        <!-- Hero Header -->
-        <section class="relative py-20 overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800/80">
-            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold uppercase tracking-wider mb-6">
-                    <i class="fa-solid fa-star"></i>
-                    <span>Verified Client Feedback</span>
+    <!-- Main Content Section -->
+    <main class="relative z-10 w-full max-w-4xl mx-auto px-6 py-12 flex flex-col items-center text-center flex-grow justify-center">
+        
+        <!-- Badge -->
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-8 animate-pulse">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>Launching Soon</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+            We are building something <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">extraordinary.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mb-12 font-normal leading-relaxed">
+            Our team is crafting the ultimate next-generation platform. Subscribe below to get exclusive early access and be the first to know when we go live.
+        </p>
+
+        <!-- Countdown Timer Card -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 w-full max-w-2xl mb-10 shadow-2xl">
+            <div class="grid grid-cols-4 gap-3 sm:gap-6 text-center">
+                <div class="flex flex-col items-center bg-slate-900/60 rounded-2xl p-4 border border-slate-800">
+                    <span id="days" class="text-3xl sm:text-5xl font-black text-white mb-1">00</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-wider">Days</span>
                 </div>
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6">
-                    Client <span class="bg-gradient-to-r from-brand-500 to-emerald-400 bg-clip-text text-transparent">Experiences</span>
-                </h1>
-                <p class="max-w-2xl mx-auto text-lg text-slate-400 mb-10">
-                    Discover what founders, enterprise partners, and entrepreneurs say about collaborating with Accxs Creations for software development, UI/UX design, and AI automation.
-                </p>
-
-                <!-- Rating Overview Card -->
-                <div class="max-w-4xl mx-auto bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                    <div class="text-center md:text-left md:border-r border-slate-800 md:pr-6">
-                        <div class="text-5xl font-black text-white mb-2">4.9<span class="text-brand-500 text-3xl">/5</span></div>
-                        <div class="flex justify-center md:justify-start space-x-1 text-amber-400 mb-2">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text-xs text-slate-400">Based on <span id="total-reviews-count" class="font-semibold text-slate-200">124</span> verified client reviews</p>
-                    </div>
-
-                    <div class="space-y-2 md:col-span-2">
-                        <div class="flex items-center text-xs text-slate-300 space-x-3">
-                            <span class="w-12 text-right">5 Star</span>
-                            <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full" style="width: 88%"></div>
-                            </div>
-                            <span class="w-8 text-slate-400">88%</span>
-                        </div>
-                        <div class="flex items-center text-xs text-slate-300 space-x-3">
-                            <span class="w-12 text-right">4 Star</span>
-                            <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full" style="width: 10%"></div>
-                            </div>
-                            <span class="w-8 text-slate-400">10%</span>
-                        </div>
-                        <div class="flex items-center text-xs text-slate-300 space-x-3">
-                            <span class="w-12 text-right">3 Star</span>
-                            <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full" style="width: 2%"></div>
-                            </div>
-                            <span class="w-8 text-slate-400">2%</span>
-                        </div>
-                        <div class="flex items-center text-xs text-slate-300 space-x-3">
-                            <span class="w-12 text-right">2 Star</span>
-                            <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full" style="width: 0%"></div>
-                            </div>
-                            <span class="w-8 text-slate-400">0%</span>
-                        </div>
-                        <div class="flex items-center text-xs text-slate-300 space-x-3">
-                            <span class="w-12 text-right">1 Star</span>
-                            <div class="flex-grow h-2 bg-slate-800 rounded-full overflow-hidden">
-                                <div class="bg-brand-500 h-full rounded-full" style="width: 0%"></div>
-                            </div>
-                            <span class="w-8 text-slate-400">0%</span>
-                        </div>
-                    </div>
+                <div class="flex flex-col items-center bg-slate-900/60 rounded-2xl p-4 border border-slate-800">
+                    <span id="hours" class="text-3xl sm:text-5xl font-black text-white mb-1">00</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-wider">Hours</span>
+                </div>
+                <div class="flex flex-col items-center bg-slate-900/60 rounded-2xl p-4 border border-slate-800">
+                    <span id="minutes" class="text-3xl sm:text-5xl font-black text-white mb-1">00</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-wider">Minutes</span>
+                </div>
+                <div class="flex flex-col items-center bg-slate-900/60 rounded-2xl p-4 border border-slate-800">
+                    <span id="seconds" class="text-3xl sm:text-5xl font-black text-emerald-400 mb-1">00</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-400 uppercase tracking-wider">Seconds</span>
                 </div>
             </div>
-        </section>
-
-        <!-- Search, Filter & Action Toolbar -->
-        <section class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 p-4 rounded-2xl backdrop-blur-md">
-                <!-- Search Input -->
-                <div class="relative w-full md:w-96">
-                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-search"></i>
-                    </span>
-                    <input type="text" id="review-search" oninput="filterReviews()" placeholder="Search by name, project, or keyword..." class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 transition-colors">
+            
+            <!-- Progress Bar -->
+            <div class="mt-8">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
+                    <span>Development Progress</span>
+                    <span class="text-emerald-400">85% Complete</span>
                 </div>
-
-                <!-- Rating Filter Tabs -->
-                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                    <button onclick="setRatingFilter('all')" id="filter-btn-all" class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white transition-all shadow-md shadow-brand-600/20">All Reviews</button>
-                    <button onclick="setRatingFilter('5')" id="filter-btn-5" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">5 Stars</button>
-                    <button onclick="setRatingFilter('4')" id="filter-btn-4" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">4 Stars</button>
-                    <button onclick="setRatingFilter('3')" id="filter-btn-3" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">3 Stars & Below</button>
+                <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2.5 rounded-full transition-all duration-1000" style="width: 85%"></div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Write Review Button -->
-                <button onclick="openReviewModal()" class="w-full md:w-auto inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-white text-sm font-semibold shadow-lg shadow-brand-500/25 transition-all">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Leave a Review</span>
+        <!-- Subscription Form -->
+        <div class="w-full max-w-md">
+            <form id="subscribeForm" onsubmit="handleSubscribe(event)" class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <input type="email" id="emailInput" required placeholder="Enter your email address..." 
+                        class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm shadow-inner transition">
+                </div>
+                <button type="submit" id="submitBtn" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-semibold text-sm transition shadow-lg shadow-emerald-500/20 flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer">
+                    <span>Notify Me</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
+            </form>
+            
+            <!-- Success Message State (Hidden by default) -->
+            <div id="successMessage" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                <span>Thank you! We've added you to our exclusive VIP list.</span>
             </div>
-        </section>
+            
+            <!-- Error Message State (Hidden by default) -->
+            <div id="errorMessage" class="hidden mt-4 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-circle-exclamation text-rose-400 text-lg"></i>
+                <span id="errorText">Please enter a valid email address.</span>
+            </div>
+        </div>
 
-        <!-- Reviews Grid Section -->
-        <section class="pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic cards populated via JavaScript -->
-            </div>
-
-            <!-- Empty State (Hidden by default) -->
-            <div id="no-reviews-state" class="hidden text-center py-16 bg-slate-900/40 border border-slate-800 rounded-3xl mt-4">
-                <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-400 text-2xl">
-                    <i class="fa-solid fa-folder-open"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white mb-1">No matching reviews found</h3>
-                <p class="text-sm text-slate-400">Try adjusting your search query or filter criteria.</p>
-            </div>
-        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 pt-16 pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-                <div class="space-y-4 md:col-span-1">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
-                            <i class="fa-solid fa-code text-white text-sm"></i>
-                        </div>
-                        <span class="text-lg font-bold text-white">Accxs Creations</span>
-                    </div>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Engineering digital excellence through custom web apps, enterprise software, and scalable cloud solutions based in the Philippines.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4">Quick Links</h4>
-                    <ul class="space-y-2.5 text-sm text-slate-400">
-                        <li><a href="index.html" class="hover:text-brand-500 transition-colors">Home</a></li>
-                        <li><a href="index.html#services" class="hover:text-brand-500 transition-colors">Services</a></li>
-                        <li><a href="index.html#portfolio" class="hover:text-brand-500 transition-colors">Portfolio</a></li>
-                        <li><a href="reviews.html" class="hover:text-brand-500 transition-colors">Client Reviews</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4">Services</h4>
-                    <ul class="space-y-2.5 text-sm text-slate-400">
-                        <li><a href="index.html#services" class="hover:text-brand-500 transition-colors">Full-Stack Development</a></li>
-                        <li><a href="index.html#services" class="hover:text-brand-500 transition-colors">UI/UX Product Design</a></li>
-                        <li><a href="index.html#services" class="hover:text-brand-500 transition-colors">Cloud Architecture</a></li>
-                        <li><a href="index.html#services" class="hover:text-brand-500 transition-colors">AI & Automation</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-4">Connect</h4>
-                    <p class="text-sm text-slate-400 mb-4">Ready to start your next big project? Get in touch with our engineering team today.</p>
-                    <button onclick="openQuoteModal()" class="w-full px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold shadow-lg shadow-brand-600/20 transition-all">
-                        Request Project Quote
-                    </button>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
-                <p>&copy; 2026 Accxs Creations. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 sm:mt-0">
-                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
-                    <a href="#" class="hover:text-slate-400">Terms of Service</a>
-                    <a href="#" class="hover:text-slate-400">Security</a>
-                </div>
-            </div>
+    <!-- Footer / Social Links -->
+    <footer class="relative z-10 w-full max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between border-t border-slate-900 gap-4">
+        <p class="text-xs text-slate-500">&copy; 2026 Aetheris Inc. All rights reserved.</p>
+        <div class="flex items-center space-x-4">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
+                <i class="fa-brands fa-discord"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition shadow-sm">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
         </div>
     </footer>
 
-    <!-- Staff Login Modal -->
-    <div id="staff-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative">
-            <button onclick="closeStaffModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 mb-4">
-                <i class="fa-solid fa-shield-halved text-xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-1">Staff Portal Login</h3>
-            <p class="text-sm text-slate-400 mb-6">Enter your authorized credentials to access internal engineering metrics and client management.</p>
-            <form onsubmit="handleStaffLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Staff Email</label>
-                    <input type="email" id="staff-email" required placeholder="name@accxscreations.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Password</label>
-                    <input type="password" id="staff-password" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm transition-all shadow-lg shadow-brand-600/20">
-                    Authenticate Session
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Leave a Review Modal -->
-    <div id="review-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeReviewModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 mb-4">
-                <i class="fa-solid fa-star text-xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-1">Share Your Experience</h3>
-            <p class="text-sm text-slate-400 mb-6">Your feedback helps us continuously elevate our software engineering standards.</p>
-            <form onsubmit="handleReviewSubmission(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Your Name</label>
-                    <input type="text" id="reviewer-name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Project / Company Name</label>
-                    <input type="text" id="reviewer-project" required placeholder="e.g. Apex FinTech Platform" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Rating (1 to 5 Stars)</label>
-                    <select id="reviewer-rating" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-brand-500">
-                        <option value="5">5 Stars - Exceptional Experience</option>
-                        <option value="4">4 Stars - Highly Satisfied</option>
-                        <option value="3">3 Stars - Good / Met Expectations</option>
-                        <option value="2">2 Stars - Room for Improvement</option>
-                        <option value="1">1 Star - Unsatisfied</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Your Review</label>
-                    <textarea id="reviewer-comment" rows="4" required placeholder="Describe your collaboration with Accxs Creations..." class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-brand-500 resize-none"></textarea>
-                </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-white font-semibold text-sm transition-all shadow-lg shadow-brand-500/20">
-                    Publish Verified Review
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Project Quote Confirmation Modal -->
-    <div id="quote-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-center">
-            <button onclick="closeQuoteModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="w-16 h-16 rounded-full bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-500 text-2xl mx-auto mb-4">
-                <i class="fa-solid fa-paper-plane"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Request Received!</h3>
-            <p class="text-sm text-slate-400 mb-6">Thank you for considering Accxs Creations. Our technical leads will review your specifications and get back to you within 24 hours.</p>
-            <button onclick="closeQuoteModal()" class="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm transition-all shadow-lg shadow-brand-600/20">
-                Back to Reviews
-            </button>
-        </div>
-    </div>
-
-    <!-- Application Scripts -->
+    <!-- JavaScript Logic -->
     <script>
-        // Philippine Standard Time Clock
-        function updatePSTClock() {
-            const now = new Date();
-            const options = {
-                timeZone: 'Asia/Manila',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            };
-            const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
-            const pstElement = document.getElementById('pst-clock');
-            const mobilePstElement = document.getElementById('mobile-pst-clock');
-            if (pstElement) pstElement.textContent = `PST: ${timeString}`;
-            if (mobilePstElement) mobilePstElement.textContent = `PST: ${timeString}`;
-        }
-        setInterval(updatePSTClock, 1000);
-        updatePSTClock();
+        // --- Countdown Timer Logic ---
+        // Set target date 30 days in the future from now
+        const targetDate = new Date().getTime() + (30 * 24 * 60 * 60 * 1000);
 
-        // Theme Toggle Logic
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        themeToggleBtn.addEventListener('click', () => {
-            const html = document.documentElement;
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-        }
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
 
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Modal Controls
-        function openStaffModal() {
-            document.getElementById('staff-modal').classList.remove('hidden');
-        }
-        function closeStaffModal() {
-            document.getElementById('staff-modal').classList.add('hidden');
-        }
-        function openReviewModal() {
-            document.getElementById('review-modal').classList.remove('hidden');
-        }
-        function closeReviewModal() {
-            document.getElementById('review-modal').classList.add('hidden');
-        }
-        function openQuoteModal() {
-            document.getElementById('quote-modal').classList.remove('hidden');
-        }
-        function closeQuoteModal() {
-            document.getElementById('quote-modal').classList.add('hidden');
-        }
-
-        // Staff Login Handler
-        function handleStaffLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('staff-email').value;
-            closeStaffModal();
-            alert(`Welcome back, ${email}! Staff credentials authenticated successfully.`);
-        }
-
-        // Sample Reviews Database (Simulated Firebase Integration)
-        let reviewsData = [
-            {
-                id: 1,
-                name: "Atty. Marcus Aurelius Tan",
-                project: "LexTech Portal Management System",
-                rating: 5,
-                comment: "Accxs Creations delivered an exceptional, high-performance web platform that streamlined our legal documentation workflows. Their adherence to secure cloud standards and prompt turnaround is top-notch.",
-                date: "October 10, 2026",
-                verified: true
-            },
-            {
-                id: 2,
-                name: "Eunice Alcantara",
-                project: "E-Commerce Microservices Architecture",
-                rating: 5,
-                comment: "Working with the engineering team at Accxs was seamless. They redesigned our checkout infrastructure resulting in a 40% reduction in cart abandonment and lightning-fast load times.",
-                date: "September 28, 2026",
-                verified: true
-            },
-            {
-                id: 3,
-                name: "Dr. Roberto M. Sison",
-                project: "Telehealth Diagnostics App",
-                rating: 5,
-                comment: "The UI/UX and HIPAA-compliant backend architecture created by Accxs Creations exceeded all our hospital board's expectations. Truly world-class Filipino technical talent.",
-                date: "September 15, 2026",
-                verified: true
-            },
-            {
-                id: 4,
-                name: "Krizia Mae Valderrama",
-                project: "Logistics Fleet Tracking Dashboard",
-                rating: 4,
-                comment: "Very professional team. They integrated real-time GPS tracking and analytics smoothly. Minor deployment delays were handled with professional communication.",
-                date: "August 30, 2026",
-                verified: true
-            },
-            {
-                id: 5,
-                name: "Kenjiro Takahashi",
-                project: "AI-Powered Customer Support SaaS",
-                rating: 5,
-                comment: "Incredible speed in developing our MVP. Their expertise in modern LLM API integrations and responsive Tailwind design gave us an instant edge over competitors.",
-                date: "August 12, 2026",
-                verified: true
-            },
-            {
-                id: 6,
-                name: "Bianca Nicole Santos",
-                project: "Fintech Mobile Wallet UI & API",
-                rating: 4,
-                comment: "Clean code structure, thorough documentation, and intuitive design interfaces. Will definitely partner with Accxs Creations on future software expansion phases.",
-                date: "July 24, 2026",
-                verified: true
-            }
-        ];
-
-        let currentRatingFilter = 'all';
-
-        // Render Reviews Grid
-        function renderReviews() {
-            const grid = document.getElementById('reviews-grid');
-            const searchQuery = document.getElementById('review-search').value.toLowerCase();
-            const noState = document.getElementById('no-reviews-state');
-
-            const filtered = reviewsData.filter(rev => {
-                const matchesSearch = rev.name.toLowerCase().includes(searchQuery) ||
-                                      rev.project.toLowerCase().includes(searchQuery) ||
-                                      rev.comment.toLowerCase().includes(searchQuery);
-                
-                if (currentRatingFilter === '5') return matchesSearch && rev.rating === 5;
-                if (currentRatingFilter === '4') return matchesSearch && rev.rating === 4;
-                if (currentRatingFilter === '3') return matchesSearch && rev.rating <= 3;
-                return matchesSearch;
-            });
-
-            document.getElementById('total-reviews-count').textContent = reviewsData.length;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '';
-                noState.classList.remove('hidden');
+            if (distance < 0) {
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
                 return;
             }
 
-            noState.classList.add('hidden');
-            grid.innerHTML = filtered.map(rev => `
-                <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col justify-between backdrop-blur-md shadow-xl hover:border-brand-500/50 transition-all group">
-                    <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex space-x-1 text-amber-400">
-                                ${Array(5).fill(0).map((_, i) => `<i class="fa-solid fa-star text-xs ${i < rev.rating ? '' : 'text-slate-700'}"></i>`).join('')}
-                            </div>
-                            <span class="text-xs text-slate-500">${rev.date}</span>
-                        </div>
-                        <p class="text-slate-300 text-sm leading-relaxed mb-6">"${rev.comment}"</p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                        <div>
-                            <h4 class="text-sm font-bold text-white group-hover:text-brand-400 transition-colors">${rev.name}</h4>
-                            <p class="text-xs text-slate-400">${rev.project}</p>
-                        </div>
-                        ${rev.verified ? '<span class="px-2.5 py-1 rounded-full bg-brand-500/10 text-brand-400 text-xs font-semibold flex items-center space-x-1"><i class="fa-solid fa-circle-check text-[10px]"></i><span>Verified</span></span>' : ''}
-                    </div>
-                </div>
-            `).join('');
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
         }
 
-        function setRatingFilter(rating) {
-            currentRatingFilter = rating;
-            ['all', '5', '4', '3'].forEach(r => {
-                const btn = document.getElementById(`filter-btn-${r}`);
-                if (r === rating) {
-                    btn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 text-white transition-all shadow-md shadow-brand-600/20";
-                } else {
-                    btn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- Form Submission Handler ---
+        function handleSubscribe(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('emailInput');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            const form = document.getElementById('subscribeForm');
+
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                errorMsg.classList.remove('hidden');
+                successMsg.classList.add('hidden');
+                return;
+            }
+
+            errorMsg.classList.add('hidden');
+            
+            // Simulate API request loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Submitting...</span>';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                form.style.display = 'none';
+                successMsg.classList.remove('hidden');
+            }, 800);
+        }
+
+        function openNotifyModal() {
+            const emailInput = document.getElementById('emailInput');
+            if (emailInput) {
+                emailInput.focus();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        // --- Interactive Particle Canvas Animation ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let particlesArray = [];
+        const numberOfParticles = 60;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function connectParticles() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a + 1; b < particlesArray.length; b++) {
+                    const dx = particlesArray[a].x - particlesArray[b].x;
+                    const dy = particlesArray[a].y - particlesArray[b].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        const opacity = (1 - (distance / 120)) * 0.15;
+                        ctx.strokeStyle = `rgba(16, 185, 129, ${opacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
                 }
-            });
-            renderReviews();
+            }
         }
 
-        function filterReviews() {
-            renderReviews();
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            connectParticles();
+            requestAnimationFrame(animateParticles);
         }
 
-        // Handle Review Submission Form
-        function handleReviewSubmission(e) {
-            e.preventDefault();
-            const name = document.getElementById('reviewer-name').value;
-            const project = document.getElementById('reviewer-project').value;
-            const rating = parseInt(document.getElementById('reviewer-rating').value);
-            const comment = document.getElementById('reviewer-comment').value;
-
-            const newReview = {
-                id: reviewsData.length + 1,
-                name,
-                project,
-                rating,
-                comment,
-                date: "Today",
-                verified: true
-            };
-
-            reviewsData.unshift(newReview);
-            closeReviewModal();
-            renderReviews();
-            alert("Thank you! Your verified review has been successfully published to the platform.");
-            e.target.reset();
-        }
-
-        // Initial render on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderReviews();
-        });
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
