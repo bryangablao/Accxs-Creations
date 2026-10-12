@@ -773,9 +773,9 @@
         <!-- Customer reviews: only publish reviews with independently confirmed source details -->
         <section id="reviews" class="py-20 border-t border-slate-200 dark:border-slate-800">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10"><h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-3">Customer Experiences</h2><h3 class="text-3xl sm:text-4xl font-extrabold">What Our Clients Say</h3><p class="mt-3 text-slate-500 dark:text-slate-400">Sample reviews for layout demonstration only. Not actual customer testimonials.</p></div>
+            <div class="text-center mb-10"><h2 class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-3">Customer Experiences</h2><h3 class="text-3xl sm:text-4xl font-extrabold">What Our Clients Say</h3><p class="mt-3 text-slate-500 dark:text-slate-400">Real reviews shared by our customers.</p></div>
           </div>
-          <div class="marquee-window max-w-7xl mx-auto" aria-label="Sample customer reviews"><div id="reviewTrack" class="marquee-track py-4"></div></div>
+          <div class="marquee-window max-w-7xl mx-auto" aria-label="Customer reviews"><div id="reviewTrack" class="marquee-track py-4"></div></div>
           <div class="text-center mt-7"><a href="reviews.html" class="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">See More Reviews <i class="fa-solid fa-arrow-right"></i></a></div>
         </section>
     </main>
@@ -1084,45 +1084,87 @@ pygame.quit()`;
          }
          switchTab('html');
 
-         // Replace this empty array with genuine customer reviews with consent and source links.
-         // Example schema: {name, message, rating:5, date:'2026-09-01', platform:'google', photo:'https://...', url:'https://...'}
-         const customerReviews = [
-             {name:'Alex Morgan',message:'Sample: The website layout looks modern and works smoothly on mobile.',rating:5,date:'2026-09-12',platform:'google'},
-             {name:'Jamie Cruz',message:'Sample: Communication throughout the design process was excellent.',rating:5,date:'2026-09-16',platform:'facebook'},
-             {name:'Taylor Reyes',message:'Sample: The portfolio design made my work much easier to present.',rating:4,date:'2026-09-19',platform:'google'},
-             {name:'Casey Santos',message:'Sample: Fast turnaround and a polished final experience.',rating:5,date:'2026-09-22',platform:'facebook'},
-             {name:'Jordan Lee',message:'Sample: A clean, responsive website with thoughtful details.',rating:5,date:'2026-09-25',platform:'google'},
-             {name:'Sam Rivera',message:'Sample: The project interface is intuitive and easy to navigate.',rating:4,date:'2026-09-28',platform:'facebook'}
-         ];
+         // Live customer reviews are loaded from the same Firestore collection as reviews.html.
          const reviewTrack = document.getElementById('reviewTrack');
+         const reviewWindow = reviewTrack.parentElement;
+         function reviewStatus(text) {
+             reviewTrack.replaceChildren();
+             reviewTrack.classList.remove('marquee-track');
+             reviewTrack.classList.add('justify-center', 'px-4', 'w-full');
+             reviewTrack.style.animation = 'none';
+             const empty = document.createElement('p');
+             empty.className = 'text-center text-sm text-slate-500 dark:text-slate-400 p-8';
+             empty.textContent = text;
+             reviewTrack.appendChild(empty);
+         }
+         reviewStatus('Loading customer reviews...');
+
          function buildReviewCard(review) {
              const card = document.createElement('article');
              card.className = 'review-card flex flex-col p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg';
-             const sample=document.createElement('p');sample.className='text-[10px] uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold mb-3';sample.textContent='Demo review · Fictional';card.appendChild(sample);
-             const head=document.createElement('div'); head.className='flex items-center gap-3';
-             const avatar=document.createElement('div'); avatar.className='w-12 h-12 rounded-full overflow-hidden bg-indigo-500/10 flex items-center justify-center shrink-0';
-             if (review.photo && /^https:\/\//.test(review.photo)) { const img=document.createElement('img');img.src=review.photo;img.alt='';img.referrerPolicy='no-referrer';img.className='w-full h-full object-cover';avatar.appendChild(img); }
-             else {avatar.textContent=(review.name||'?').slice(0,1).toUpperCase();avatar.classList.add('font-bold','text-indigo-500');}
-             const info=document.createElement('div');info.className='min-w-0';
-             const name=document.createElement('p');name.className='font-bold text-sm truncate';name.textContent=review.name;
-             const source=document.createElement('p');source.className='text-xs text-slate-500 dark:text-slate-400';
-             const platform=review.platform==='facebook'?'Facebook':'Google';
-             const icon=document.createElement('i');icon.className='fa-brands '+(platform==='Google'?'fa-google':'fa-facebook')+' mr-1';source.append(icon,document.createTextNode(platform+' review'));
-             info.append(name,source);head.append(avatar,info);
-             const stars=document.createElement('p');stars.className='text-amber-500 mt-4';stars.setAttribute('aria-label',`${review.rating} out of 5 stars`);stars.textContent='★'.repeat(Math.max(0,Math.min(5,Number(review.rating)||0)))+'☆'.repeat(5-Math.max(0,Math.min(5,Number(review.rating)||0)));
-             const message=document.createElement('p');message.className='text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed flex-grow';message.textContent=review.message;
-             const foot=document.createElement('div');foot.className='mt-4 text-xs text-slate-500';
-             const date=new Date(review.date);foot.textContent=Number.isNaN(date.getTime())?'':date.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
-             if (review.url && /^https:\/\//.test(review.url)) {const link=document.createElement('a');link.href=review.url;link.target='_blank';link.rel='noopener noreferrer';link.className='ml-3 text-indigo-500 underline';link.textContent='View source';foot.append(link);}
-             card.append(head,stars,message,foot);return card;
+             const head = document.createElement('div');
+             head.className = 'flex items-center gap-3';
+             const avatar = document.createElement('div');
+             avatar.className = 'w-12 h-12 rounded-full overflow-hidden bg-indigo-500/10 flex items-center justify-center shrink-0';
+             const displayName = String(review.name || 'Customer');
+             if (review.photo && /^https:\/\//.test(review.photo)) {
+                 const img = document.createElement('img');
+                 img.src = review.photo;
+                 img.alt = '';
+                 img.referrerPolicy = 'no-referrer';
+                 img.className = 'w-full h-full object-cover';
+                 avatar.appendChild(img);
+             } else {
+                 avatar.textContent = displayName.slice(0, 1).toUpperCase();
+                 avatar.classList.add('font-bold', 'text-indigo-500');
+             }
+             const info = document.createElement('div');
+             info.className = 'min-w-0';
+             const name = document.createElement('p');
+             name.className = 'font-bold text-sm truncate';
+             name.textContent = displayName;
+             const source = document.createElement('p');
+             source.className = 'text-xs text-slate-500 dark:text-slate-400';
+             source.textContent = 'Verified submission';
+             info.append(name, source);
+             head.append(avatar, info);
+             const rating = Math.max(1, Math.min(5, Math.round(Number(review.rating) || 1)));
+             const stars = document.createElement('p');
+             stars.className = 'text-amber-500 mt-4';
+             stars.setAttribute('aria-label', `${rating} out of 5 stars`);
+             stars.textContent = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+             const message = document.createElement('p');
+             message.className = 'text-sm text-slate-600 dark:text-slate-300 mt-3 leading-relaxed flex-grow break-words';
+             message.textContent = String(review.message || '');
+             const foot = document.createElement('div');
+             foot.className = 'mt-4 text-xs text-slate-500';
+             const rawDate = review.createdAt || review.date || review.updatedAt;
+             const date = rawDate?.toDate ? rawDate.toDate() : rawDate ? new Date(rawDate) : null;
+             if (date && !Number.isNaN(date.getTime())) {
+                 foot.textContent = date.toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+             }
+             card.append(head, stars, message, foot);
+             return card;
          }
-         if (customerReviews.length) {
-             const reviews=customerReviews.slice(0,20);
-             for(let copy=0;copy<2;copy++) for(const review of reviews) reviewTrack.appendChild(buildReviewCard(review));
-             if (reviews.length<4) reviewTrack.style.animation='none';
-         } else {
-             reviewTrack.classList.remove('marquee-track');reviewTrack.classList.add('justify-center','px-4');
-             const empty=document.createElement('p');empty.className='text-center text-sm text-slate-500 dark:text-slate-400 p-8';empty.textContent='Verified customer reviews will appear here once connected.';reviewTrack.appendChild(empty);
+         function displayLiveReviews(reviews) {
+             if (!reviews.length) {
+                 reviewStatus('No reviews yet. Be the first to share your experience!');
+                 return;
+             }
+             reviewTrack.replaceChildren();
+             reviewTrack.classList.remove('justify-center', 'px-4', 'w-full');
+             reviewTrack.classList.add('marquee-track');
+             reviewTrack.style.animation = '';
+             const shown = reviews.slice(0, 20);
+             if (shown.length < 4 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                 reviewTrack.style.animation = 'none';
+                 reviewTrack.classList.add('px-4');
+                 for (const review of shown) reviewTrack.appendChild(buildReviewCard(review));
+             } else {
+                 for (let copy = 0; copy < 2; copy++) {
+                     for (const review of shown) reviewTrack.appendChild(buildReviewCard(review));
+                 }
+             }
          }
          // These are technology wordmarks, not claims of partnership or endorsement.
          const technologyLogos = [
@@ -1195,7 +1237,7 @@ document.addEventListener("keydown", function(event) {
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
         const firebaseConfig = {
     apiKey: "AIzaSyAZrI3Y1l3dq9GCUfzB8RZyxKx8LE9cM_Y",
     authDomain: "accxs-3a962.firebaseapp.com",
@@ -1208,6 +1250,26 @@ document.addEventListener("keydown", function(event) {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+         // Share the reviews.html Firestore collection without requiring visitors to sign in.
+         // Firestore security rules must permit public reads of customerReviews.
+         const liveReviewsQuery = query(collection(db, 'customerReviews'), orderBy('createdAt', 'desc'), limit(20));
+         onSnapshot(liveReviewsQuery, snapshot => {
+             const reviews = snapshot.docs.map(doc => doc.data()).filter(item =>
+                 item && typeof item.message === 'string' && item.message.trim() &&
+                 Number(item.rating) >= 1 && Number(item.rating) <= 5
+             ).map(item => ({
+                 name: item.name || item.displayName || item.userName || 'Customer',
+                 photo: item.photo || item.photoURL || item.avatar || '',
+                 message: item.message,
+                 rating: item.rating,
+                 createdAt: item.createdAt || item.date || item.updatedAt
+             }));
+             displayLiveReviews(reviews);
+         }, error => {
+             console.error('Could not load customer reviews:', error);
+             reviewStatus('Reviews are temporarily unavailable. Please visit our reviews page.');
+         });
+
         const STAFF_EMAIL_DOMAIN = "staff.accxscreations.com";
         const STAFF_PORTAL_URL = "dashboard.html";
 
