@@ -184,8 +184,15 @@
                         <a href="https://www.instagram.com/accxscreations/" target="_blank" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-pink-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
                             <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
-                        <a href="mailto:accxscreations@gmail.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
+                        <a href="mailto:accxscreations@gmail.com" 
+                           onclick="copyEmail(event, 'accxscreations@gmail.com')"
+                           aria-label="Email Us" 
+                           class="relative w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm transition-colors group">
                             <i class="fa-solid fa-envelope text-sm"></i>
+                            <!-- Tooltip for feedback -->
+                            <span id="emailTooltip" class="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-900 dark:bg-slate-800 text-white text-[10px] font-medium rounded shadow-lg opacity-0 pointer-events-none transition-opacity duration-200 whitespace-nowrap">
+                                Copied email!
+                            </span>
                         </a>
                         <a href="https://www.messenger.com/t/1328882766980078" target="_blank" aria-label="Messenger" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-blue-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white shadow-sm">
                             <i class="fa-brands fa-facebook-messenger text-sm"></i>
@@ -403,6 +410,22 @@
 
         initParticles();
         animateParticles();
+
+        function copyEmail(e, email) {
+            // Copy email to clipboard so they can paste it anywhere (Outlook, Yahoo, etc.)
+            navigator.clipboard.writeText(email).then(() => {
+                const tooltip = document.getElementById('emailTooltip');
+                if (tooltip) {
+                    tooltip.classList.remove('opacity-0');
+                    setTimeout(() => {
+                        tooltip.classList.add('opacity-0');
+                    }, 2000);
+                }
+            }).catch(err => {
+                console.error('Failed to copy email: ', err);
+            });
+        }    
+        
     </script>
 </body>
 </html>
