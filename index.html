@@ -632,7 +632,27 @@
                                 </div>
                                 <div>
                                     <div class="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider font-semibold">Email Us</div>
-                                    <a href="mailto:accxscreations@gmail.com" class="text-base font-semibold hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">accxscreations@gmail.com</a>
+<div class="flex flex-wrap gap-3">
+
+  <!-- Gmail -->
+  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=accxscreations@gmail.com"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="px-5 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700">
+     <i class="fa-solid fa-envelope mr-2"></i>
+     Open Gmail
+  </a>
+
+  <!-- Outlook -->
+  <a href="https://outlook.office.com/mail/deeplink/compose?to=accxscreations@gmail.com"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="px-5 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700">
+     <i class="fa-solid fa-envelope mr-2"></i>
+     Open Outlook
+  </a>
+
+</div>
                                 </div>
                             </div>
 
@@ -755,7 +775,7 @@
                             <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
                         <!-- Gmail -->
-                        <a href="mailto:contact@accxscreations.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
+                        <a href="mailto:accxscreations@gmail.com" aria-label="Gmail" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-rose-600 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 hover:text-white transition-all shadow-sm">
                             <i class="fa-solid fa-envelope text-sm"></i>
                         </a>
                         <!-- Messenger -->
@@ -1273,7 +1293,7 @@ function showNotification(message) {
                 closeQuoteConfirm();
             } catch (error) {
                 console.error('Project quote submission failed:', error);
-                confirmError.textContent = 'We could not submit your request. Please try again or email contact@accxscreations.com.';
+                confirmError.textContent = 'We could not submit your request. Please try again or email accxscreations@gmail.com.';
                 confirmError.classList.remove('hidden');
             } finally {
                 quoteSending = false;
