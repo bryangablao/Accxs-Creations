@@ -748,7 +748,7 @@
                 const date = h.at ? new Intl.DateTimeFormat('en-PH', {timeZone:'Asia/Manila',dateStyle:'medium',timeStyle:'short'}).format(new Date(h.at)) : '';
                 return `<div class="border border-slate-200 dark:border-slate-700 rounded-lg p-2 text-xs"><strong>${escapeHtml(h.staffName || 'Staff')}</strong> · ${escapeHtml(date)}<p class="mt-1 whitespace-pre-wrap break-words">${escapeHtml(h.note || '')}</p></div>`;
             }).join('');
-            return `<details class="mt-3"><summary class="cursor-pointer text-xs text-indigo-600 dark:text-indigo-400">Change History (${item.detailHistory.length})</summary><div class="themed-scroll mt-2 max-h-44 overflow-y-auto space-y-2">${rows}</div></details>`;
+            return `<details class="mt-3"><summary class="cursor-pointer text-xs text-indigo-600 dark:text-indigo-400">Notes (${item.detailHistory.length})</summary><div class="themed-scroll mt-2 max-h-44 overflow-y-auto space-y-2">${rows}</div></details>`;
         }
         function renderQuotes() {
             updateCounts();
