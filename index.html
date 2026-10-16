@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Accxs Creations</title>
     <link rel="icon" type="image/png" href="a/1/a.png">
     <!-- Tailwind CSS CDN -->
@@ -52,6 +52,36 @@
         }
         /* Responsive layouts for small phones, tablets, and desktop */
         *, *::before, *::after { box-sizing: border-box; }
+
+        /* Keep the document locked to the real device viewport. */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        body {
+            min-height: 100dvh;
+            position: relative;
+            overscroll-behavior-x: none;
+        }
+        header, main, footer, section {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+        main { overflow-x: clip; }
+        a, button, input, select, textarea { touch-action: manipulation; }
+        .max-w-7xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-lg, .max-w-md {
+            width: 100%;
+        }
+        .viewport-safe {
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+        }
         img, video, svg, canvas { max-width: 100%; }
         input, select, textarea { min-width: 0; max-width: 100%; font-size: 16px; }
         pre { max-width: 100%; }
@@ -155,6 +185,27 @@
 
         /* Additional mobile-first layout refinements */
         @media (max-width: 767px) {
+
+            /* Mobile viewport lock and overflow protection */
+            html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+            body { min-height: 100dvh; }
+            header, main, footer, section { overflow-x: clip; }
+            .ambient-glow { width: min(600px, 130vw) !important; height: min(600px, 130vw) !important; }
+            #hero, #purpose, #personal-websites, #services, #codestudio, #contact, #reviews { width: 100%; max-width: 100%; }
+            #hero > div, #purpose > div, #personal-websites > div, #services > div, #codestudio > div, #contact > div, #reviews > div, footer > div { width: 100%; max-width: 100%; }
+            #codestudio .max-w-4xl { width: 100%; max-width: 100%; }
+            #codestudio .max-w-4xl > div:first-child > div:last-child { width: 100%; max-width: 100%; overflow-x: hidden; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            #codestudio .max-w-4xl > div:first-child > div:last-child button { width: 100%; padding-left: 4px; padding-right: 4px; white-space: nowrap; }
+            #htmlNameCode, #codeContent { width: 100%; max-width: 100%; }
+            #codeContent { overflow: auto; -webkit-overflow-scrolling: touch; }
+            #simulationStage { width: 100%; max-width: 100%; padding-left: 16px; padding-right: 16px; }
+            #simulationGreeting { max-width: 100%; font-size: clamp(2rem, 11vw, 3rem) !important; line-height: 1.08; overflow-wrap: anywhere; }
+            #simulationSubtitle { max-width: 100%; overflow-wrap: anywhere; }
+            .marquee-window { max-width: 100%; overflow: hidden; }
+            .review-card { max-width: calc(100vw - 32px); }
+            #staffLoginModal, #quoteConfirmModal { width: 100%; max-width: 100%; padding-left: 12px; padding-right: 12px; }
+            #staffLoginCard, #quoteConfirmModal > [role="dialog"] { width: 100%; max-width: min(100%, 32rem); }
+            #customNotification { left: 16px; right: 16px; bottom: 16px; width: auto; max-width: none; }
             html { scroll-padding-top: 72px; }
             body, main, section, footer { min-width: 0; }
             header .max-w-7xl > a { min-width: 0; flex: 1 1 auto; }
@@ -193,6 +244,17 @@
             .logo-wordmark { font-size: 18px; }
             .logo-wordmark i { font-size: 23px; }
         }
+
+        @media (max-width: 480px) {
+            .max-w-7xl.mx-auto, .max-w-4xl.mx-auto, .max-w-3xl.mx-auto { width: 100%; }
+            #hero .mt-16.pt-10 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            #hero .mt-16.pt-10 > div { width: 100%; }
+            #personal-websites .mt-16.p-8 { border-radius: 20px; }
+            #personal-websites .mt-16.p-8 a { display: flex; width: 100%; }
+            #contact .flex.flex-wrap.gap-3 a { flex-basis: 100%; }
+            footer .pt-8.flex { width: 100%; }
+        }
+
         @media (max-width: 390px) {
             header .max-w-7xl { padding-left: 10px; padding-right: 10px; }
             header .group { gap: 7px; }
@@ -355,7 +417,7 @@
 
     <main class="flex-grow bg-grid-pattern relative">
         <!-- Ambient background lighting -->
-        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="ambient-glow absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none"></div>
 
         <!-- Hero Section -->
         <section id="hero" class="relative overflow-hidden pt-20 pb-28 lg:pt-32 lg:pb-36">
@@ -920,6 +982,17 @@
     </footer>
 
     <script>
+
+        // Keep mobile Safari from pinch-zooming this fixed responsive layout.
+        document.addEventListener('gesturestart', function (event) {
+            event.preventDefault();
+        }, { passive: false });
+        document.addEventListener('gesturechange', function (event) {
+            event.preventDefault();
+        }, { passive: false });
+        document.addEventListener('gestureend', function (event) {
+            event.preventDefault();
+        }, { passive: false });
 
         // Live Philippine Standard Time, independent of the visitor's local time zone.
         const philippineClock = document.getElementById('philippineClock');
