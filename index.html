@@ -517,7 +517,8 @@ html.dark{scrollbar-color:#6366f1 #0b1224}
 .dark ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#818cf8,#a78bfa)}
 @media(max-width:639px){::-webkit-scrollbar{width:6px;height:6px}}
 /* ===== Mobile fit for Privacy page / hero ===== */
-html,body{max-width:100%;overflow-x:hidden}
+html,body{max-width:100%;overflow-x:clip}
+#siteHeader{position:-webkit-sticky!important;position:sticky!important;top:0!important;z-index:60!important}
 [data-page="privacy"] *{overflow-wrap:anywhere;word-break:normal}
 [data-page="privacy"] img,[data-page="privacy"] table{max-width:100%}
 @media(max-width:479px){
