@@ -467,6 +467,70 @@ i[class*="fa-"]{display:inline-flex;align-items:center;justify-content:center;fo
 i[class*="fa-"] svg{height:1em;width:auto;fill:currentColor;display:block;overflow:visible}
 i.fa-spin svg{animation:icSpin 1s linear infinite}
 @keyframes icSpin{to{transform:rotate(360deg)}}
+
+/* ===== Header: fixed size, logo, responsive brand ===== */
+#siteHeader > div:first-child{height:68px!important}
+.brand-link{display:flex;align-items:center;gap:.6rem;min-width:0;flex:0 1 auto}
+.brand-logo{width:40px;height:40px;object-fit:contain;flex-shrink:0;border-radius:10px}
+.brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.brand-name{font-size:clamp(.95rem,4.4vw,1.25rem);font-weight:800;letter-spacing:-.01em;white-space:nowrap;background:linear-gradient(90deg,#4f46e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dark .brand-name{background-image:linear-gradient(90deg,#818cf8,#a78bfa)}
+.brand-tag{margin-top:3px;font-size:clamp(.5rem,2.3vw,.65rem);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;color:#64748b}
+.dark .brand-tag{color:#94a3b8}
+@media(max-width:359px){.brand-logo{width:34px;height:34px}.brand-link{gap:.45rem}.brand-tag{letter-spacing:.02em}}
+@media(max-width:420px){body[data-route=dashboard] .brand-text{display:none}}
+/* ===== Day/Night switch blended with page colors ===== */
+.theme-switch{position:relative;flex-shrink:0;width:58px;height:32px;padding:0;border-radius:999px;overflow:hidden;cursor:pointer;border:1px solid rgba(99,102,241,.22);background:linear-gradient(135deg,rgba(224,231,255,.9),rgba(248,250,252,.9));box-shadow:inset 0 1px 3px rgba(15,23,42,.08)}
+.dark .theme-switch{border-color:rgba(129,140,248,.25);background:linear-gradient(135deg,#0b1224,#1e1b4b);box-shadow:inset 0 1px 4px rgba(0,0,0,.5)}
+.theme-switch::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(1.2px 1.2px at 12px 9px,#fff,transparent),radial-gradient(1px 1px at 22px 21px,#c7d2fe,transparent),radial-gradient(1.4px 1.4px at 32px 11px,#fff,transparent)}
+.dark .theme-switch::before{opacity:.9}
+.theme-switch::after{content:"";position:absolute;right:9px;top:13px;width:16px;height:7px;border-radius:99px;background:rgba(255,255,255,.95);box-shadow:-6px -4px 0 -1px rgba(255,255,255,.95),0 1px 4px rgba(99,102,241,.2)}
+.dark .theme-switch::after{opacity:0}
+.ts-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;z-index:1;background:radial-gradient(circle at 35% 35%,#fde68a,#f59e0b);box-shadow:0 0 0 3px rgba(251,191,36,.25),0 0 14px rgba(245,158,11,.55);transition:transform .35s cubic-bezier(.65,0,.35,1),background .35s,box-shadow .35s}
+.dark .ts-knob{transform:translateX(26px);background:radial-gradient(circle at 35% 35%,#f1f5f9,#cbd5e1);box-shadow:0 0 0 3px rgba(165,180,252,.15),0 0 12px rgba(165,180,252,.35)}
+.ts-knob::before,.ts-knob::after{content:"";position:absolute;border-radius:50%;background:rgba(100,116,139,.35);opacity:0;transition:opacity .3s}
+.ts-knob::before{width:6px;height:6px;top:5px;left:11px}
+.ts-knob::after{width:4px;height:4px;top:14px;left:5px}
+.dark .ts-knob::before,.dark .ts-knob::after{opacity:1}
+
+/* ===== Compact one-row header actions ===== */
+#siteHeader a,#siteHeader button{white-space:nowrap}
+#siteHeader .flex.items-center.gap-2{flex-shrink:0;gap:.4rem}
+#siteHeader a[href="#/home/contact"].md\:inline-flex,#staffLoginBtn{padding:.4rem .75rem!important;font-size:.78rem!important;line-height:1.2;gap:.4rem!important}
+#mobileMenuBtn{width:2.25rem!important;height:2.25rem!important}
+.theme-switch{width:44px;height:24px}
+.ts-knob{top:2px;left:2px;width:18px;height:18px}
+.dark .ts-knob{transform:translateX(20px)}
+.ts-knob::before{width:5px;height:5px;top:4px;left:8px}
+.ts-knob::after{width:3px;height:3px;top:11px;left:4px}
+.theme-switch::after{right:7px;top:10px;width:12px;height:5px;box-shadow:-5px -3px 0 -1px rgba(255,255,255,.95),0 1px 3px rgba(99,102,241,.2)}
+@media(max-width:359px){.theme-switch{width:40px}.dark .ts-knob{transform:translateX(16px)}}
+/* ===== Themed page scrollbar ===== */
+html{scrollbar-width:thin;scrollbar-color:#818cf8 #eef2ff}
+html.dark{scrollbar-color:#6366f1 #0b1224}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:#eef2ff}
+.dark ::-webkit-scrollbar-track{background:#0b1224}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#818cf8,#a78bfa);border-radius:999px;border:2px solid #eef2ff}
+.dark ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#6366f1,#7c3aed);border-color:#0b1224}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#6366f1,#7c3aed)}
+.dark ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#818cf8,#a78bfa)}
+@media(max-width:639px){::-webkit-scrollbar{width:6px;height:6px}}
+/* ===== Mobile fit for Privacy page / hero ===== */
+html,body{max-width:100%;overflow-x:hidden}
+[data-page="privacy"] *{overflow-wrap:anywhere;word-break:normal}
+[data-page="privacy"] img,[data-page="privacy"] table{max-width:100%}
+@media(max-width:479px){
+ [data-page="privacy"] h1{font-size:1.9rem!important;line-height:1.15}
+ [data-page="privacy"] .max-w-4xl>div:first-child{font-size:.65rem;letter-spacing:.04em;padding:.35rem .7rem;max-width:100%;flex-wrap:wrap;justify-content:center}
+ [data-page="privacy"] .max-w-4xl p{font-size:.95rem}
+ [data-page="privacy"] .max-w-4xl .flex-wrap span{padding:.4rem .7rem;font-size:.72rem}
+ [data-page="privacy"] .max-w-5xl{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:.6rem}
+ [data-page="privacy"] .max-w-5xl>div{padding:.75rem .5rem}
+ [data-page="privacy"] .max-w-5xl .font-bold{font-size:.85rem}
+ [data-page="privacy"] .max-w-5xl p{font-size:.68rem}
+ [data-page="privacy"] section>div{padding-left:.9rem;padding-right:.9rem}
+}
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
@@ -488,9 +552,13 @@ i.fa-spin svg{animation:icSpin 1s linear infinite}
     
 <header id="siteHeader" class="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80">
 <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-3">
- <a href="#/" class="flex items-center gap-2.5 min-w-0 group" aria-label="Accxs Creations home">
-  <div class="min-w-0 leading-tight"><div class="font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent truncate">Accxs Creations</div><div class="hidden min-[400px]:block text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 truncate">Software &amp; Web Agency</div></div>
- </a>
+ <a href="#/" class="brand-link" aria-label="Accxs Creations home">
+          <img src="a/1/a.png" alt="Accxs Creations logo" class="brand-logo" width="40" height="40" decoding="async">
+          <span class="brand-text">
+            <span class="brand-name">Accxs Creations</span>
+            <span class="brand-tag">Software &amp; Web Agency</span>
+          </span>
+        </a>
  <nav class="hide-on-dashboard hidden lg:flex items-center gap-1 relative" aria-label="Main">
   <a class="nav-link" data-nav="home" href="#/">Home</a><a class="nav-link" href="#/home/purpose">Purpose</a><a class="nav-link" href="#/home/services">What We Do</a><a class="nav-link" href="#/home/personal-websites">Personal Sites</a><a class="nav-link" href="#/home/codestudio">Code Studio</a><a class="nav-link" href="#/home/contact">Contact</a><a class="nav-link" data-nav="reviews" href="#/reviews">Reviews</a><span id="navLine" aria-hidden="true"></span>
  </nav>
@@ -502,7 +570,7 @@ i.fa-spin svg{animation:icSpin 1s linear infinite}
    <button id="accountsTrigger" type="button" class="hidden w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50" aria-label="Manage accounts"><i class="fa-solid fa-users-gear"></i></button>
    <button id="logoutBtn" type="button" class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white" aria-label="Log out"><i class="fa-solid fa-right-from-bracket"></i></button>
   </div>
-  <button id="themeToggle" type="button" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50" aria-label="Toggle light/dark theme"><i id="themeIcon" class="fa-solid fa-sun"></i></button>
+  <button id="themeToggle" type="button" class="theme-switch" role="switch" aria-checked="false" aria-label="Toggle light/dark theme"><span class="ts-knob"></span></button>
   <button id="mobileMenuBtn" type="button" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><i class="fa-solid fa-bars"></i></button>
  </div>
 </div>
@@ -1516,7 +1584,7 @@ mb.addEventListener('click',()=>setMenu(mm.hidden));
 mm.addEventListener('click',e=>{if(e.target.closest('a,button'))setMenu(false)});
 /* theme */
 const tbtn=document.getElementById('themeToggle'),meta=document.querySelector('meta[name=theme-color]');
-function theme(){const dark=root.classList.contains('dark');tbtn.innerHTML=dark?'<i id="themeIcon" class="fa-solid fa-sun"></i>':'<i id="themeIcon" class="fa-solid fa-moon"></i>';meta&&meta.setAttribute('content',dark?'#020617':'#f8fafc')}
+function theme(){const dark=root.classList.contains('dark');tbtn.setAttribute('aria-checked',String(dark));meta&&meta.setAttribute('content',dark?'#020617':'#f8fafc')}
 document.getElementById('themeToggle').addEventListener('click',()=>{const d=root.classList.toggle('dark');try{localStorage.setItem('theme',d?'dark':'light')}catch(_){}theme()});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',e=>{let s=null;try{s=localStorage.getItem('theme')}catch(_){}if(!s){root.classList.toggle('dark',e.matches);theme()}});
 theme();
