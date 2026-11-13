@@ -532,6 +532,20 @@ html,body{max-width:100%;overflow-x:clip}
  [data-page="privacy"] .max-w-5xl p{font-size:.68rem}
  [data-page="privacy"] section>div{padding-left:.9rem;padding-right:.9rem}
 }
+
+/* ===== Brand always fits: scales with screen, never clipped ===== */
+.brand-link{flex:0 0 auto;max-width:100%}
+.brand-logo{width:clamp(30px,9vw,40px);height:clamp(30px,9vw,40px)}
+.brand-name{font-size:clamp(.85rem,4.2vw,1.25rem)}
+.brand-tag{font-size:clamp(.45rem,2.1vw,.65rem);letter-spacing:clamp(.01em,.4vw,.05em)}
+#siteHeader>div:first-child{overflow:visible}
+@media(max-width:359px){.brand-tag{letter-spacing:.01em}.brand-link{gap:.4rem}}
+/* Desktop widths: make room so brand text is never squeezed */
+@media(min-width:1024px) and (max-width:1279px){
+ #siteHeader nav[aria-label=Main] .nav-link{padding-left:.55rem!important;padding-right:.55rem!important;font-size:.82rem}
+ #siteHeader a[href="#/home/contact"].md\:inline-flex{display:none!important}
+}
+@media(min-width:1280px){.brand-name{font-size:1.3rem}}
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
@@ -728,22 +742,22 @@ html,body{max-width:100%;overflow-x:clip}
                 </div>
 
                 <!-- Interactive Personal Website Estimator Widget -->
-                <div class="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 text-white border border-slate-800 shadow-2xl">
+                <div class="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-indigo-50 via-white to-violet-100 text-slate-900 border border-indigo-200 shadow-xl shadow-indigo-500/10 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950 dark:text-white dark:border-slate-800 dark:shadow-2xl">
                     <div class="max-w-3xl mx-auto text-center">
                         <h4 class="text-2xl sm:text-3xl font-extrabold mb-3">Estimate Your Personal Website</h4>
-                        <p class="text-slate-400 text-sm mb-8">Select your preferred options below to calculate estimated delivery time and get started instantly.</p>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm mb-8">Select your preferred options below to calculate estimated delivery time and get started instantly.</p>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left mb-8">
-                            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/60">
-                                <span class="text-xs text-indigo-400 font-semibold uppercase">Type</span>
+                            <div class="p-4 rounded-2xl bg-white/80 border border-indigo-100 shadow-sm dark:bg-slate-800/80 dark:border-slate-700/60 dark:shadow-none">
+                                <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold uppercase">Type</span>
                                 <div class="text-lg font-bold mt-1">Portfolio & Blog</div>
                             </div>
-                            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/60">
-                                <span class="text-xs text-indigo-400 font-semibold uppercase">Timeline</span>
+                            <div class="p-4 rounded-2xl bg-white/80 border border-indigo-100 shadow-sm dark:bg-slate-800/80 dark:border-slate-700/60 dark:shadow-none">
+                                <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold uppercase">Timeline</span>
                                 <div class="text-lg font-bold mt-1">7 – 14 Business Days</div>
                             </div>
-                            <div class="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/60">
-                                <span class="text-xs text-indigo-400 font-semibold uppercase">Includes</span>
+                            <div class="p-4 rounded-2xl bg-white/80 border border-indigo-100 shadow-sm dark:bg-slate-800/80 dark:border-slate-700/60 dark:shadow-none">
+                                <span class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold uppercase">Includes</span>
                                 <div class="text-lg font-bold mt-1">Hosting + Domain</div>
                             </div>
                         </div>
