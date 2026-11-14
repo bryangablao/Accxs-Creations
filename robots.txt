@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bryangablao.github.io/Accxs-Creations/sitemap.xml
