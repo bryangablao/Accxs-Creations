@@ -546,6 +546,20 @@ html,body{max-width:100%;overflow-x:clip}
  #siteHeader a[href="#/home/contact"].md\:inline-flex{display:none!important}
 }
 @media(min-width:1280px){.brand-name{font-size:1.3rem}}
+
+/* ===== Dashboard view tabs + Team Directory ===== */
+.dash-view-tab,.td-tab{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1rem;border-radius:.85rem;font-size:.85rem;font-weight:700;white-space:nowrap;border:1px solid #e2e8f0;background:#fff;color:#475569;cursor:pointer}
+.dark .dash-view-tab,.dark .td-tab{border-color:#1e293b;background:#0f172a;color:#cbd5e1}
+.dash-view-tab.active,.td-tab.active{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 6px 18px rgba(99,102,241,.3)}
+.td-tab{padding:.5rem .85rem;font-size:.8rem}
+@media(max-width:479px){.dash-view-tab,.td-tab{padding:.5rem .7rem;font-size:.75rem;gap:.35rem}#teamView [role=tablist]{width:100%}}
+#teamView,#teamView *{min-width:0}
+#teamView table{border-collapse:collapse;width:100%;font-size:.8rem}
+#teamView th,#teamView td{padding:.65rem .8rem;text-align:center;border-bottom:1px solid rgba(148,163,184,.2);white-space:nowrap}
+#teamView th:first-child,#teamView td:first-child{text-align:left;position:sticky;left:0;background:inherit;white-space:normal;min-width:9rem}
+#teamView thead th{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:#64748b}
+#teamView td.me,#teamView th.me{background:rgba(99,102,241,.1)}
+.td-card summary{cursor:pointer;list-style:none}.td-card summary::-webkit-details-marker{display:none}
 </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased">
@@ -568,7 +582,7 @@ html,body{max-width:100%;overflow-x:clip}
 <header id="siteHeader" class="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800/80">
 <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-3">
  <a href="#/" class="brand-link" aria-label="Accxs Creations home">
-          <img src="a/1/a.png" alt="Accxs Creations logo" class="brand-logo" width="40" height="40" decoding="async">
+          <img src="image/accxslogo.ico" alt="Accxs Creations logo" class="brand-logo" width="40" height="40" decoding="async">
           <span class="brand-text">
             <span class="brand-name">Accxs Creations</span>
             <span class="brand-tag">Software &amp; Web Agency</span>
@@ -1059,8 +1073,16 @@ html,body{max-width:100%;overflow-x:clip}
                     </div>
                 </div>
 
+
+                <!-- View switcher: Project Requests / Team Directory -->
+                <div class="mt-8 flex flex-wrap items-center gap-2" role="tablist" aria-label="Dashboard sections">
+                    <button id="viewQuotesBtn" type="button" role="tab" class="dash-view-tab active"><i class="fa-solid fa-inbox"></i><span>Project Requests</span></button>
+                    <button id="viewTeamBtn" type="button" role="tab" class="dash-view-tab"><i class="fa-solid fa-people-group"></i><span>Team Directory</span></button>
+                </div>
+
+                <div id="quotesView">
                 <!-- Stats -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mt-8">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mt-6">
                     <div class="p-3.5 sm:p-5 min-w-0 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
                         <div class="flex items-center justify-between">
                             <div class="text-[10px] sm:text-xs uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Total</div>
@@ -1138,6 +1160,72 @@ html,body{max-width:100%;overflow-x:clip}
                     </div>
 
                     <div id="dashboardError" class="hidden mt-5 p-5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm"></div>
+                </div>
+                </div><!-- /quotesView -->
+
+                <!-- ===== Team Directory ===== -->
+                <div id="teamView" class="hidden mt-6 min-w-0">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                        <div class="min-w-0">
+                            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Team Directory</h2>
+                            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Staff accounts, your profile, and what each role is allowed to do.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Team Directory sections">
+                            <button type="button" role="tab" data-td-tab="accounts" class="td-tab active"><i class="fa-solid fa-users-gear"></i><span>Account Management</span></button>
+                            <button type="button" role="tab" data-td-tab="profile" class="td-tab"><i class="fa-solid fa-id-badge"></i><span>My Profile</span></button>
+                            <button type="button" role="tab" data-td-tab="roles" class="td-tab"><i class="fa-solid fa-user-shield"></i><span>Roles &amp; Permissions</span></button>
+                        </div>
+                    </div>
+
+                    <!-- Accounts -->
+                    <div data-td-panel="accounts" class="mt-6">
+                        <div id="tdStats" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4"></div>
+                        <div class="mt-5 p-4 sm:p-5 min-w-0 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+                            <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
+                                <div class="relative flex-1 min-w-0">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                    <input id="accountsSearch" type="search" placeholder="Search name, email, user ID or role..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                </div>
+                                <div class="grid grid-cols-2 sm:flex gap-2">
+                                    <select id="tdRoleFilter" aria-label="Filter by role" class="min-w-0 px-3 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-semibold">
+                                        <option value="all">All roles</option><option>Owner</option><option>Administrator</option><option>Manager</option><option>IT Support</option><option>Staff</option>
+                                    </select>
+                                    <select id="tdStatusFilter" aria-label="Filter by status" class="min-w-0 px-3 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-semibold">
+                                        <option value="all">Any status</option><option value="active">Active</option><option value="inactive">Inactive</option>
+                                    </select>
+                                    <button id="refreshAccounts" type="button" class="col-span-2 sm:col-span-1 px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold"><i class="fa-solid fa-arrows-rotate mr-2"></i>Refresh</button>
+                                </div>
+                            </div>
+                            <p id="accountsMessage" class="mt-3 text-sm text-slate-500 dark:text-slate-400" role="status"></p>
+                        </div>
+                        <div id="accountsList" class="mt-4 grid grid-cols-1 xl:grid-cols-2 gap-4"></div>
+                    </div>
+
+                    <!-- My profile -->
+                    <div data-td-panel="profile" class="hidden mt-6">
+                        <div class="max-w-2xl mx-auto p-5 sm:p-7 min-w-0 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md">
+                            <div class="flex items-center gap-4">
+                                <div id="tdMeAvatar" class="w-16 h-16 shrink-0 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center text-2xl font-extrabold">?</div>
+                                <div class="min-w-0">
+                                    <div id="tdMeName" class="text-xl font-extrabold break-words">Staff Member</div>
+                                    <div id="tdMeRole" class="text-sm font-bold mt-0.5">Staff</div>
+                                </div>
+                            </div>
+                            <p class="mt-5 text-xs text-slate-500">Your account details and editable personal information.</p>
+                            <div id="profileFields" class="mt-4 space-y-3"></div>
+                            <p id="profileError" class="hidden mt-4 text-sm text-rose-500" role="alert"></p>
+                        </div>
+                    </div>
+
+                    <!-- Roles & permissions -->
+                    <div data-td-panel="roles" class="hidden mt-6">
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Your assigned role is highlighted. Permissions are enforced by Firebase security rules.</p>
+                        <div id="rolesList" class="mt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+                        <div class="mt-6 min-w-0 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-800 shadow-sm backdrop-blur-md overflow-hidden">
+                            <div class="px-4 sm:px-5 py-4 font-extrabold border-b border-slate-200 dark:border-slate-800">Permission matrix</div>
+                            <div id="tdMatrix" class="themed-scroll overflow-x-auto"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1310,9 +1398,7 @@ html,body{max-width:100%;overflow-x:clip}
                 <!-- Col 1: Brand Info & Socials -->
                 <div class="md:col-span-2 space-y-4">
                     <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow">
-                            <i class="fa-solid fa-code text-white text-sm"></i>
-                        </div>
+                        <img src="image/accxslogo.ico" alt="Accxs Creations logo" width="32" height="32" class="w-8 h-8 rounded-lg object-contain" decoding="async">
                         <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">
                             Accxs Creations
                         </span>
@@ -1502,8 +1588,8 @@ html,body{max-width:100%;overflow-x:clip}
             <div class="themed-scroll overflow-y-auto min-h-0 p-6 sm:p-8">
             <div class="flex justify-between items-center"><h2 id="profileTitle" class="text-2xl font-extrabold">My Profile</h2><button type="button" data-close-modal aria-label="Close profile" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"><i class="fa-solid fa-xmark"></i></button></div>
             <p class="mt-2 text-xs text-slate-500">Your account details and editable personal information.</p>
-            <div id="profileFields" class="mt-6 space-y-3"></div>
-            <p id="profileError" class="hidden mt-4 text-sm text-rose-500" role="alert"></p>
+            <div id="profileFieldsLegacy" class="mt-6 space-y-3"></div>
+            <p id="profileErrorLegacy" class="hidden mt-4 text-sm text-rose-500" role="alert"></p>
             </div>
         </div>
     </div>
@@ -1532,7 +1618,7 @@ html,body{max-width:100%;overflow-x:clip}
       <div role="dialog" aria-modal="true" aria-labelledby="rolesTitle" class="modal-safe relative w-full max-w-3xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-5 sm:p-7 shadow-2xl">
         <div class="flex justify-between items-center gap-3"><h2 id="rolesTitle" class="text-xl sm:text-2xl font-extrabold">Roles & Permissions</h2><button data-close-role type="button" aria-label="Close roles"><i class="fa-solid fa-xmark"></i></button></div>
         <p class="mt-2 text-sm text-slate-500">Your assigned role is highlighted. Permissions are enforced by Firebase.</p>
-        <div id="rolesList" class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        <div id="rolesListLegacy" class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
     </div>
     <!-- Account directory -->
@@ -1541,8 +1627,8 @@ html,body{max-width:100%;overflow-x:clip}
       <div role="dialog" aria-modal="true" aria-labelledby="accountsTitle" class="modal-safe relative w-full max-w-5xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-5 sm:p-7 shadow-2xl">
         <div class="flex items-center justify-between gap-3"><h2 id="accountsTitle" class="text-xl sm:text-2xl font-extrabold">Account Management</h2><button data-close-accounts type="button" aria-label="Close accounts"><i class="fa-solid fa-xmark"></i></button></div>
         <p class="mt-2 text-sm text-slate-500">Firebase Authentication accounts linked to employee profiles. Actions depend on your role.</p>
-        <div class="mt-4 flex gap-2"><input id="accountsSearch" type="search" placeholder="Search name, email, or role" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950"><button id="refreshAccounts" type="button" class="px-3 rounded-xl bg-indigo-600 text-white">Refresh</button></div>
-        <p id="accountsMessage" class="mt-3 text-sm text-slate-500" role="status"></p><div id="accountsList" class="mt-4 space-y-3"></div>
+        <div class="mt-4 flex gap-2"><input id="accountsSearchLegacy" type="search" placeholder="Search name, email, or role" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950"><button id="refreshAccountsLegacy" type="button" class="px-3 rounded-xl bg-indigo-600 text-white">Refresh</button></div>
+        <p id="accountsMessageLegacy" class="mt-3 text-sm text-slate-500" role="status"></p><div id="accountsListLegacy" class="mt-4 space-y-3"></div>
       </div>
     </div>
 
@@ -2697,9 +2783,13 @@ window.openStaffLogin = openStaffLogin;
         }
         function renderProfile() {
             const p = employeeProfile || {};
+            const nm = `${p.firstName || ''} ${p.lastName || ''}`.trim() || 'Staff Member';
+            const meAv = document.getElementById('tdMeAvatar'); if (meAv) { meAv.textContent = (typeof tdInitials === 'function' ? tdInitials(nm) : nm[0]); meAv.style.background = roleColor(p.role || 'Staff'); }
+            const meN = document.getElementById('tdMeName'); if (meN) meN.textContent = nm;
+            const meR = document.getElementById('tdMeRole'); if (meR) { meR.textContent = p.role || 'Staff'; meR.style.color = roleColor(p.role || 'Staff'); }
             profileFields.innerHTML = profileRow('Full Name', `${p.firstName || ''} ${p.lastName || ''}`.trim()) + profileRow('Role', p.role || 'Staff') + profileRow('User ID', p.userId) + profileRow('Age', p.age, 'age') + profileRow('Gender', p.gender, 'gender') + profileRow('Address', p.address, 'address') + profileRow('Personal Email', p.personalEmail, 'personalEmail');
         }
-        document.getElementById('profileTrigger').addEventListener('click', (e) => { if(e.target.closest('#headerRole')) return; profileError.classList.add('hidden'); renderProfile(); showModal(profileModal); });
+        document.getElementById('profileTrigger').addEventListener('click', (e) => { if(e.target.closest('#headerRole')) return; profileError.classList.add('hidden'); goTeam('profile'); });
         profileFields.addEventListener('click', async e => {
             const edit = e.target.closest('[data-edit-profile]');
             if (!edit) return;
@@ -2833,10 +2923,27 @@ window.openStaffLogin = openStaffLogin;
         const accountsModal = document.getElementById('accountsModal');
         const roleRank = {Owner:5,Administrator:4,Manager:3,'IT Support':2,Staff:1};
         function roleColor(role) { return ROLE_INFO.find(r=>r.name===role)?.color || '#10b981'; }
+        const PERMS = [
+          ['View project requests', [1,1,1,1,1]],
+          ['Edit details & update status', [1,1,1,1,1]],
+          ['Archive requests', [1,1,1,0,0]],
+          ['Permanently delete requests', [1,1,0,0,0]],
+          ['View staff directory', [1,1,1,0,0]],
+          ['Activate / deactivate accounts', [1,1,0,0,0]],
+          ['Assign Manager, IT Support, Staff', [1,1,0,0,0]],
+          ['Assign Owner / Administrator', [1,0,0,0,0]]
+        ];
+        function renderMatrix() {
+          const el = document.getElementById('tdMatrix'); if (!el) return;
+          const names = ROLE_INFO.map(r => r.name);
+          const head = names.map(n => `<th class="${n === activeRole ? 'me' : ''}" style="color:${roleColor(n)}">${n}${accountsLoaded ? `<div class="font-semibold normal-case tracking-normal text-slate-500">${accountRows.filter(a => a.role === n).length} acct</div>` : ''}</th>`).join('');
+          const body = PERMS.map(([label, flags]) => `<tr><td class="font-semibold">${label}</td>${flags.map((f, i) => `<td class="${names[i] === activeRole ? 'me' : ''}">${f ? '<i class="fa-solid fa-circle-check text-emerald-500" aria-label="Allowed"></i>' : '<span class="text-slate-400" aria-label="Not allowed">—</span>'}</td>`).join('')}</tr>`).join('');
+          el.innerHTML = `<table><thead><tr><th>Permission</th>${head}</tr></thead><tbody>${body}</tbody></table>`;
+        }
         function renderRoleInfo() {
           document.getElementById('rolesList').innerHTML = ROLE_INFO.map(r=>`<section class="p-4 rounded-2xl border ${r.name===activeRole?'ring-2 ring-indigo-500 bg-indigo-500/10':'border-slate-200 dark:border-slate-700'}"><div class="flex items-center gap-2 font-extrabold" style="color:${r.color}"><i class="fa-solid fa-${r.icon}"></i>${r.name}${r.name===activeRole?'<span class="ml-auto text-xs rounded-full px-2 py-1 bg-indigo-600 text-white">Your Role</span>':''}</div><p class="mt-2 text-sm text-slate-600 dark:text-slate-300">${r.text}</p></section>`).join('');
         }
-        document.getElementById('headerRole').addEventListener('click', e=>{e.stopPropagation();renderRoleInfo();showModal(roleModal);});
+        document.getElementById('headerRole').addEventListener('click', e=>{e.stopPropagation();goTeam('roles');});
         document.querySelectorAll('[data-close-role]').forEach(e=>e.addEventListener('click',()=>hideModal(roleModal)));
         document.querySelectorAll('[data-close-accounts]').forEach(e=>e.addEventListener('click',()=>hideModal(accountsModal)));
         
@@ -2862,8 +2969,8 @@ window.openStaffLogin = openStaffLogin;
         }
 
         async function getAccountRows() {
-          if (!['Owner', 'Administrator'].includes(activeRole)) {
-            throw new Error('Only Owners and Administrators can manage accounts.');
+          if (!['Owner', 'Administrator', 'Manager'].includes(activeRole)) {
+            throw new Error('Only Owners, Administrators and Managers can view the account directory.');
           }
 
           const employeeSnapshot = await getDocs(collection(db, 'employees'));
@@ -2888,6 +2995,7 @@ window.openStaffLogin = openStaffLogin;
                 email: employee.email || access.email || '',
                 userId: employee.userId || '',
                 role: employeeRole,
+                age: employee.age, gender: employee.gender, address: employee.address, personalEmail: employee.personalEmail,
                 active: access.active === true,
                 accessExists: accessSnapshot.docs.some(x => x.id === uid)
               };
@@ -2896,86 +3004,128 @@ window.openStaffLogin = openStaffLogin;
             .sort((a, b) => a.name.localeCompare(b.name));
         }
 
+        function tdInitials(name) { return (name || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('') || '?'; }
+        function tdField(label, value) {
+          return `<div class="min-w-0"><div class="text-[10px] font-bold uppercase text-slate-500">${label}</div><div class="text-xs font-semibold break-words">${escapeHtml(value === undefined || value === null || value === '' ? 'Not provided' : String(value))}</div></div>`;
+        }
+        function renderTdStats() {
+          const total = accountRows.length, active = accountRows.filter(a => a.active).length;
+          const admins = accountRows.filter(a => ['Owner', 'Administrator'].includes(a.role)).length;
+          const tile = (label, val, icon, color) => `<div class="p-3.5 sm:p-5 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-sm"><div class="flex items-center justify-between"><div class="text-[10px] sm:text-xs uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">${label}</div><i class="fa-solid fa-${icon} ${color}"></i></div><div class="mt-3 text-3xl font-extrabold">${val}</div></div>`;
+          document.getElementById('tdStats').innerHTML =
+            tile('Accounts', total, 'users', 'text-indigo-500') + tile('Active', active, 'circle-check', 'text-emerald-500') +
+            tile('Inactive', total - active, 'user-slash', 'text-rose-500') + tile('Admin level', admins, 'shield-halved', 'text-violet-500');
+        }
         function renderAccounts() {
+          renderTdStats();
           const needle = document.getElementById('accountsSearch').value.trim().toLowerCase();
+          const roleF = document.getElementById('tdRoleFilter').value;
+          const statF = document.getElementById('tdStatusFilter').value;
           const rows = accountRows.filter(a =>
+            (roleF === 'all' || a.role === roleF) &&
+            (statF === 'all' || (statF === 'active') === a.active) &&
             [a.name, a.email, a.role, a.userId].join(' ').toLowerCase().includes(needle)
           );
-
           const allowedRoles = allowedRolesForCurrentUser();
+          const canAdmin = ['Owner', 'Administrator'].includes(activeRole);
 
           document.getElementById('accountsList').innerHTML = rows.length
             ? rows.map(a => {
                 const allowed = canManageAccount(a);
                 const isSelf = a.uid === auth.currentUser?.uid;
-                const opts = allowedRoles.map(r =>
-                  `<option value="${escapeHtml(r)}" ${r === a.role ? 'selected' : ''}>${escapeHtml(r)}</option>`
-                ).join('');
-
+                const c = roleColor(a.role);
+                const opts = allowedRoles.map(r => `<option value="${escapeHtml(r)}" ${r === a.role ? 'selected' : ''}>${escapeHtml(r)}</option>`).join('');
+                const controls = canAdmin ? `
+                  <div class="mt-4 flex flex-wrap items-center gap-2">
+                    <select aria-label="Select role" data-account-role ${allowed ? '' : 'disabled'} class="min-w-0 rounded-lg px-2 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs disabled:opacity-50">${opts}</select>
+                    <button type="button" data-account-action="role" ${allowed ? '' : 'disabled'} class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-35">Adjust Role</button>
+                    <button type="button" data-account-action="active" ${allowed ? '' : 'disabled'} class="px-3 py-2 rounded-lg ${a.active ? 'bg-amber-600' : 'bg-emerald-600'} text-white text-xs font-bold disabled:opacity-35">${a.active ? 'Deactivate' : 'Activate'}</button>
+                  </div>
+                  ${allowed || isSelf ? '' : '<p class="mt-2 text-[11px] text-slate-500">You can\'t change this account with your role.</p>'}` : '';
                 return `
-                  <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950" data-account="${escapeHtml(a.uid)}">
-                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                      <div class="min-w-0">
-                        <div class="font-bold break-words">
-                          ${escapeHtml(a.name)}
-                          ${isSelf ? '<span class="text-xs text-indigo-500">(You)</span>' : ''}
-                        </div>
+                  <div class="td-card p-4 sm:p-5 rounded-2xl bg-white/85 dark:bg-slate-900/85 border border-slate-200 dark:border-slate-800 shadow-sm" data-account="${escapeHtml(a.uid)}">
+                    <div class="flex items-start gap-3">
+                      <div class="w-12 h-12 shrink-0 rounded-xl flex items-center justify-center font-extrabold text-white" style="background:${c}">${escapeHtml(tdInitials(a.name))}</div>
+                      <div class="min-w-0 flex-1">
+                        <div class="font-bold break-words">${escapeHtml(a.name)} ${isSelf ? '<span class="text-xs text-indigo-500">(You)</span>' : ''}</div>
                         <div class="text-xs text-slate-500 break-all">${escapeHtml(a.email || 'No email')}</div>
-                        <div class="text-xs text-slate-500 mt-1">${escapeHtml(a.userId || 'No User ID')}</div>
-                        <div class="text-xs mt-1 font-bold" style="color:${roleColor(a.role)}">
-                          ${escapeHtml(a.role)} ·
-                          ${a.active
-                            ? '<span class="text-emerald-500">Active</span>'
-                            : '<span class="text-rose-500">Inactive</span>'}
-                        </div>
+                        <div class="text-xs text-slate-500 mt-0.5 break-all">ID: ${escapeHtml(a.userId || 'No User ID')}</div>
                       </div>
-
-                      <div class="flex flex-wrap items-center gap-2">
-                        <select aria-label="Select role" data-account-role ${allowed ? '' : 'disabled'}
-                          class="min-w-0 rounded-lg px-2 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs">
-                          ${opts}
-                        </select>
-                        <button data-account-action="role" ${allowed ? '' : 'disabled'}
-                          class="px-3 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold disabled:opacity-35">
-                          Adjust Role
-                        </button>
-                        <button data-account-action="active" ${allowed ? '' : 'disabled'}
-                          class="px-3 py-2 rounded-lg ${a.active ? 'bg-amber-600' : 'bg-emerald-600'} text-white text-xs font-bold disabled:opacity-35">
-                          ${a.active ? 'Deactivate' : 'Activate'}
-                        </button>
+                      <div class="flex flex-col items-end gap-1.5 shrink-0">
+                        <span class="text-[11px] font-bold px-2 py-1 rounded-full" style="color:${c};background:${c}22">${escapeHtml(a.role)}</span>
+                        <span class="text-[11px] font-bold px-2 py-1 rounded-full ${a.active ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' : 'text-rose-600 dark:text-rose-400 bg-rose-500/10'}">${a.active ? 'Active' : 'Inactive'}</span>
                       </div>
                     </div>
+                    <details class="mt-3"><summary class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">View profile details</summary>
+                      <div class="mt-3 grid grid-cols-2 gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+                        ${tdField('Age', a.age)}${tdField('Gender', a.gender)}${tdField('Personal email', a.personalEmail)}${tdField('Address', a.address)}
+                      </div>
+                    </details>
+                    ${controls}
                   </div>`;
               }).join('')
-            : '<p class="text-sm text-slate-500">No matching employee accounts.</p>';
+            : '<p class="text-sm text-slate-500 xl:col-span-2 p-6 text-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">No matching staff accounts.</p>';
+          renderMatrix();
         }
 
+        let accountsLoaded = false;
         async function refreshAccounts() {
           const message = document.getElementById('accountsMessage');
-          message.textContent = 'Loading employee accounts...';
-          document.getElementById('accountsList').innerHTML =
-            '<div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 text-sm text-slate-500">Loading accounts...</div>';
-
+          const list = document.getElementById('accountsList');
+          if (!['Owner', 'Administrator', 'Manager'].includes(activeRole)) {
+            document.getElementById('tdStats').innerHTML = '';
+            message.textContent = '';
+            list.innerHTML = '<div class="xl:col-span-2 p-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-400"><i class="fa-solid fa-lock mr-2 text-indigo-500"></i>The staff account list is available to Owners, Administrators and Managers. You can still view and edit your own profile and see what each role can do.</div>';
+            return;
+          }
+          message.textContent = 'Loading staff accounts...';
+          list.innerHTML = '<div class="xl:col-span-2 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 text-sm text-slate-500">Loading accounts...</div>';
           try {
             accountRows = await getAccountRows();
+            accountsLoaded = true;
             renderAccounts();
-            message.textContent = `${accountRows.length} employee account(s) found.`;
+            message.textContent = `${accountRows.length} staff account(s) registered.` + (['Manager'].includes(activeRole) ? ' View only for your role.' : '');
           } catch (e) {
             console.error('Account directory failed:', e);
             message.textContent = 'Unable to load accounts: ' + (e.message || e.code || 'unknown error');
-            document.getElementById('accountsList').innerHTML =
-              '<p class="text-sm text-rose-500">The account directory could not be loaded. Check your Firestore Rules and make sure the employee has Owner or Administrator access.</p>';
+            list.innerHTML = '<p class="xl:col-span-2 text-sm text-rose-500">The account directory could not be loaded. Check your Firestore Rules and make sure your employee profile has the right role.</p>';
           }
         }
 
-        document.getElementById('accountsTrigger').addEventListener('click', () => {
-          if (!['Owner', 'Administrator'].includes(activeRole)) return;
-          showModal(accountsModal);
-          refreshAccounts();
-        });
-
+        // ---- Team Directory navigation ----
+        const quotesView = document.getElementById('quotesView');
+        const teamView = document.getElementById('teamView');
+        function setDashView(view) {
+          const team = view === 'team';
+          quotesView.classList.toggle('hidden', team);
+          teamView.classList.toggle('hidden', !team);
+          document.getElementById('viewQuotesBtn').classList.toggle('active', !team);
+          document.getElementById('viewTeamBtn').classList.toggle('active', team);
+          document.getElementById('viewQuotesBtn').setAttribute('aria-selected', String(!team));
+          document.getElementById('viewTeamBtn').setAttribute('aria-selected', String(team));
+        }
+        function setTeamTab(tab) {
+          document.querySelectorAll('[data-td-tab]').forEach(b => { const on = b.dataset.tdTab === tab; b.classList.toggle('active', on); b.setAttribute('aria-selected', String(on)); });
+          document.querySelectorAll('[data-td-panel]').forEach(p => p.classList.toggle('hidden', p.dataset.tdPanel !== tab));
+          if (tab === 'profile') renderProfile();
+          if (tab === 'roles') { renderRoleInfo(); renderMatrix(); }
+          if (tab === 'accounts' && !accountsLoaded) refreshAccounts();
+        }
+        function goTeam(tab = 'accounts') {
+          setDashView('team'); setTeamTab(tab);
+          teamView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        window.__resetDashView = () => { setDashView('quotes'); accountsLoaded = false; accountRows = []; };
+        document.getElementById('viewQuotesBtn').addEventListener('click', () => setDashView('quotes'));
+        document.getElementById('viewTeamBtn').addEventListener('click', () => goTeam(teamView.dataset.tab || 'accounts'));
+        document.querySelectorAll('[data-td-tab]').forEach(b => b.addEventListener('click', () => { teamView.dataset.tab = b.dataset.tdTab; setTeamTab(b.dataset.tdTab); }));
+        document.getElementById('accountsTrigger').addEventListener('click', () => goTeam('accounts'));
         document.getElementById('refreshAccounts').addEventListener('click', refreshAccounts);
         document.getElementById('accountsSearch').addEventListener('input', renderAccounts);
+        document.getElementById('tdRoleFilter').addEventListener('change', renderAccounts);
+        document.getElementById('tdStatusFilter').addEventListener('change', renderAccounts);
+
+        
 
         document.getElementById('accountsList').addEventListener('click', e => {
           const btn = e.target.closest('[data-account-action]');
@@ -3075,6 +3225,7 @@ window.openStaffLogin = openStaffLogin;
             document.getElementById('accountsTrigger').classList.toggle('hidden', !['Owner','Administrator'].includes(activeRole));
             document.getElementById('logsTab').classList.toggle('hidden', !canArchive());
             welcomeName.textContent = fullName;
+            if (!teamView.classList.contains('hidden')) setTeamTab(teamView.dataset.tab || 'accounts');
 
             return profile;
         }
@@ -3125,7 +3276,7 @@ window.openStaffLogin = openStaffLogin;
                 }
             });
         }
-        function leaveDashboard() { if (authUnsub) { authUnsub(); authUnsub = null; } if (unsubscribeQuotes) { unsubscribeQuotes(); unsubscribeQuotes = null; } }
+        function leaveDashboard() { window.__resetDashView && window.__resetDashView(); if (authUnsub) { authUnsub(); authUnsub = null; } if (unsubscribeQuotes) { unsubscribeQuotes(); unsubscribeQuotes = null; } }
         window.addEventListener('route', e => e.detail.page === 'dashboard' ? enterDashboard() : leaveDashboard());
         if (window.Router && window.Router.current === 'dashboard') enterDashboard();
 
